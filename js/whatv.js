@@ -1,41 +1,42 @@
 'use strict';
 
 (function(window, undefined) {
-var whaTV = function() {
-            // The whaTV object is actually just the init constructor 'enhanced'
-            return new whaTV.fn.init();
-          },
+var whaTV = {
+  // Reference to self
+  whatTV = this,
 
-    // Use the correct document accordingly with window argument (sandbox)
-    document = window.document,
+  // The representation of the slides
+  slides: [],
 
-    // The representation of the slides
-    slides;
+  // The current version of whaTV being used
+  version: '0.0.1',
 
-whaTV.fn = whaTV.prototype = {
   init: function() {
+    // Getting slides
     $.getJSON('/slides.json', function(data) {
-                                this.slides = data;
+                                whaTV.slides = data.slides;
                               }
     );
-    return this;
   },
-  // The current version of whaTV being used
-  whaTV: "0.0.1"
 
-  // Here come all the functions and vars needed in whaTV
+  loadSlideIntoDOM: function() {
+
+  },
+
+  makeTransition: function() {
+
+  },
+
+  onSlidetimeout: function() {
+
+  }
 };
 
-// Give the init function the whaTV prototype for later instantiation
-whaTV.fn.init.prototype = whaTV.fn;
+whaTV.init();
 
-whaTV.extend = whaTV.fn.extend = function() {
-
-};
-
-whaTV(window);
-
-// Expose jQuery to the global object
+// Expose whaTV to the global object for debugging purposes
 window.whaTV = whaTV;
+console.log(whaTV);
+
 
 })(window);
