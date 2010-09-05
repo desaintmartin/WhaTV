@@ -7,7 +7,7 @@
 	<slide>
 		<type>video</type>
 		<timeout>15</timeout>
-		<ressource>./sources/apple-ipod_nano-colors_848x496</ressource>
+		<ressource>./sources/apple-ipod_nano-colors_848x496.mov</ressource>
 	</slide>
 	<slide>
 		<type>image</type>

@@ -1,0 +1,20 @@
+{
+  'slides': [
+    {'type': 'html',
+     'timeout': 5,
+     'resource': './assets/1.html'
+    },
+    {'type': 'video',
+     'timeout': 15,
+     'resource': './assets/apple-ipod_nano-colors_848x496.mov'
+    },
+    {'type': 'image',
+     'timeout': 5,
+     'resource': './assets/slurp.gif'
+    },
+    {'type': 'flash',
+     'timeout': 4,
+     'resource': './assets/flash.swf'
+    }
+  ]
+}
