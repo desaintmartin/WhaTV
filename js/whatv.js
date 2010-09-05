@@ -26,38 +26,62 @@ var whaTV = {
 
   showFirstSlide: function(data) {
     whaTV.slides = data.slides;
-    // TODO : loading
-    //addEventListener('domnodecomplete', ok = false; transition())
+    // TODO : loading screen
     whaTV.loadPointedSlideIntoDOM()
   },
 
   loadPointedSlideIntoDOM: function() {
+    console.debug("loadPointedSlideIntoDOM called.");
+    whaTV.ready = false;
     //Charge en DOM les éléments necessaires au slide pointé.
     //Une fois que tout est chargé :
-    //  var newEvt = document.createEventObject()
-    //  this.dispatchEvent("domenodecomplete", evt)
-    //  return domeNode;
+    whaTV.loadedSlide = document.createElement('div');
+    // Simulating fire event when complete
+    setTimeout(whaTV.onNextSlideReady, 1000);
+  },
+
+  onNextSlideReady: function() {
+    whaTV.ready = true;
+    whaTV.onDomNodeComplete();
   },
 
   makeTransition: function() {
-    //removeEventListener('domnodecomplete', ok = false; transition())
+    console.debug("makeTransition called.");
+    //whaTV.onDomNodeComplete = function() {return null;};
     //Efface le slide actuel, affiche le domNode. Incrémente le pointeur.
-    //chargement()
-    //addEventListener('domnodecomplete', function(){ok = true})
-    //thetimeout = timeout(this.onslidetimeout(), Roadmap.pointeur.timeout)
+    whaTV.onDomNodeComplete = function() {whaTV.ready = true;};
+    whaTV.loadPointedSlideIntoDOM();
+    setTimeout(whaTV.onSlideTimeout, 3000);//Roadmap.pointeur.timeout)
   },
 
-  onSlidetimeout: function() {
-    //removeEventListener('domnodecomplete', function(){ok = true})
-    //si ok : ok = false; transition()
-    //sinon : addEventListener('domnodecomplete', ok = false; transition())
+  onSlideTimeout: function() {
+    if (whaTV.ready) {
+      whaTV.makeTransition();
+    }
+    else {
+      whaTV.onDomNodeComplete = function() {
+                                  whaTV.ready = false;
+                                  whaTV.makeTransition()
+                                };
+    }
+  },
+
+  onDomNodeComplete: function() {
+    // This function will be overwritten by makeTransition and onSlideTimeout
+    // This code is used as is ONLY for first iteration
+    whaTV.ready = true;
+    whaTV.makeTransition();
+  },
+
+  pause: function() {
+    whaTV.onDomNodeComplete = function() {return null;};
   }
 };
 
 whaTV.init();
 
 // Expose whaTV to the global object for debugging purposes
-window.whaTV = whaTV;
+window.w = whaTV;
 console.log(whaTV);
 
 
