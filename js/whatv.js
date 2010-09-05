@@ -3,7 +3,7 @@
 (function(window, undefined) {
 var whaTV = {
   // Pointer to current slide
-  pointer: 1,
+  pointer: 0,
 
   // The informations about slides to show
   slides: [],
@@ -37,7 +37,7 @@ var whaTV = {
     //Une fois que tout est chargé :
     whaTV.loadedSlide = document.createElement('div');
     // Simulating fire event when complete
-    setTimeout(whaTV.onNextSlideReady, 1000);
+    setTimeout(whaTV.onNextSlideReady, 2000);
   },
 
   onNextSlideReady: function() {
@@ -48,10 +48,11 @@ var whaTV = {
   makeTransition: function() {
     console.debug("makeTransition called.");
     //whaTV.onDomNodeComplete = function() {return null;};
-    //Efface le slide actuel, affiche le domNode. Incrémente le pointeur.
+    //Efface le slide actuel, affiche le domNode.
+    whaTV.incrementPointer();
     whaTV.onDomNodeComplete = function() {whaTV.ready = true;};
     whaTV.loadPointedSlideIntoDOM();
-    setTimeout(whaTV.onSlideTimeout, 3000);//Roadmap.pointeur.timeout)
+    setTimeout(whaTV.onSlideTimeout, 1000);//slides[i].timeout)
   },
 
   onSlideTimeout: function() {
@@ -73,7 +74,15 @@ var whaTV = {
     whaTV.makeTransition();
   },
 
+  // Increments the pointer. If last slide has been reached, we start again.
+  incrementPointer: function() {
+    whaTV.pointer = whaTV.pointer + 1;
+    console.log(whaTV.pointer);
+    if (whaTV.pointer === whaTV.slides.length) whaTV.pointer = 0;
+  },
+
   pause: function() {
+    whaTV.ready = false;
     whaTV.onDomNodeComplete = function() {return null;};
   }
 };
