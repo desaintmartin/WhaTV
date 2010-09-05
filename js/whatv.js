@@ -1,18 +1,23 @@
-'use strict'
+'use strict';
 
 (function(window, undefined) {
 var whaTV = function() {
             // The whaTV object is actually just the init constructor 'enhanced'
-            return new whaTV.fn();
+            return new whaTV.fn.init();
           },
-    // Map over jQuery in case of overwrite
-    _whatTV = window.whaTV,
+
     // Use the correct document accordingly with window argument (sandbox)
-    document = window.document;
+    document = window.document,
+
+    // The representation of the slides
+    slides;
 
 whaTV.fn = whaTV.prototype = {
   init: function() {
-    
+    $.getJSON('/slides.json', function(data) {
+                                this.slides = data;
+                              }
+    );
     return this;
   },
   // The current version of whaTV being used
@@ -28,9 +33,9 @@ whaTV.extend = whaTV.fn.extend = function() {
 
 };
 
+whaTV(window);
 
-//$.getJSON('/slides.json', function(data){
-                              
-//});
+// Expose jQuery to the global object
+window.whaTV = whaTV;
 
 })(window);
