@@ -1,6 +1,7 @@
 'use strict';
 
 (function(window, undefined) {
+// Inside of our object, we will always refer to "whaTV" to fetch attributes.
 var whaTV = {
   // Pointer to current slide
   pointer: 0,
@@ -18,8 +19,6 @@ var whaTV = {
   version: '0.0.1',
 
   init: function() {
-    // Reference to self
-    whaTV = this;
     // Getting slides
     $.getJSON('/slides.json', whaTV.showFirstSlide);
   },
@@ -34,10 +33,21 @@ var whaTV = {
     console.debug("loadPointedSlideIntoDOM called.");
     whaTV.ready = false;
     //Charge en DOM les éléments necessaires au slide pointé.
+    currentSlide = whaTV.slides[whaTV.pointer];
+    switch (currentSlide.type) {
+      case "html":
+        break;
+      case "flash":
+        break;
+      case "image":
+        break;
+      case "video":
+        break;
+    }
     //Une fois que tout est chargé :
     whaTV.loadedSlide = document.createElement('div');
     // Simulating fire event when complete
-    setTimeout(whaTV.onNextSlideReady, 2000);
+    setTimeout(whaTV.onNextSlideReady, Math.random()*5000);
   },
 
   onNextSlideReady: function() {
@@ -49,10 +59,10 @@ var whaTV = {
     console.debug("makeTransition called.");
     //whaTV.onDomNodeComplete = function() {return null;};
     //Efface le slide actuel, affiche le domNode.
-    whaTV.incrementPointer();
     whaTV.onDomNodeComplete = function() {whaTV.ready = true;};
+    setTimeout(whaTV.onSlideTimeout, whaTV.slides[whaTV.pointer].timeout * 1000);
     whaTV.loadPointedSlideIntoDOM();
-    setTimeout(whaTV.onSlideTimeout, 1000);//slides[i].timeout)
+    whaTV.incrementPointer();
   },
 
   onSlideTimeout: function() {
@@ -91,7 +101,5 @@ whaTV.init();
 
 // Expose whaTV to the global object for debugging purposes
 window.w = whaTV;
-console.log(whaTV);
-
 
 })(window);
