@@ -42,46 +42,46 @@ var whaTV = {
   // Load into the DOM the pointed slide and its elements. Fire an event
   // onNextSlideReady when Everything is loaded.
   loadPointedSlideIntoDOM: function() {
-    console.debug('loadPointedSlideIntoDOM called.');
+    console.log('loadPointedSlideIntoDOM called.');
     whaTV.ready = false;
     currentSlide = whaTV.slides[whaTV.pointer];
     var content;
     switch (currentSlide.type) {
       case 'html':
-        console.log('HTML file detected');
+        console.debug('HTML file detected');
         content = whaTV.defaults.htmlMethod ? whaTV.loadIframe() :
                                               whaTV.loadIframe();
         break;
       case 'flash':
-        console.log('Flash file detected');
+        console.debug('Flash file detected');
         content = document.createElement('object');
         break;
       case 'image':
-        console.log('Image file detected');
+        console.debug('Image file detected');
         content = document.createElement('img');
         content.setAttribute('src', whaTV.slides[whaTV.pointer].resource);
         break;
       case 'video':
-        console.log('Video file detected');
+        console.debug('Video file detected');
         content = document.createElement('video');
         content.setAttribute('src', whaTV.slides[whaTV.pointer].resource);
         break;
     }
-    var hiddenContentDiv = $('#content' + (w.pointer % 2 + 1))[0];
-    console.debug('I clear the content div ' + (w.pointer % 2 + 1));
+    var hiddenContentDiv = $('#content' + whaTV.getPointerModuloTwoPlusOne())[0];
+    console.debug('Clearing content' + whaTV.getPointerModuloTwoPlusOne());
     whaTV.clearNode(hiddenContentDiv);
-    console.debug('I load the content div ' + (w.pointer % 2 + 1));
+    console.debug('Load content' + whaTV.getPointerModuloTwoPlusOne());
     hiddenContentDiv.appendChild(content);
     // Simulating fire event when complete
     setTimeout(whaTV.onNextSlideReady, Math.random() * 500);
   },
 
   makeTransition: function() {
-    console.debug('makeTransition called.');
-    console.debug('I hide the content div ' + (2 - w.pointer % 2));
-    $('#content' + (2 - w.pointer % 2)).hide();
-    console.debug('I show the content div ' + (w.pointer % 2 + 1));
-    $('#content' + (w.pointer % 2 + 1)).show();
+    console.log('makeTransition called.');
+    console.debug('Hidding content' + whaTV.getPointerModuloTwo());
+    $('#content' + whaTV.getPointerModuloTwo()).hide();
+    console.debug('Showing content' + whaTV.getPointerModuloTwoPlusOne());
+    $('#content' + whaTV.getPointerModuloTwoPlusOne()).show();
     whaTV.onDomNodeComplete = function() {whaTV.ready = true;};
     setTimeout(whaTV.onSlideTimeout,
                whaTV.slides[whaTV.pointer].timeout * 1000);
@@ -135,6 +135,14 @@ var whaTV = {
         node.removeChild(node.firstChild);
       }
     }
+  },
+
+  getPointerModuloTwo: function() {
+    return 2 - whaTV.pointer % 2;
+  },
+
+  getPointerModuloTwoPlusOne: function() {
+    return whaTV.pointer % 2 + 1;
   }
 };
 
