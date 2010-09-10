@@ -35,14 +35,14 @@ var whaTV = {
     whaTV.slides = data.slides;
     // TODO : loading screen
     $('#content1').hide();
-    console.debug('Showing slide number 0');
     whaTV.loadPointedSlideIntoDOM();
   },
 
   // Load into the DOM the pointed slide and its elements. Fire an event
-  // onNextSlideReady when Everything is loaded.
+  // notifyReadyOrGo when Everything is loaded.
   loadPointedSlideIntoDOM: function() {
-    console.log('loadPointedSlideIntoDOM called.');
+    console.log('loadPointedSlideIntoDOM called. preparing slide number ' +
+                whaTV.pointer);
     whaTV.ready = false;
     currentSlide = whaTV.slides[whaTV.pointer];
     var content;
@@ -73,25 +73,20 @@ var whaTV = {
     console.debug('Load content' + whaTV.getPointerModuloTwoPlusOne());
     hiddenContentDiv.appendChild(content);
     // Simulating fire event when complete
-    setTimeout(whaTV.onNextSlideReady, Math.random() * 500);
+    setTimeout(whaTV.onNextSlideReady, 1000);//Math.random() * 500);
   },
 
   makeTransition: function() {
-    console.log('makeTransition called.');
+    console.log('makeTransition called. Showing slide number ' + whaTV.pointer);
     console.debug('Hidding content' + whaTV.getPointerModuloTwo());
     $('#content' + whaTV.getPointerModuloTwo()).hide();
     console.debug('Showing content' + whaTV.getPointerModuloTwoPlusOne());
     $('#content' + whaTV.getPointerModuloTwoPlusOne()).show();
-    whaTV.onDomNodeComplete = function() {whaTV.ready = true;};
+    whaTV.notifyReadyOrGo = function() {whaTV.ready = true;};
     setTimeout(whaTV.onSlideTimeout,
-               whaTV.slides[whaTV.pointer].timeout * 1000);
+               2000);//whaTV.slides[whaTV.pointer].timeout * 1000);
     whaTV.incrementPointer();
     whaTV.loadPointedSlideIntoDOM();
-  },
-
-  onNextSlideReady: function() {
-    whaTV.ready = true;
-    whaTV.onDomNodeComplete();
   },
 
   onSlideTimeout: function() {
@@ -99,14 +94,14 @@ var whaTV = {
       whaTV.makeTransition();
     }
     else {
-      whaTV.onDomNodeComplete = function() {
-                                  whaTV.ready = false;
-                                  whaTV.makeTransition();
-                                };
+      whaTV.notifyReadyOrGo = function() {whaTV.makeTransition();};
     }
   },
 
-  onDomNodeComplete: function() {
+  onNextSlideReady: function() {
+    whaTV.notifyReadyOrGo();
+  },
+  notifyReadyOrGo: function() {
     // This function will be overwritten by makeTransition and onSlideTimeout
     // This code is used as is ONLY for first iteration
     whaTV.makeTransition();
@@ -116,7 +111,6 @@ var whaTV = {
   incrementPointer: function() {
     whaTV.pointer = whaTV.pointer + 1;
     if (whaTV.pointer === whaTV.slides.length) whaTV.pointer = 0;
-    console.debug('Showing slide number ' + whaTV.pointer);
   },
 
 
@@ -152,6 +146,6 @@ whaTV.init();
 window.w = whaTV;
 window.pause = function() {
   whaTV.ready = false;
-  whaTV.onDomNodeComplete = function() {return null;};
+  whaTV.notifyReadyOrGo = function() {return null;};
 }
 })(window);
