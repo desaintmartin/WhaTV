@@ -138,6 +138,26 @@ var whaTV = {
   getPointerModuloTwoPlusOne: function() {
     return whaTV.pointer % 2 + 1;
   }
+
+
+  /*// Some ideas to some simpler event system
+  onSlideTimeout2: function() {
+    if (whaTV.ready) {
+      whaTV.makeTransition();
+    }
+    else {
+      whaTV.madeTransition = true;
+    }
+  },
+
+  onNextSlideReady2: function() {
+    if (whaTV.madeTransition) {
+      whaTV.makeTransition();
+    }
+    else {
+      whaTV.ready = true;
+    }
+  },*/
 };
 
 whaTV.init();
