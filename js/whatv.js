@@ -1,7 +1,7 @@
 'use strict';
 
 (function(window, undefined) {
-// Inside of our object, we will always refer to "whaTV" to fetch attributes.
+// Inside of our object, we will always refer to 'whaTV' to fetch attributes.
 var whaTV = {
   defaults: {
     // The html fetching method.
@@ -29,61 +29,62 @@ var whaTV = {
     var whaTV = this;
     // Getting slides
     $.getJSON('/slides.json', whaTV.showFirstSlide);
-    $('#content1').hide();
   },
 
   showFirstSlide: function(data) {
     whaTV.slides = data.slides;
     // TODO : loading screen
-    console.debug("Showing slide number 0");
-    whaTV.loadPointedSlideIntoDOM()
+    $('#content1').hide();
+    console.debug('Showing slide number 0');
+    whaTV.loadPointedSlideIntoDOM();
   },
 
-  // Load into the DOM the pointed slide and its elements. Fire an event 
+  // Load into the DOM the pointed slide and its elements. Fire an event
   // onNextSlideReady when Everything is loaded.
   loadPointedSlideIntoDOM: function() {
-    console.debug("loadPointedSlideIntoDOM called.");
+    console.debug('loadPointedSlideIntoDOM called.');
     whaTV.ready = false;
     currentSlide = whaTV.slides[whaTV.pointer];
     var content;
     switch (currentSlide.type) {
       case 'html':
-        console.log("HTML file detected");
-        content = whaTV.defaults.htmlMethod ? whaTV.loadIframe()
-                                            : whaTV.loadIframe();
+        console.log('HTML file detected');
+        content = whaTV.defaults.htmlMethod ? whaTV.loadIframe() :
+                                              whaTV.loadIframe();
         break;
       case 'flash':
-        console.log("Flash file detected");
-        content = document.createElement("object");
+        console.log('Flash file detected');
+        content = document.createElement('object');
         break;
       case 'image':
-        console.log("Image file detected");
-        content = document.createElement("img");
-        content.setAttribute("src", whaTV.slides[whaTV.pointer].resource);
+        console.log('Image file detected');
+        content = document.createElement('img');
+        content.setAttribute('src', whaTV.slides[whaTV.pointer].resource);
         break;
       case 'video':
-        console.log("Video file detected");
-        content = document.createElement("video");
-        content.setAttribute("src", whaTV.slides[whaTV.pointer].resource);
+        console.log('Video file detected');
+        content = document.createElement('video');
+        content.setAttribute('src', whaTV.slides[whaTV.pointer].resource);
         break;
     }
-    var hiddenContentDiv = $("#content" + (w.pointer%2 + 1))[0];
-    console.debug("I clear the content div " + (w.pointer%2 + 1));
+    var hiddenContentDiv = $('#content' + (w.pointer % 2 + 1))[0];
+    console.debug('I clear the content div ' + (w.pointer % 2 + 1));
     whaTV.clearNode(hiddenContentDiv);
-    console.debug("I load the content div " + (w.pointer%2 + 1));
+    console.debug('I load the content div ' + (w.pointer % 2 + 1));
     hiddenContentDiv.appendChild(content);
     // Simulating fire event when complete
-    setTimeout(whaTV.onNextSlideReady, Math.random()*500);
+    setTimeout(whaTV.onNextSlideReady, Math.random() * 500);
   },
 
   makeTransition: function() {
-    console.debug("makeTransition called.");
-    console.debug("I hide the content div " + (2 - w.pointer % 2));
-    $("#content" + (2 - w.pointer % 2)).hide();
-    console.debug("I show the content div " + (w.pointer%2 + 1));
-    $("#content" + (w.pointer%2 + 1)).show();
+    console.debug('makeTransition called.');
+    console.debug('I hide the content div ' + (2 - w.pointer % 2));
+    $('#content' + (2 - w.pointer % 2)).hide();
+    console.debug('I show the content div ' + (w.pointer % 2 + 1));
+    $('#content' + (w.pointer % 2 + 1)).show();
     whaTV.onDomNodeComplete = function() {whaTV.ready = true;};
-    setTimeout(whaTV.onSlideTimeout, whaTV.slides[whaTV.pointer].timeout * 1000);
+    setTimeout(whaTV.onSlideTimeout,
+               whaTV.slides[whaTV.pointer].timeout * 1000);
     whaTV.incrementPointer();
     whaTV.loadPointedSlideIntoDOM();
   },
@@ -94,14 +95,13 @@ var whaTV = {
   },
 
   onSlideTimeout: function() {
-    console.warn(whaTV.ready);
     if (whaTV.ready) {
       whaTV.makeTransition();
     }
     else {
       whaTV.onDomNodeComplete = function() {
                                   whaTV.ready = false;
-                                  whaTV.makeTransition()
+                                  whaTV.makeTransition();
                                 };
     }
   },
@@ -116,7 +116,7 @@ var whaTV = {
   incrementPointer: function() {
     whaTV.pointer = whaTV.pointer + 1;
     if (whaTV.pointer === whaTV.slides.length) whaTV.pointer = 0;
-    console.debug("Showing slide number " + whaTV.pointer);
+    console.debug('Showing slide number ' + whaTV.pointer);
   },
 
 
@@ -132,8 +132,8 @@ var whaTV = {
   clearNode: function(node) {
     if (node.hasChildNodes()) {
       while (node.childNodes.length >= 1) {
-        node.removeChild(node.firstChild);       
-      } 
+        node.removeChild(node.firstChild);
+      }
     }
   }
 };
