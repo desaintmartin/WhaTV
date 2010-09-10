@@ -1,15 +1,10 @@
 *{margin:0; padding:0}
 html{width:100%; height:100%;}
-body{border:0 none; font:12px/17px Arial, Helvetica, sans-sherif; background-color:white;}
+body{border:0 none;}
 
 #logo{position:absolute; top:0px; left:0px;}
-#logo_atilla, #logo_sopra{position:absolute; top:0px; left:0px;}
 #logo_sopra{-moz-opacity:0; opacity:0; filter:alpha(opacity=0);}
 
 #contenu{margin-top: 130px; width:1000px; min-height:400px; height:auto; margin-left:auto; margin-right:auto;}
 /* Faire en sorte qu'on prenne toute la page , mais pas plus en hauteur ni en largeur, ET sans deformer les images. */
-footer{position:absolute; bottom:0px; left:0px; width:100%; font:70px/80px Arial, Helvetica, sans-sherif; z-index:1; background:url(../img_atilla/bas.png) repeat;}
-
-#table_pied{margin-right:20px;}
-#texte_defil{width:100%;}
-#horloge{height:100%; margin-left:20px; color:#333333;}
+footer{position:absolute; bottom:0px; left:0px; width:100%; font:70px/80px Arial, Helvetica, sans-sherif; z-index:1;}
