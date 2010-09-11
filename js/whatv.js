@@ -138,6 +138,7 @@ var whaTV = {
     iframe.setAttribute('src', whaTV.slides[whaTV.pointer].resource);
     iframe.setAttribute('class', 'next_content');
     iframe.setAttribute('id', whaTV.pointer);
+    iframe.setAttribute('scrolling', "no");
     // XXX : May be used to fire the onNextSlideReady event?
     //iframe.onload = function(){alert("lol")};
     return iframe;

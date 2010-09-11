@@ -4,6 +4,14 @@
      "timeout": 10,
      "resource": "./assets/1.html"
     },
+    {"type": "html",
+     "timeout": 10,
+     "resource": "http://google.fr/"
+    },
+    {"type": "html",
+     "timeout": 10,
+     "resource": "http://www.eistiens.net/"
+    },
     {"type": "video",
      "timeout": 15,
      "resources": [{

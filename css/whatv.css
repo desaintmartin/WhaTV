@@ -11,7 +11,8 @@ body {
 
 .content {
     /*background:#000;*/
-	min-height:400px; height:auto; margin-left:auto; margin-right:auto;
+	/*min-height:400px; height:auto;*/
+	overflow: hidden;
 }
 
 video {
@@ -25,5 +26,17 @@ iframe {
 	overflow: 'hidden';
 }
 
-#logo{position:absolute; top:0px; left:0px;}
-footer{position:absolute; bottom:0px; left:0px; width:100%; font:70px/80px Arial, Helvetica, sans-sherif; z-index:1;}
+/*#logo{
+	position:absolute; 
+	top:0px; 
+	left:0px;
+}
+
+footer{
+	position:absolute;
+	bottom:0px; 
+	left:0px; 
+	width:100%; 
+	font:70px/80px Arial, Helvetica, sans-sherif; 
+	z-index:1;
+}*/
