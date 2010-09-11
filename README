@@ -1,0 +1,16 @@
+About : 
+WhaTV is a simple information diffusion system, aimed to be used either in web
+browsers or embedded in entreprise diffusion systems.
+
+Roadmap :
+
+0.0.2 : Iframe full support with proper css
+0.0.3 : Flash support
+0.0.4 : Powerpoint support
+0.0.5 : Ambilight support
+0.1.0 : First stable release with proper "finished loading" event firing
+0.2.0 : Widgets support
+0.2.1 : Proof of concept : meteo widget
+0.3.0 : Transition system
+
+Later : node.js authentication and synchronization system
