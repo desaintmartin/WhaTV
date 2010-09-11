@@ -1,10 +1,25 @@
 About : 
+=========
 WhaTV is a simple information diffusion system, aimed to be used either in web
 browsers or embedded in entreprise diffusion systems.
 
-Roadmap :
 
-0.0.2 : Iframe full support with proper css
+Changelog
+=========
+
+0.0.1 (2010-09-11)
+----------------
+Initial release
+[Cedric de Saint Martin]
+
+0.0.2 (2010-09-11)
+----------------
+Iframe and video full support with proper css
+[Cedric de Saint Martin]
+
+
+Roadmap :
+=========
 0.0.3 : Flash support
 0.0.4 : Powerpoint support
 0.0.5 : Ambilight support
