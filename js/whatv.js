@@ -64,15 +64,8 @@ var whaTV = {
         break;
       case 'video':
         console.debug('Video file detected');
-        content = document.createElement('video');
-        for (index in resources = whaTV.slides[whaTV.pointer].resources) {
-          source = document.createElement('source');
-          source.setAttribute('src', resources[index].resource);
-          source.setAttribute('type', resources[index].codec);
-          content.appendChild(source);
-        content.preload = true;
+        content = whaTV.loadVideo();
         break;
-      }
     }
     var hiddenContentDiv = $('#content' +
                              whaTV.getPointerModuloTwoPlusOne()
@@ -142,6 +135,21 @@ var whaTV = {
     // XXX : May be used to fire the onNextSlideReady event?
     //iframe.onload = function(){alert("lol")};
     return iframe;
+  },
+
+  loadVideo: function() {
+    videoContainerDiv = document.createElement('div');
+    videoContainerDiv.setAttribute('class', 'video_container');
+    video = document.createElement('video');
+    for (index in resources = whaTV.slides[whaTV.pointer].resources) {
+      source = document.createElement('source');
+      source.setAttribute('src', resources[index].resource);
+      source.setAttribute('type', resources[index].codec);
+      video.appendChild(source);
+    }
+    video.preload = true;
+    videoContainerDiv.appendChild(video);
+    return videoContainerDiv;
   },
 
   clearNode: function(node) {

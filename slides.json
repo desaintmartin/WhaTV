@@ -1,5 +1,12 @@
 {
   "slides": [
+    {"type": "video",
+     "timeout": 15,
+     "resources": [{
+     "codec": "video/mp4; codecs='avc1.42E01E, mp4a.40.2'",
+     "resource": "./assets/apple-ipod_nano-colors_848x496.mov"
+     }]
+    },
     {"type": "html",
      "timeout": 10,
      "resource": "./assets/1.html"
@@ -11,13 +18,6 @@
     {"type": "html",
      "timeout": 10,
      "resource": "http://www.eistiens.net/"
-    },
-    {"type": "video",
-     "timeout": 15,
-     "resources": [{
-     "codec": "video/mp4; codecs='avc1.42E01E, mp4a.40.2'",
-     "resource": "./assets/apple-ipod_nano-colors_848x496.mov"
-     }]
     },
     {"type": "image",
      "timeout": 5,
