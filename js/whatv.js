@@ -54,7 +54,7 @@ var whaTV = {
         break;
       case 'flash':
         console.debug('Flash file detected');
-        content = document.createElement('object');
+        content = whaTV.loadFlash();
         break;
       case 'image':
         console.debug('Image file detected');
@@ -124,7 +124,7 @@ var whaTV = {
   },
 
 
-  // Utility methods
+  // Loaders
   loadIframe: function() {
     iframe = document.createElement('iframe');
     iframe.setAttribute('frameborder', '0');
@@ -152,6 +152,16 @@ var whaTV = {
     return videoContainerDiv;
   },
 
+  loadFlash: function(){
+    flash = document.createElement('embed');
+    flash.setAttribute('src', whaTV.slides[whaTV.pointer].resource);
+    flash.setAttribute('pluginspage', 'http://www.adobe.com/go/getflashplayer');
+    flash.setAttribute('type', 'application/x-shockwave-flash');
+    return flash;
+  },
+
+
+  // Utilities
   clearNode: function(node) {
     if (node.hasChildNodes()) {
       while (node.childNodes.length >= 1) {

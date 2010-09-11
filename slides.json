@@ -1,31 +1,39 @@
 {
   "slides": [
+    {"type": "flash",
+     "timeout": 5,
+     "resource": "./assets/app.swf"
+    },
+    {"type": "flash",
+     "timeout": 5,
+     "resource": "./assets/flexballs.swf"
+    },
     {"type": "video",
-     "timeout": 15,
-     "resources": [{
-     "codec": "video/mp4; codecs='avc1.42E01E, mp4a.40.2'",
-     "resource": "./assets/apple-ipod_nano-colors_848x496.mov"
-     }]
+     "timeout": 5,
+     "resources": [
+       {"codec": "video/mp4;",
+        "resource": "./assets/demo2.mp4"
+       },
+       {"codec": "video/ogg;",
+        "resource": "./assets/demo2.ogv"
+       }
+     ]
     },
     {"type": "html",
-     "timeout": 10,
+     "timeout": 5,
      "resource": "./assets/1.html"
     },
     {"type": "html",
-     "timeout": 10,
+     "timeout": 5,
      "resource": "http://google.fr/"
     },
     {"type": "html",
-     "timeout": 10,
+     "timeout": 5,
      "resource": "http://www.eistiens.net/"
     },
     {"type": "image",
      "timeout": 5,
      "resource": "./assets/slurp.gif"
-    },
-    {"type": "flash",
-     "timeout": 4,
-     "resource": "./assets/flash.swf"
     }
   ]
 }

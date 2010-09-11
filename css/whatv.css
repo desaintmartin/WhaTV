@@ -1,5 +1,3 @@
-/* @override http://localhost:8888/css/whatv.css */
-
 body {
 	padding:0;
 	margin:0;
@@ -16,14 +14,20 @@ body {
 	/*min-height:400px; height:auto;*/
 	overflow: hidden;
 	width: 100%;
-	heigth: 100%;
+	height: 100%;
 }
 
 
 video {
 	background: #000;
-	width:100%;
-	height:100%;
+	width: 100%;
+	height: 100%;
+}
+
+embed {
+	background: #000;
+	width: 100%;
+	height: 100%;
 }
 
 
