@@ -1,5 +1,9 @@
 {
   "slides": [
+    {"type": "image",
+     "timeout": 5,
+     "resource": "./assets/slurp.gif"
+    },
     {"type": "flash",
      "timeout": 5,
      "resource": "./assets/app.swf"
@@ -30,10 +34,6 @@
     {"type": "html",
      "timeout": 5,
      "resource": "http://www.eistiens.net/"
-    },
-    {"type": "image",
-     "timeout": 5,
-     "resource": "./assets/slurp.gif"
     }
   ]
 }
