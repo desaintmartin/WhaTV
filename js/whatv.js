@@ -58,7 +58,7 @@ var whaTV = {
         break;
       case 'image':
         console.debug('Image file detected');
-        // What about Image() preloading?
+        // XXX : What about Image() preloading?
         content = document.createElement('img');
         content.setAttribute('src', whaTV.slides[whaTV.pointer].resource);
         break;
@@ -70,7 +70,6 @@ var whaTV = {
           source.setAttribute('src', resources[index].resource);
           source.setAttribute('type', resources[index].codec);
           content.appendChild(source);
-        content.setAttribute('style', 'width:100%; height:100%');
         content.preload = true;
         break;
       }
@@ -82,6 +81,8 @@ var whaTV = {
     whaTV.clearNode(hiddenContentDiv);
     console.debug('Load content' + whaTV.getPointerModuloTwoPlusOne());
     hiddenContentDiv.appendChild(content);
+    // XXX : This is hightly experimental
+    //if(content.play) ambiLight.create(content);
     // Simulating fire event when complete
     setTimeout(whaTV.onNextSlideReady, Math.random() * 2000);
   },
@@ -134,11 +135,10 @@ var whaTV = {
   loadIframe: function() {
     iframe = document.createElement('iframe');
     iframe.setAttribute('frameborder', '0');
-    iframe.setAttribute('style', 'height: 100%; width: 100%;');
     iframe.setAttribute('src', whaTV.slides[whaTV.pointer].resource);
     iframe.setAttribute('class', 'next_content');
     iframe.setAttribute('id', whaTV.pointer);
-    // May be used to fire the onNextSlideReady event?
+    // XXX : May be used to fire the onNextSlideReady event?
     //iframe.onload = function(){alert("lol")};
     return iframe;
   },
