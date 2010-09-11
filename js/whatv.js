@@ -74,7 +74,9 @@ var whaTV = {
         break;
       }
     }
-    var hiddenContentDiv = $('#content' + whaTV.getPointerModuloTwoPlusOne())[0];
+    var hiddenContentDiv = $('#content' +
+                             whaTV.getPointerModuloTwoPlusOne()
+                            )[0];
     console.debug('Clearing content' + whaTV.getPointerModuloTwoPlusOne());
     whaTV.clearNode(hiddenContentDiv);
     console.debug('Load content' + whaTV.getPointerModuloTwoPlusOne());
@@ -87,13 +89,13 @@ var whaTV = {
     console.log('makeTransition called. Showing slide number ' + whaTV.pointer);
     console.debug('Hidding content' + whaTV.getPointerModuloTwo());
     $('#content' + whaTV.getPointerModuloTwo()).hide();
-    if ($('#content' + whaTV.getPointerModuloTwo() + " video")[0]) {
-      $('#content' + whaTV.getPointerModuloTwo() + " video")[0].pause();
+    if ($('#content' + whaTV.getPointerModuloTwo() + ' video')[0]) {
+      $('#content' + whaTV.getPointerModuloTwo() + ' video')[0].pause();
     }
     console.debug('Showing content' + whaTV.getPointerModuloTwoPlusOne());
     $('#content' + whaTV.getPointerModuloTwoPlusOne()).show();
-    if ($('#content' + whaTV.getPointerModuloTwoPlusOne() + " video")[0]) {
-      $('#content' + whaTV.getPointerModuloTwoPlusOne() + " video")[0].play();
+    if ($('#content' + whaTV.getPointerModuloTwoPlusOne() + ' video')[0]) {
+      $('#content' + whaTV.getPointerModuloTwoPlusOne() + ' video')[0].play();
     }
     whaTV.notifyReadyOrGo = function() {whaTV.ready = true;};
     setTimeout(whaTV.onSlideTimeout,
