@@ -65,6 +65,8 @@ var whaTV = {
         console.debug('Video file detected');
         content = document.createElement('video');
         content.setAttribute('src', whaTV.slides[whaTV.pointer].resource);
+        content.setAttribute('preload', 'preload');
+        content.setAttribute('style', 'width:100%; height:100%');
         break;
     }
     var hiddenContentDiv = $('#content' + whaTV.getPointerModuloTwoPlusOne())[0];
@@ -73,18 +75,24 @@ var whaTV = {
     console.debug('Load content' + whaTV.getPointerModuloTwoPlusOne());
     hiddenContentDiv.appendChild(content);
     // Simulating fire event when complete
-    setTimeout(whaTV.onNextSlideReady, 1000);//Math.random() * 500);
+    setTimeout(whaTV.onNextSlideReady, Math.random() * 2000);
   },
 
   makeTransition: function() {
     console.log('makeTransition called. Showing slide number ' + whaTV.pointer);
     console.debug('Hidding content' + whaTV.getPointerModuloTwo());
     $('#content' + whaTV.getPointerModuloTwo()).hide();
+    if ($('#content' + whaTV.getPointerModuloTwo() + " video")[0]) {
+      $('#content' + whaTV.getPointerModuloTwo() + " video")[0].stop();
+    }
     console.debug('Showing content' + whaTV.getPointerModuloTwoPlusOne());
     $('#content' + whaTV.getPointerModuloTwoPlusOne()).show();
+    if ($('#content' + whaTV.getPointerModuloTwoPlusOne() + " video")[0]) {
+      $('#content' + whaTV.getPointerModuloTwoPlusOne() + " video")[0].play();
+    }
     whaTV.notifyReadyOrGo = function() {whaTV.ready = true;};
     setTimeout(whaTV.onSlideTimeout,
-               2000);//whaTV.slides[whaTV.pointer].timeout * 1000);
+               whaTV.slides[whaTV.pointer].timeout * 1000);
     whaTV.incrementPointer();
     whaTV.loadPointedSlideIntoDOM();
   },
@@ -117,6 +125,8 @@ var whaTV = {
   // Utility methods
   loadIframe: function() {
     iframe = document.createElement('iframe');
+    iframe.setAttribute('frameborder', '0');
+    iframe.setAttribute('style', 'height: 100%; width: 100%;');
     iframe.setAttribute('src', whaTV.slides[whaTV.pointer].resource);
     iframe.setAttribute('class', 'next_content');
     iframe.setAttribute('id', whaTV.pointer);
