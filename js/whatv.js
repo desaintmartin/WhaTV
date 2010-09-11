@@ -64,10 +64,15 @@ var whaTV = {
       case 'video':
         console.debug('Video file detected');
         content = document.createElement('video');
-        content.setAttribute('src', whaTV.slides[whaTV.pointer].resource);
-        content.setAttribute('preload', 'preload');
+        for (index in resources = whaTV.slides[whaTV.pointer].resources) {
+          source = document.createElement('source');
+          source.setAttribute('src', resources[index].resource);
+          source.setAttribute('type', resources[index].codec);
+          content.appendChild(source);
         content.setAttribute('style', 'width:100%; height:100%');
+        content.preload = true;
         break;
+      }
     }
     var hiddenContentDiv = $('#content' + whaTV.getPointerModuloTwoPlusOne())[0];
     console.debug('Clearing content' + whaTV.getPointerModuloTwoPlusOne());
@@ -83,7 +88,7 @@ var whaTV = {
     console.debug('Hidding content' + whaTV.getPointerModuloTwo());
     $('#content' + whaTV.getPointerModuloTwo()).hide();
     if ($('#content' + whaTV.getPointerModuloTwo() + " video")[0]) {
-      $('#content' + whaTV.getPointerModuloTwo() + " video")[0].stop();
+      $('#content' + whaTV.getPointerModuloTwo() + " video")[0].pause();
     }
     console.debug('Showing content' + whaTV.getPointerModuloTwoPlusOne());
     $('#content' + whaTV.getPointerModuloTwoPlusOne()).show();
