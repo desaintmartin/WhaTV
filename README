@@ -9,23 +9,29 @@ Changelog
 
 0.0.1 (2010-09-11)
 ----------------
-Initial release
+Initial release.
 [Cedric de Saint Martin]
 
 0.0.2 (2010-09-11)
 ----------------
-Iframe and video full support with proper css
+Iframe and video full support with proper css.
+[Cedric de Saint Martin]
+
+0.0.3 (2010-09-11)
+----------------
+Adding Flash support.
 [Cedric de Saint Martin]
 
 
 Roadmap :
 =========
-0.0.3 : Flash support
-0.0.4 : Powerpoint support
+0.0.4 : CSS3 image animation support (examples : http://developer.apple.com/safaridemos/showcase/transitions/)
 0.0.5 : Ambilight support
 0.1.0 : First stable release with proper "finished loading" event firing
 0.2.0 : Widgets support
 0.2.1 : Proof of concept : meteo widget
 0.3.0 : Transition system
+0.4.0 : Powerpoint support
 
 Later : node.js authentication and synchronization system
+Image has to be vertically centered.

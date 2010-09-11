@@ -1,5 +1,5 @@
 'use strict';
-
+var $;
 (function(window, undefined) {
 // Inside of our object, we will always refer to 'whaTV' to fetch attributes.
 var whaTV = {
@@ -44,8 +44,9 @@ var whaTV = {
     console.log('loadPointedSlideIntoDOM called. preparing slide number ' +
                 whaTV.pointer);
     whaTV.ready = false;
-    currentSlide = whaTV.slides[whaTV.pointer];
-    var content;
+    var currentSlide = whaTV.slides[whaTV.pointer],
+        content,
+        hiddenContentDiv;
     switch (currentSlide.type) {
       case 'html':
         console.debug('HTML file detected');
@@ -58,16 +59,14 @@ var whaTV = {
         break;
       case 'image':
         console.debug('Image file detected');
-        // XXX : What about Image() preloading?
-        content = document.createElement('img');
-        content.setAttribute('src', whaTV.slides[whaTV.pointer].resource);
+        content = whaTV.loadImage();
         break;
       case 'video':
         console.debug('Video file detected');
         content = whaTV.loadVideo();
         break;
     }
-    var hiddenContentDiv = $('#content' +
+    hiddenContentDiv = $('#content' +
                              whaTV.getPointerModuloTwoPlusOne()
                             )[0];
     console.debug('Clearing content' + whaTV.getPointerModuloTwoPlusOne());
@@ -120,13 +119,13 @@ var whaTV = {
   // Increments the pointer. If last slide has been reached, we start again.
   incrementPointer: function() {
     whaTV.pointer = whaTV.pointer + 1;
-    if (whaTV.pointer === whaTV.slides.length) whaTV.pointer = 0;
+    if (whaTV.pointer === whaTV.slides.length) {whaTV.pointer = 0;}
   },
 
 
   // Loaders
   loadIframe: function() {
-    iframe = document.createElement('iframe');
+    var iframe = document.createElement('iframe');
     iframe.setAttribute('frameborder', '0');
     iframe.setAttribute('src', whaTV.slides[whaTV.pointer].resource);
     iframe.setAttribute('class', 'next_content');
@@ -137,11 +136,22 @@ var whaTV = {
     return iframe;
   },
 
+  loadImage: function() {
+    // XXX : What about Image() preloading?
+    var image = document.createElement('img');
+    image.setAttribute('src', whaTV.slides[whaTV.pointer].resource);
+    image.setAttribute('class', 'slide');
+    return image;
+  },
+
   loadVideo: function() {
-    videoContainerDiv = document.createElement('div');
+    var videoContainerDiv = document.createElement('div'),
+        video = document.createElement('video'),
+        resources = whaTV.slides[whaTV.pointer].resources,
+        source,
+        index;
     videoContainerDiv.setAttribute('class', 'video_container');
-    video = document.createElement('video');
-    for (index in resources = whaTV.slides[whaTV.pointer].resources) {
+    for (index in resources) {
       source = document.createElement('source');
       source.setAttribute('src', resources[index].resource);
       source.setAttribute('type', resources[index].codec);
@@ -153,7 +163,7 @@ var whaTV = {
   },
 
   loadFlash: function(){
-    flash = document.createElement('embed');
+    var flash = document.createElement('embed');
     flash.setAttribute('src', whaTV.slides[whaTV.pointer].resource);
     flash.setAttribute('pluginspage', 'http://www.adobe.com/go/getflashplayer');
     flash.setAttribute('type', 'application/x-shockwave-flash');

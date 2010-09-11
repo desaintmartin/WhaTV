@@ -17,6 +17,11 @@ body {
 	height: 100%;
 }
 
+img.slide {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
 
 video {
 	background: #000;
