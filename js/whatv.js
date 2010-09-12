@@ -28,7 +28,7 @@ var whaTV = {
     // Reference to self
     var whaTV = this;
     // Getting slides
-    $.getJSON('/slides.json', whaTV.showFirstSlide);
+    $.getJSON('slides.json', whaTV.showFirstSlide);
   },
 
   showFirstSlide: function(data) {
@@ -64,6 +64,7 @@ var whaTV = {
       case 'video':
         console.debug('Video file detected');
         content = whaTV.loadVideo();
+        //content.addEventListener('ended', whaTV.onSlideTimeout, false);
         break;
     }
     hiddenContentDiv = $('#content' +

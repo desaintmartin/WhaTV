@@ -25,13 +25,15 @@ Adding Flash support.
 
 Roadmap :
 =========
-0.0.4 : CSS3 image animation support (examples : http://developer.apple.com/safaridemos/showcase/transitions/)
+0.0.4 : CSS3 image animation support (examples : http://developer.apple.com/safaridemos/showcase/transitions/) and/or Ambimage support
 0.0.5 : Ambilight support
-0.1.0 : First stable release with proper "finished loading" event firing
+0.1.0 : First stable release with proper "finished loading" event firing, animated header, footer with date and quick messages.
 0.2.0 : Widgets support
 0.2.1 : Proof of concept : meteo widget
-0.3.0 : Transition system
+0.3.0 : Modular transition system with some examples
 0.4.0 : Powerpoint support
 
 Later : node.js authentication and synchronization system
 Image has to be vertically centered.
+Slide isolation : a failed slide won't prevent other to show correctly
+Photo album
