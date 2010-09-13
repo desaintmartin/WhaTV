@@ -1,19 +1,19 @@
 {
   "slides": [
     {"type": "image",
-     "timeout": 5,
+     "timeout": 3,
      "resource": "./assets/slurp.gif"
     },
     {"type": "flash",
-     "timeout": 5,
+     "timeout": 3,
      "resource": "./assets/app.swf"
     },
     {"type": "flash",
-     "timeout": 5,
+     "timeout": 3,
      "resource": "./assets/flexballs.swf"
     },
     {"type": "video",
-     "timeout": 5,
+     "timeout": 3,
      "resources": [
        {"codec": "video/mp4;",
         "resource": "./assets/demo2.mp4"
@@ -24,16 +24,20 @@
      ]
     },
     {"type": "html",
-     "timeout": 5,
+     "timeout": 3,
      "resource": "./assets/1.html"
     },
     {"type": "html",
-     "timeout": 5,
+     "timeout": 3,
      "resource": "http://google.fr/"
     },
     {"type": "html",
-     "timeout": 5,
+     "timeout": 3,
      "resource": "http://www.eistiens.net/"
+    },
+    {"type": "html",
+     "timeout": 3,
+     "resource": "http://dev.watercooled.org"
     }
   ]
 }

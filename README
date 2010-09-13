@@ -37,3 +37,4 @@ Later : node.js authentication and synchronization system
 Image has to be vertically centered.
 Slide isolation : a failed slide won't prevent other to show correctly
 Photo album
+Could it be possible to have x #content, where x is the number of slides?

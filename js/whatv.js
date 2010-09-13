@@ -11,6 +11,9 @@ var whaTV = {
   // Pointer to current slide
   pointer: 0,
 
+  // Ugly hack to know where to show the slide if not even.
+  even: true,
+
   // The informations about slides to show
   slides: [],
 
@@ -83,7 +86,8 @@ var whaTV = {
   makeTransition: function() {
     var divToHide = $('#content' + whaTV.getPointerModuloTwo()),
         divToShow = $('#content' + whaTV.getPointerModuloTwoPlusOne());
-    console.log('makeTransition called. Showing slide number ' + whaTV.pointer);
+    console.log('makeTransition called. Showing slide number ' + whaTV.pointer
+                + ' from #content' + whaTV.getPointerModuloTwoPlusOne() + '.');
     console.debug('Hidding content' + whaTV.getPointerModuloTwo());
     divToHide.hide();
     whaTV.onHide(divToHide);
@@ -118,7 +122,12 @@ var whaTV = {
   // Increments the pointer. If last slide has been reached, we start again.
   incrementPointer: function() {
     whaTV.pointer = whaTV.pointer + 1;
-    if (whaTV.pointer === whaTV.slides.length) {whaTV.pointer = 0;}
+    if (whaTV.pointer === whaTV.slides.length) {
+      whaTV.pointer = 0;
+      if (whaTV.slides.length % 2) {
+        whaTV.even = !whaTV.even;
+      }
+    }
   },
 
 
@@ -169,18 +178,19 @@ var whaTV = {
     return flash;
   },
 
+
   // Pseudo-events
-  onHide: function(div) {
-    var videos = div.getElementsByTagName('video');
-    if (videos) {
-      videos[0].pause();
+  onShow: function(div) {
+    var videos = div[0].getElementsByTagName('video');
+    if (videos.length) {
+      videos[0].play();
     }
   },
 
-  onShow: function(div) {
-    var videos = div.getElementsByTagName('video');
-    if (videos) {
-      videos[0].play();
+  onHide: function(div) {
+    var videos = div[0].getElementsByTagName('video');
+    if (videos.length) {
+      videos[0].pause();
     }
   },
 
@@ -195,11 +205,19 @@ var whaTV = {
   },
 
   getPointerModuloTwo: function() {
-    return 2 - whaTV.pointer % 2;
+    var whereToDraw = 2 - whaTV.pointer % 2;
+    if (!whaTV.even) {
+      whereToDraw = whaTV.pointer % 2 + 1;
+    }
+    return whereToDraw;
   },
 
   getPointerModuloTwoPlusOne: function() {
-    return whaTV.pointer % 2 + 1;
+    var whereToDraw = whaTV.pointer % 2 + 1;
+    if (!whaTV.even) {
+      whereToDraw = 2 - whaTV.pointer % 2;
+    }
+    return whereToDraw;
   }
 
 
