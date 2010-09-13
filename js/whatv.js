@@ -1,5 +1,5 @@
 'use strict';
-var $;
+
 (function(window, undefined) {
 // Inside of our object, we will always refer to 'whaTV' to fetch attributes.
 var whaTV = {
@@ -145,11 +145,19 @@ var whaTV = {
   },
 
   loadImage: function() {
-    // XXX : What about Image() preloading?
-    var image = document.createElement('img');
+    var image = new Image(),
+        // One global image wrapper which respect whaTV style, put in #contentx.
+        globalWrapper = document.createElement('div'),
+        // One wrapper to do what you want inside, put in the global wrapper.
+        localWrapper = document.createElement('div');
+        
     image.setAttribute('src', whaTV.slides[whaTV.pointer].resource);
-    image.setAttribute('class', 'slide');
-    return image;
+    image.setAttribute('class', 'imageSlide');
+    localWrapper.appendChild(image);
+    localWrapper.setAttribute('class', 'localImageContainer');
+    globalWrapper.appendChild(localWrapper);
+    globalWrapper.setAttribute('class', 'imageContainer');
+    return globalWrapper;
   },
 
   loadVideo: function() {
@@ -181,9 +189,19 @@ var whaTV = {
 
   // Pseudo-events
   onShow: function(div) {
-    var videos = div[0].getElementsByTagName('video');
+    div = div[0]; // jQuery hack
+    var videos = div.getElementsByTagName('video');
     if (videos.length) {
       videos[0].play();
+    }
+    if (window.ambimage) {
+      var ambiWrappers = div.getElementsByClassName('imageContainer');
+      if (ambiWrappers.length === 1) {
+        var ambimageWrapper = ambiWrappers[0];
+        image = ambimageWrapper.getElementsByTagName('img')[0];
+        //image.parentNode.setAttribute('style', 'width: ' + image.width + "px");
+        ambimage.drawAmbimage(image);
+      }
     }
   },
 
