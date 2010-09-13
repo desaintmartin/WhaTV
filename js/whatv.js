@@ -81,17 +81,15 @@ var whaTV = {
   },
 
   makeTransition: function() {
+    var divToHide = $('#content' + whaTV.getPointerModuloTwo()),
+        divToShow = $('#content' + whaTV.getPointerModuloTwoPlusOne());
     console.log('makeTransition called. Showing slide number ' + whaTV.pointer);
     console.debug('Hidding content' + whaTV.getPointerModuloTwo());
-    $('#content' + whaTV.getPointerModuloTwo()).hide();
-    if ($('#content' + whaTV.getPointerModuloTwo() + ' video')[0]) {
-      $('#content' + whaTV.getPointerModuloTwo() + ' video')[0].pause();
-    }
+    divToHide.hide();
+    whaTV.onHide(divToHide);
     console.debug('Showing content' + whaTV.getPointerModuloTwoPlusOne());
-    $('#content' + whaTV.getPointerModuloTwoPlusOne()).show();
-    if ($('#content' + whaTV.getPointerModuloTwoPlusOne() + ' video')[0]) {
-      $('#content' + whaTV.getPointerModuloTwoPlusOne() + ' video')[0].play();
-    }
+    divToShow.show();
+    whaTV.onShow(divToShow);
     whaTV.notifyReadyOrGo = function() {whaTV.ready = true;};
     setTimeout(whaTV.onSlideTimeout,
                whaTV.slides[whaTV.pointer].timeout * 1000);
@@ -169,6 +167,21 @@ var whaTV = {
     flash.setAttribute('pluginspage', 'http://www.adobe.com/go/getflashplayer');
     flash.setAttribute('type', 'application/x-shockwave-flash');
     return flash;
+  },
+
+  // Pseudo-events
+  onHide: function(div) {
+    var videos = div.getElementsByTagName('video');
+    if (videos) {
+      videos[0].pause();
+    }
+  },
+
+  onShow: function(div) {
+    var videos = div.getElementsByTagName('video');
+    if (videos) {
+      videos[0].play();
+    }
   },
 
 
