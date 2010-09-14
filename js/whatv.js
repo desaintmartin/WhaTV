@@ -199,7 +199,7 @@ var whaTV = {
       if (ambiWrappers.length === 1) {
         var ambimageWrapper = ambiWrappers[0];
         image = ambimageWrapper.getElementsByTagName('img')[0];
-        //image.parentNode.setAttribute('style', 'width: ' + image.width + "px");
+        image.parentNode.setAttribute('style', 'width: ' + image.width + "px");
         ambimage.drawAmbimage(image);
       }
     }
