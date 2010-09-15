@@ -1,7 +1,7 @@
 {
   "slides": [
     {"type": "image",
-     "timeout": 3000,
+     "timeout": 3,
      "resource": "./assets/last.jpg"
     },
     {"type": "flash",
