@@ -151,6 +151,7 @@ var whaTV = {
         // One wrapper to do what you want inside, put in the global wrapper.
         localWrapper = document.createElement('div');
     localWrapper.appendChild(image);
+    // TODO add a boolean in json to know if we want original size or full size
     localWrapper.setAttribute('class', 'localImageContainer');
     globalWrapper.appendChild(localWrapper);
     globalWrapper.setAttribute('class', 'imageContainer');
@@ -200,8 +201,7 @@ var whaTV = {
       videos[0].play();
     }
     if (window.ambimage) {
-      // TODO add a boolean in json to know if we want original size or full size,
-      // With ambimage or not.
+      // TODO add a boolean in json to know if we want with ambimage or not.
       var ambiWrappers = div.getElementsByClassName('imageContainer');
       if (ambiWrappers.length === 1) {
         var ambimageWrapper = ambiWrappers[0];
