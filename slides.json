@@ -24,16 +24,16 @@
      ]
     },
     {"type": "html",
-     "timeout": 3,
+     "timeout": 5,
      "resource": "./assets/1.html"
     },
     {"type": "html",
-     "timeout": 3,
+     "timeout": 5,
      "resource": "http://google.fr/"
     },
     {"type": "html",
-     "timeout": 3,
-     "resource": "http://www.eistiens.net/"
+     "timeout": 5,
+     "resource": "http://www.lemonde.fr"
     },
     {"type": "html",
      "timeout": 3,

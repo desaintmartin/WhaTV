@@ -58,7 +58,7 @@ var whaTV = {
         break;
       case 'flash':
         console.debug('Flash file detected');
-        content = whaTV.loadFlash();
+        content = whaTV.loadFlash(whaTV.slides[whaTV.pointer].resource);
         break;
       case 'image':
         console.debug('Image file detected');
@@ -170,23 +170,28 @@ var whaTV = {
     var videoContainerDiv = document.createElement('div'),
         video = document.createElement('video'),
         resources = whaTV.slides[whaTV.pointer].resources,
-        source,
         index;
     videoContainerDiv.setAttribute('class', 'video_container');
     for (index in resources) {
+      var resource = resources[index].resource,
+          source;
+      if (false){//resource in someregexp) {
+        //video.appendChild(whaTV.loadFlash(someflash));
+      }
       source = document.createElement('source');
       source.setAttribute('src', resources[index].resource);
       source.setAttribute('type', resources[index].codec);
       video.appendChild(source);
     }
+    
     video.preload = true;
     videoContainerDiv.appendChild(video);
     return videoContainerDiv;
   },
 
-  loadFlash: function(){
+  loadFlash: function(flashObjectUrl) {
     var flash = document.createElement('embed');
-    flash.setAttribute('src', whaTV.slides[whaTV.pointer].resource);
+    flash.setAttribute('src', flashObjectUrl);
     flash.setAttribute('pluginspage', 'http://www.adobe.com/go/getflashplayer');
     flash.setAttribute('type', 'application/x-shockwave-flash');
     return flash;
