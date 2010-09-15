@@ -150,13 +150,18 @@ var whaTV = {
         globalWrapper = document.createElement('div'),
         // One wrapper to do what you want inside, put in the global wrapper.
         localWrapper = document.createElement('div');
-        
-    image.setAttribute('src', whaTV.slides[whaTV.pointer].resource);
-    image.setAttribute('class', 'imageSlide');
     localWrapper.appendChild(image);
     localWrapper.setAttribute('class', 'localImageContainer');
     globalWrapper.appendChild(localWrapper);
     globalWrapper.setAttribute('class', 'imageContainer');
+    image.addEventListener(
+        'load',
+        function(e) {
+          image.parentNode.setAttribute('style', 'width: ' + image.width + "px");
+        },
+        false);
+    image.setAttribute('src', whaTV.slides[whaTV.pointer].resource);
+    image.setAttribute('class', 'imageSlide');
     return globalWrapper;
   },
 
@@ -195,11 +200,12 @@ var whaTV = {
       videos[0].play();
     }
     if (window.ambimage) {
+      // TODO add a boolean in json to know if we want original size or full size,
+      // With ambimage or not.
       var ambiWrappers = div.getElementsByClassName('imageContainer');
       if (ambiWrappers.length === 1) {
         var ambimageWrapper = ambiWrappers[0];
         image = ambimageWrapper.getElementsByTagName('img')[0];
-        image.parentNode.setAttribute('style', 'width: ' + image.width + "px");
         ambimage.drawAmbimage(image);
       }
     }

@@ -1,8 +1,8 @@
 {
   "slides": [
     {"type": "image",
-     "timeout": 3,
-     "resource": "./assets/slurp.gif"
+     "timeout": 3000,
+     "resource": "./assets/last.jpg"
     },
     {"type": "flash",
      "timeout": 3,

@@ -25,11 +25,12 @@ div.imageContainer {
 	background: #000;
 	width: 100%;
 	height: 100%;
+	padding: 100px 0px 0px 0px;
 }
 
 div.localImageContainer {
 	position: relative;
-	margin: 100px auto 10px auto;
+	margin: 0px auto 10px auto;
 }
 
 img.imageSlide {
