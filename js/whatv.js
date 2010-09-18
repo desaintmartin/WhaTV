@@ -149,12 +149,20 @@ var whaTV = {
         // One global image wrapper which respect whaTV style, put in #contentx.
         globalWrapper = document.createElement('div'),
         // One wrapper to do what you want inside, put in the global wrapper.
-        localWrapper = document.createElement('div');
+        localWrapper = document.createElement('div'),
+        moduleIndex,
+        modules = whaTV.slides[whaTV.pointer].modules;
     localWrapper.appendChild(image);
     // TODO add a boolean in json to know if we want original size or full size
     localWrapper.setAttribute('class', 'localImageContainer');
     globalWrapper.appendChild(localWrapper);
     globalWrapper.setAttribute('class', 'imageContainer');
+    for (moduleIndex in modules) {
+      if (modules[moduleIndex] === 'ambimage') {
+        globalWrapper.setAttribute('class',
+                                   globalWrapper.className + ' ambimage');
+      }
+    }
     image.addEventListener(
         'load',
         function(e) {
@@ -207,7 +215,7 @@ var whaTV = {
     }
     if (window.ambimage) {
       // TODO add a boolean in json to know if we want with ambimage or not.
-      var ambiWrappers = div.getElementsByClassName('imageContainer');
+      var ambiWrappers = div.getElementsByClassName('ambimage');
       if (ambiWrappers.length === 1) {
         var ambimageWrapper = ambiWrappers[0];
         image = ambimageWrapper.getElementsByTagName('img')[0];

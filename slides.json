@@ -1,8 +1,9 @@
 {
   "slides": [
     {"type": "image",
-     "timeout": 3,
-     "resource": "./assets/last.jpg"
+     "timeout": 30000,
+     "resource": "./assets/last.jpg",
+     "modules": ["ambimage"]
     },
     {"type": "flash",
      "timeout": 3,

@@ -25,7 +25,7 @@ Adding Flash support.
 
 Roadmap :
 =========
-0.0.4 : CSS3 image animation support (examples : http://developer.apple.com/safaridemos/showcase/transitions/) and/or Ambimage support
+0.0.4 : Ambimage support, modular
 0.0.5 : Ambilight support
 0.1.0 : First stable release with proper "finished loading" event firing, animated header, footer with date and quick messages.
 0.2.0 : Widgets support
@@ -38,3 +38,6 @@ Image has to be vertically centered.
 Slide isolation : a failed slide won't prevent other to show correctly
 Photo album
 Could it be possible to have x #content, where x is the number of slides?
+Replace $.getJSON by $.get & JSON.parse
+Vertical centering
+CSS3 image animation support (examples : http://developer.apple.com/safaridemos/showcase/transitions/) 
