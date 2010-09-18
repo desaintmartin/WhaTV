@@ -86,8 +86,8 @@ var whaTV = {
   makeTransition: function() {
     var divToHide = $('#content' + whaTV.getPointerModuloTwo()),
         divToShow = $('#content' + whaTV.getPointerModuloTwoPlusOne());
-    console.log('makeTransition called. Showing slide number ' + whaTV.pointer
-                + ' from #content' + whaTV.getPointerModuloTwoPlusOne() + '.');
+    console.log('makeTransition called. Showing slide number ' + whaTV.pointer +
+                ' from #content' + whaTV.getPointerModuloTwoPlusOne() + '.');
     console.debug('Hidding content' + whaTV.getPointerModuloTwo());
     divToHide.hide();
     whaTV.onHide(divToHide);
@@ -138,9 +138,9 @@ var whaTV = {
     iframe.setAttribute('src', whaTV.slides[whaTV.pointer].resource);
     iframe.setAttribute('class', 'next_content');
     iframe.setAttribute('id', whaTV.pointer);
-    iframe.setAttribute('scrolling', "no");
+    iframe.setAttribute('scrolling', 'no');
     // XXX : May be used to fire the onNextSlideReady event?
-    //iframe.onload = function(){alert("lol")};
+    //iframe.onload = function(){alert('lol')};
     return iframe;
   },
 
@@ -166,7 +166,8 @@ var whaTV = {
     image.addEventListener(
         'load',
         function(e) {
-          image.parentNode.setAttribute('style', 'width: ' + image.width + "px");
+          image.parentNode.setAttribute('style',
+                                        'width: ' + image.width + 'px');
         },
         false);
     image.setAttribute('src', whaTV.slides[whaTV.pointer].resource);
@@ -178,12 +179,13 @@ var whaTV = {
     var videoContainerDiv = document.createElement('div'),
         video = document.createElement('video'),
         resources = whaTV.slides[whaTV.pointer].resources,
-        index;
+        index,
+        resource,
+        source;
     videoContainerDiv.setAttribute('class', 'video_container');
     for (index in resources) {
-      var resource = resources[index].resource,
-          source;
-      if (false){//resource in someregexp) {
+      resource = resources[index].resource;
+      if (false) {//resource in someregexp) {
         //video.appendChild(whaTV.loadFlash(someflash));
       }
       source = document.createElement('source');
@@ -191,7 +193,7 @@ var whaTV = {
       source.setAttribute('type', resources[index].codec);
       video.appendChild(source);
     }
-    
+
     video.preload = true;
     videoContainerDiv.appendChild(video);
     return videoContainerDiv;
@@ -209,17 +211,19 @@ var whaTV = {
   // Pseudo-events
   onShow: function(div) {
     div = div[0]; // jQuery hack
-    var videos = div.getElementsByTagName('video');
+    var videos = div.getElementsByTagName('video'),
+        ambimageWrapper,
+        image;
     if (videos.length) {
       videos[0].play();
     }
     if (window.ambimage) {
       // TODO add a boolean in json to know if we want with ambimage or not.
-      var ambiWrappers = div.getElementsByClassName('ambimage');
-      if (ambiWrappers.length === 1) {
-        var ambimageWrapper = ambiWrappers[0];
+      ambimageWrapper = div.getElementsByClassName('ambimage');
+      if (ambimageWrapper.length === 1) {
+        ambimageWrapper = ambimageWrapper[0];
         image = ambimageWrapper.getElementsByTagName('img')[0];
-        ambimage.drawAmbimage(image);
+        window.ambimage.drawAmbimage(image);
       }
     }
   },
@@ -285,5 +289,5 @@ window.w = whaTV;
 window.pause = function() {
   whaTV.ready = false;
   whaTV.notifyReadyOrGo = function() {return null;};
-}
+};
 })(window);

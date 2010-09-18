@@ -1,7 +1,7 @@
 {
   "slides": [
     {"type": "image",
-     "timeout": 30000,
+     "timeout": 10,
      "resource": "./assets/last.jpg",
      "modules": ["ambimage"]
     },

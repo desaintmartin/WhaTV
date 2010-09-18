@@ -22,10 +22,13 @@ Iframe and video full support with proper css.
 Adding Flash support.
 [Cedric de Saint Martin]
 
+0.0.4 (2010-10-18)
+----------------
+Adding modular Ambimage support.
+[Cedric de Saint Martin]
 
 Roadmap :
 =========
-0.0.4 : Ambimage support, modular
 0.0.5 : Ambilight support
 0.1.0 : First stable release with proper "finished loading" event firing, animated header, footer with date and quick messages.
 0.2.0 : Widgets support
