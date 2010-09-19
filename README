@@ -27,9 +27,16 @@ Adding Flash support.
 Adding modular Ambimage support.
 [Cedric de Saint Martin]
 
+0.0.5 (2010-10-19)
+----------------
+Get rid of majority of jquery calls,
+Ambilight support,
+Adding an options system to specify image and video options (not fully implemented)
+[Cedric de Saint Martin]
+
 Roadmap :
 =========
-0.0.5 : Ambilight support
+0.0.6 : Option system with (fullscreen, ambimage/ambilight, original, crop) options
 0.1.0 : First stable release with proper "finished loading" event firing, animated header, footer with date and quick messages.
 0.2.0 : Widgets support
 0.2.1 : Proof of concept : meteo widget
@@ -44,3 +51,4 @@ Could it be possible to have x #content, where x is the number of slides?
 Replace $.getJSON by $.get & JSON.parse
 Vertical centering
 CSS3 image animation support (examples : http://developer.apple.com/safaridemos/showcase/transitions/) 
+Module system, where we specify urls of extensions files.

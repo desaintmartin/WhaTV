@@ -37,7 +37,7 @@ var whaTV = {
   showFirstSlide: function(data) {
     whaTV.slides = data.slides;
     // TODO : loading screen
-    $('#content1').hide();
+    document.getElementById('content1').style.display = 'none';
     whaTV.loadPointedSlideIntoDOM();
   },
 
@@ -80,19 +80,23 @@ var whaTV = {
     // XXX : This is hightly experimental
     //if(content.play) ambiLight.create(content);
     // Simulating fire event when complete
-    setTimeout(whaTV.onNextSlideReady, Math.random() * 2000);
+    setTimeout(whaTV.onNextSlideReady, Math.random() * 4000);
   },
 
   makeTransition: function() {
-    var divToHide = $('#content' + whaTV.getPointerModuloTwo()),
-        divToShow = $('#content' + whaTV.getPointerModuloTwoPlusOne());
+    var divToHide = document.getElementById('content' +
+                                            whaTV.getPointerModuloTwo()
+                                           ),
+        divToShow = document.getElementById('content' +
+                                            whaTV.getPointerModuloTwoPlusOne()
+                                           );
     console.log('makeTransition called. Showing slide number ' + whaTV.pointer +
                 ' from #content' + whaTV.getPointerModuloTwoPlusOne() + '.');
     console.debug('Hidding content' + whaTV.getPointerModuloTwo());
-    divToHide.hide();
+    divToHide.style.display = 'none';
     whaTV.onHide(divToHide);
     console.debug('Showing content' + whaTV.getPointerModuloTwoPlusOne());
-    divToShow.show();
+    divToShow.style.display = 'block';
     whaTV.onShow(divToShow);
     whaTV.notifyReadyOrGo = function() {whaTV.ready = true;};
     setTimeout(whaTV.onSlideTimeout,
@@ -167,22 +171,50 @@ var whaTV = {
         'load',
         function(e) {
           image.parentNode.setAttribute('style',
-                                        'width: ' + image.width + 'px');
+                                        'width: ' + image.width + 'px;');
         },
-        false);
+        false
+    );
     image.setAttribute('src', whaTV.slides[whaTV.pointer].resource);
     image.setAttribute('class', 'imageSlide');
     return globalWrapper;
   },
 
   loadVideo: function() {
-    var videoContainerDiv = document.createElement('div'),
-        video = document.createElement('video'),
+    var video = document.createElement('video'),
         resources = whaTV.slides[whaTV.pointer].resources,
+        mode = whaTV.slides[whaTV.pointer].mode,
         index,
         resource,
-        source;
-    videoContainerDiv.setAttribute('class', 'video_container');
+        source,
+        // One global image wrapper which respect whaTV style, put in #contentx.
+        globalWrapper = document.createElement('div'),
+        // One wrapper to do what you want inside, put in the global wrapper.
+        localWrapper,
+        moduleIndex;
+    video.preload = true;
+    if (mode === 'original') {
+      video.setAttribute('class', 'originalModeVideo');
+      globalWrapper.appendChild(video);
+    } else if (mode === 'ambilight') {
+      video.setAttribute('class', 'ambilightModeVideo');
+      localWrapper = document.createElement('div');
+      localWrapper.appendChild(video);
+      localWrapper.setAttribute('class', 'ambilightModeVideoLocalContainer');
+      globalWrapper.appendChild(localWrapper);
+      globalWrapper.setAttribute('class', 'ambilightModeVideoGlobalContainer');
+      video.addEventListener(
+        'loadedmetadata',
+        function(e) {
+          video.parentNode.setAttribute('style',
+                                        'width: ' + video.videoWidth + 'px;');
+          video.height = video.videoHeight;
+          video.width = video.videoWidth;
+        },
+        false
+      );
+    }
+    //video.addEventListener('canplaythrough', onpeutlire.)
     for (index in resources) {
       resource = resources[index].resource;
       if (false) {//resource in someregexp) {
@@ -193,10 +225,7 @@ var whaTV = {
       source.setAttribute('type', resources[index].codec);
       video.appendChild(source);
     }
-
-    video.preload = true;
-    videoContainerDiv.appendChild(video);
-    return videoContainerDiv;
+    return globalWrapper;
   },
 
   loadFlash: function(flashObjectUrl) {
@@ -210,12 +239,26 @@ var whaTV = {
 
   // Pseudo-events
   onShow: function(div) {
-    div = div[0]; // jQuery hack
     var videos = div.getElementsByTagName('video'),
+        video,
         ambimageWrapper,
+        ambilight,
         image;
     if (videos.length) {
-      videos[0].play();
+      video = videos[0];
+      video.play();
+      if (window.ambiLight) {
+        ambilight = div.getElementsByClassName('ambilightModeVideo');
+        if (ambilight.length === 1) {
+          window.ambiLight.create(video);
+          // Ugly hack, we have a CSS problem somewhere, we need to make
+          // The browser 'reload' the style, otherwise canvas.offset is 0.
+          setTimeout(function() {
+               document.getElementById('content' + whaTV.getPointerModuloTwo()).
+                   style.position = 'relative';
+           }, 1);
+        }
+      }
     }
     if (window.ambimage) {
       // TODO add a boolean in json to know if we want with ambimage or not.
@@ -229,7 +272,7 @@ var whaTV = {
   },
 
   onHide: function(div) {
-    var videos = div[0].getElementsByTagName('video');
+    var videos = div.getElementsByTagName('video');
     if (videos.length) {
       videos[0].pause();
     }

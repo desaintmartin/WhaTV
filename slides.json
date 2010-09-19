@@ -1,20 +1,14 @@
 {
   "slides": [
     {"type": "image",
-     "timeout": 10,
+     "timeout": 3,
      "resource": "./assets/last.jpg",
+     "mode": "fullscreen",
      "modules": ["ambimage"]
     },
-    {"type": "flash",
-     "timeout": 3,
-     "resource": "./assets/app.swf"
-    },
-    {"type": "flash",
-     "timeout": 3,
-     "resource": "./assets/flexballs.swf"
-    },
     {"type": "video",
-     "timeout": 3,
+     "timeout": 10,
+     "mode": "ambilight",
      "resources": [
        {"codec": "video/mp4;",
         "resource": "./assets/demo2.mp4"
@@ -23,6 +17,14 @@
         "resource": "./assets/demo2.ogv"
        }
      ]
+    },
+    {"type": "flash",
+     "timeout": 3,
+     "resource": "./assets/app.swf"
+    },
+    {"type": "flash",
+     "timeout": 3,
+     "resource": "./assets/flexballs.swf"
     },
     {"type": "html",
      "timeout": 5,
