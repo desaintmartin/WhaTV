@@ -3,8 +3,7 @@
     {"type": "image",
      "timeout": 3,
      "resource": "./assets/last.jpg",
-     "mode": "fullscreen",
-     "modules": ["ambimage"]
+     "mode": "ambimage"
     },
     {"type": "video",
      "timeout": 10,
@@ -33,10 +32,6 @@
     {"type": "html",
      "timeout": 5,
      "resource": "http://google.fr/"
-    },
-    {"type": "html",
-     "timeout": 5,
-     "resource": "http://www.lemonde.fr"
     },
     {"type": "html",
      "timeout": 3,

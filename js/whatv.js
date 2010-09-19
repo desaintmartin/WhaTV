@@ -31,11 +31,38 @@ var whaTV = {
     // Reference to self
     var whaTV = this;
     // Getting slides
-    $.get('slides.json', whaTV.showFirstSlide);
+    if (window.JSON) {
+      if (window.jQuery) {
+        $.get('slides.json', whaTV.showFirstSlide);
+      } else if (window.dojo) {
+        dojo.xhrGet({
+          url: 'slides.json',
+          handleAs: 'text',
+          load: whaTV.showFirstSlide
+        });
+      }
+    } else {
+      if (window.jQuery) {
+        $.getJSON('slides.json', whaTV.showFirstSlide);
+      } else if (window.dojo) {
+        dojo.xhrGet({
+          url: 'slides.json',
+          handleAs: 'json',
+          load: whaTV.showFirstSlide
+        });
+      }
+    }
   },
 
   showFirstSlide: function(data) {
     whaTV.slides = JSON.parse(data).slides;
+    // TODO : loading screen
+    document.getElementById('content1').style.display = 'none';
+    whaTV.loadPointedSlideIntoDOM();
+  },
+
+  showFirstSlideWithoutJSON: function(json) {
+    whaTV.slides = json.slides;
     // TODO : loading screen
     document.getElementById('content1').style.display = 'none';
     whaTV.loadPointedSlideIntoDOM();
@@ -153,17 +180,14 @@ var whaTV = {
         globalWrapper = document.createElement('div'),
         // One wrapper to do what you want inside, put in the global wrapper.
         localWrapper = document.createElement('div'),
-        moduleIndex,
-        modules = whaTV.slides[whaTV.pointer].modules;
+        mode = whaTV.slides[whaTV.pointer].mode;
     localWrapper.appendChild(image);
     localWrapper.setAttribute('class', 'localImageContainer');
     globalWrapper.appendChild(localWrapper);
     globalWrapper.setAttribute('class', 'imageContainer');
-    for (moduleIndex in modules) {
-      if (modules[moduleIndex] === 'ambimage') {
-        globalWrapper.setAttribute('class',
-                                   globalWrapper.className + ' ambimage');
-      }
+    if (mode === 'ambimage') {
+      globalWrapper.setAttribute('class',
+                                 globalWrapper.className + ' ambimage');
     }
     image.addEventListener(
         'load',
@@ -195,10 +219,10 @@ var whaTV = {
       video.setAttribute('class', 'originalModeVideo');
       globalWrapper.appendChild(video);
     } else if (mode === 'ambilight') {
-      video.setAttribute('class', 'ambilightModeVideo');
+      video.setAttribute('class', 'ambilight-video');
       localWrapper = document.createElement('div');
       localWrapper.appendChild(video);
-      localWrapper.setAttribute('class', 'ambilightModeVideoLocalContainer');
+      localWrapper.id = 'ambilight-video-wrap';
       globalWrapper.appendChild(localWrapper);
       globalWrapper.setAttribute('class', 'ambilightModeVideoGlobalContainer');
       video.addEventListener(
@@ -246,7 +270,7 @@ var whaTV = {
       video = videos[0];
       video.play();
       if (window.ambiLight) {
-        ambilight = div.getElementsByClassName('ambilightModeVideo');
+        ambilight = div.getElementsByClassName('ambilight-video');
         if (ambilight.length === 1) {
           window.ambiLight.create(video);
           // Ugly hack, we have a CSS problem somewhere, we need to make

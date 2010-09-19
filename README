@@ -37,6 +37,7 @@ Adding an options system to specify image and video options (not fully implement
 Roadmap :
 =========
 0.0.6 : Option system with (fullscreen, ambimage/ambilight, original, crop) options
+0.0.6.1 : ambimage/ambilight is 80% width and max weidth
 0.0.7 : footer with date and Quick Messages
 0.0.8 : animated header
 0.1.0 : First stable release with proper "finished loading" event firing, fix chromium video bug
@@ -47,7 +48,6 @@ Roadmap :
 1.0.x : Posting server, dynamic fetching of resources from server
 1.1.x : Optional authentication system
 
-Image has to be vertically centered.
 Slide isolation : a failed slide won't prevent other to show correctly
 Photo album module
 Could it be possible to have x #content, where x is the number of slides?
