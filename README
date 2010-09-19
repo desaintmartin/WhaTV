@@ -37,18 +37,20 @@ Adding an options system to specify image and video options (not fully implement
 Roadmap :
 =========
 0.0.6 : Option system with (fullscreen, ambimage/ambilight, original, crop) options
-0.1.0 : First stable release with proper "finished loading" event firing, animated header, footer with date and quick messages.
+0.0.7 : footer with date and Quick Messages
+0.0.8 : animated header
+0.1.0 : First stable release with proper "finished loading" event firing, fix chromium video bug
 0.2.0 : Widgets support
 0.2.1 : Proof of concept : meteo widget
 0.3.0 : Modular transition system with some examples
 0.4.0 : Powerpoint support
+1.0.x : Posting server, dynamic fetching of resources from server
+1.1.x : Optional authentication system
 
-Later : node.js authentication and synchronization system
 Image has to be vertically centered.
 Slide isolation : a failed slide won't prevent other to show correctly
-Photo album
+Photo album module
 Could it be possible to have x #content, where x is the number of slides?
-Replace $.getJSON by $.get & JSON.parse
 Vertical centering
 CSS3 image animation support (examples : http://developer.apple.com/safaridemos/showcase/transitions/) 
 Module system, where we specify urls of extensions files.

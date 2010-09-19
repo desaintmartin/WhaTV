@@ -31,11 +31,11 @@ var whaTV = {
     // Reference to self
     var whaTV = this;
     // Getting slides
-    $.getJSON('slides.json', whaTV.showFirstSlide);
+    $.get('slides.json', whaTV.showFirstSlide);
   },
 
   showFirstSlide: function(data) {
-    whaTV.slides = data.slides;
+    whaTV.slides = JSON.parse(data).slides;
     // TODO : loading screen
     document.getElementById('content1').style.display = 'none';
     whaTV.loadPointedSlideIntoDOM();
@@ -70,9 +70,8 @@ var whaTV = {
         //content.addEventListener('ended', whaTV.onSlideTimeout, false);
         break;
     }
-    hiddenContentDiv = $('#content' +
-                             whaTV.getPointerModuloTwoPlusOne()
-                            )[0];
+    hiddenContentDiv = document.getElementById('content' +
+        whaTV.getPointerModuloTwoPlusOne());
     console.debug('Clearing content' + whaTV.getPointerModuloTwoPlusOne());
     whaTV.clearNode(hiddenContentDiv);
     console.debug('Load content' + whaTV.getPointerModuloTwoPlusOne());
@@ -157,7 +156,6 @@ var whaTV = {
         moduleIndex,
         modules = whaTV.slides[whaTV.pointer].modules;
     localWrapper.appendChild(image);
-    // TODO add a boolean in json to know if we want original size or full size
     localWrapper.setAttribute('class', 'localImageContainer');
     globalWrapper.appendChild(localWrapper);
     globalWrapper.setAttribute('class', 'imageContainer');
@@ -261,7 +259,6 @@ var whaTV = {
       }
     }
     if (window.ambimage) {
-      // TODO add a boolean in json to know if we want with ambimage or not.
       ambimageWrapper = div.getElementsByClassName('ambimage');
       if (ambimageWrapper.length === 1) {
         ambimageWrapper = ambimageWrapper[0];
