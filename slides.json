@@ -3,6 +3,11 @@
     {"type": "image",
      "timeout": 3,
      "resource": "./assets/last.jpg",
+     "mode": "original"
+    },
+    {"type": "image",
+     "timeout": 3,
+     "resource": "./assets/last.jpg",
      "mode": "ambimage"
     },
     {"type": "video",

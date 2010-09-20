@@ -181,24 +181,19 @@ var whaTV = {
         // One wrapper to do what you want inside, put in the global wrapper.
         localWrapper = document.createElement('div'),
         mode = whaTV.slides[whaTV.pointer].mode;
+    image.setAttribute('class', 'image-slide ' + mode);
     localWrapper.appendChild(image);
     localWrapper.setAttribute('class', 'localImageContainer');
     globalWrapper.appendChild(localWrapper);
     globalWrapper.setAttribute('class', 'imageContainer');
-    if (mode === 'ambimage') {
-      globalWrapper.setAttribute('class',
-                                 globalWrapper.className + ' ambimage');
-    }
     image.addEventListener(
         'load',
         function(e) {
-          image.parentNode.setAttribute('style',
-                                        'width: ' + image.width + 'px;');
+          image.parentNode.style.width = image.width + 'px';
         },
         false
     );
     image.setAttribute('src', whaTV.slides[whaTV.pointer].resource);
-    image.setAttribute('class', 'imageSlide');
     return globalWrapper;
   },
 
@@ -215,11 +210,12 @@ var whaTV = {
         localWrapper,
         moduleIndex;
     video.preload = true;
+    whaTV.addClassName(video, 'video-slide');
     if (mode === 'original') {
-      video.setAttribute('class', 'originalModeVideo');
+      whaTV.addClassName(video, 'originalModeVideo');
       globalWrapper.appendChild(video);
     } else if (mode === 'ambilight') {
-      video.setAttribute('class', 'ambilight-video');
+      whaTV.addClassName(video, 'ambilight-video');
       localWrapper = document.createElement('div');
       localWrapper.appendChild(video);
       localWrapper.id = 'ambilight-video-wrap';
@@ -228,8 +224,7 @@ var whaTV = {
       video.addEventListener(
         'loadedmetadata',
         function(e) {
-          video.parentNode.setAttribute('style',
-                                        'width: ' + video.videoWidth + 'px;');
+          video.parentNode.style.width = video.videoWidth + 'px';
           video.height = video.videoHeight;
           video.width = video.videoWidth;
         },
@@ -261,12 +256,13 @@ var whaTV = {
 
   // Pseudo-events
   onShow: function(div) {
-    var videos = div.getElementsByTagName('video'),
+    var videos = div.getElementsByClassName('video-slide'),
         video,
         ambimageWrapper,
         ambilight,
-        image;
-    if (videos.length) {
+        images,
+        image
+    if (videos.length === 1) {
       video = videos[0];
       video.play();
       if (window.ambiLight) {
@@ -281,13 +277,16 @@ var whaTV = {
            }, 1);
         }
       }
-    }
-    if (window.ambimage) {
-      ambimageWrapper = div.getElementsByClassName('ambimage');
-      if (ambimageWrapper.length === 1) {
-        ambimageWrapper = ambimageWrapper[0];
-        image = ambimageWrapper.getElementsByTagName('img')[0];
-        window.ambimage.drawAmbimage(image);
+    } else {
+      images = div.getElementsByClassName('image-slide');
+      if (images.length === 1) {
+        image = images[0];
+        if (window.ambimage && whaTV.hasClassName(image, 'ambimage')) {
+          ambimage.drawAmbimage(image);
+        }
+        if (window.simpleAmbimage && whaTV.hasClassName(image, 'original')) {
+          simpleAmbimage.create(image);
+        }
       }
     }
   },
@@ -323,6 +322,27 @@ var whaTV = {
       whereToDraw = 2 - whaTV.pointer % 2;
     }
     return whereToDraw;
+  },
+
+  hasClassName: function(node, className) {
+    var index,
+        classes = node.className.split(' ');
+    className = className.toUpperCase();
+    if (node.className) {
+      for (index in classes) {
+        if (className == classes[index].toUpperCase()) return node;
+      }
+    }
+    return false;
+  },
+
+  addClassName: function(node, className) {
+    if (whaTV.hasClassName(node, className)) return;
+    if (node.className) {
+      node.className = node.className + ' ' + className;
+    } else {
+      node.className = className;
+    }
   }
 
 
