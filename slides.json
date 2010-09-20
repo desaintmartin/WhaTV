@@ -2,12 +2,22 @@
   "slides": [
     {"type": "image",
      "timeout": 3,
+     "resource": "./assets/wallpaper.jpg",
+     "mode": "crop"
+    },
+    {"type": "image",
+     "timeout": 3,
+     "resource": "./assets/last2.jpg",
+     "mode": "fullscreen"
+    },
+    {"type": "image",
+     "timeout": 3,
      "resource": "./assets/last.jpg",
      "mode": "original"
     },
     {"type": "image",
      "timeout": 3,
-     "resource": "./assets/last.jpg",
+     "resource": "./assets/invis.jpg",
      "mode": "ambimage"
     },
     {"type": "video",

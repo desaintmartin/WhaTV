@@ -18,23 +18,36 @@ body {
 	height: 100%;
 }
 
+
 div.imageContainer {
 	background: #000;
 	width: 100%;
 	height: 100%;
+}
+div.imageContainer.original, div.imageContainer.ambimage {
 	padding: 100px 0px 0px 0px;
 }
 
-div.localImageContainer {
+div.localImageContainer.original, div.localImageContainer.ambimage {
 	position: relative;
 	margin: 0px auto 10px auto;
 }
 
-img.imageSlide {
-	/*border: 5px solid rgba(30,30,30,0.7);*/
+img.image-slide.original {
+	border: 5px solid rgba(30,30,30,0.7);
 	-webkit-border-radius: 3px;
 	position: relative;
 	z-index: 3;
+}
+
+img.image-slide.fullscreen {
+	background-color: #000;
+	display: block;
+	margin-left: auto;
+	margin-right: auto ;
+	position:relative;
+	width: auto;
+	height: auto;
 }
 
 div.ambilightModeVideoGlobalContainer {

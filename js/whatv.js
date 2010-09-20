@@ -143,6 +143,7 @@ var whaTV = {
   onNextSlideReady: function() {
     whaTV.notifyReadyOrGo();
   },
+
   notifyReadyOrGo: function() {
     // This function will be overwritten by makeTransition and onSlideTimeout
     // This code is used as is ONLY for first iteration
@@ -183,13 +184,17 @@ var whaTV = {
         mode = whaTV.slides[whaTV.pointer].mode;
     image.setAttribute('class', 'image-slide ' + mode);
     localWrapper.appendChild(image);
-    localWrapper.setAttribute('class', 'localImageContainer');
+    localWrapper.setAttribute('class', 'localImageContainer ' + mode);
     globalWrapper.appendChild(localWrapper);
-    globalWrapper.setAttribute('class', 'imageContainer');
+    globalWrapper.setAttribute('class', 'imageContainer ' + mode);
     image.addEventListener(
         'load',
         function(e) {
-          image.parentNode.style.width = image.width + 'px';
+          if (mode === 'fullscreen') {
+            whaTV.fullscreen(image);
+          } else {
+            image.parentNode.style.width = image.width + 'px';
+          }
         },
         false
     );
@@ -211,10 +216,12 @@ var whaTV = {
         moduleIndex;
     video.preload = true;
     whaTV.addClassName(video, 'video-slide');
-    if (mode === 'original') {
+    switch (mode) {
+    case 'original':
       whaTV.addClassName(video, 'originalModeVideo');
       globalWrapper.appendChild(video);
-    } else if (mode === 'ambilight') {
+      break;
+    case 'ambilight':
       whaTV.addClassName(video, 'ambilight-video');
       localWrapper = document.createElement('div');
       localWrapper.appendChild(video);
@@ -283,8 +290,9 @@ var whaTV = {
         image = images[0];
         if (window.ambimage && whaTV.hasClassName(image, 'ambimage')) {
           ambimage.drawAmbimage(image);
-        }
-        if (window.simpleAmbimage && whaTV.hasClassName(image, 'original')) {
+        } else if (window.simpleAmbimage && 
+            (whaTV.hasClassName(image, 'original')) ||
+             whaTV.hasClassName(image, 'fullscreen')) {
           simpleAmbimage.create(image);
         }
       }
@@ -342,6 +350,20 @@ var whaTV = {
       node.className = node.className + ' ' + className;
     } else {
       node.className = className;
+    }
+  },
+
+  fullscreen: function(image) {
+    var windowRatio = window.innerWidth / window.innerHeight,
+        imgRatio = image.width / image.height,
+        finalHeight;
+    if (windowRatio > imgRatio) {
+      image.style.height = '100%';
+    } else {
+      finalHeight = (window.innerWidth / image.width) * image.height;
+      margin = (window.innerHeight - finalHeight) / 2;
+      image.parentNode.style.paddingTop = margin + 'px';
+      image.style.width = '100%';
     }
   }
 
