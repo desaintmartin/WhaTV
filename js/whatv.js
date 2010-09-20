@@ -190,11 +190,18 @@ var whaTV = {
     image.addEventListener(
         'load',
         function(e) {
-          if (mode === 'fullscreen') {
+          switch (mode) {
+          case 'fullscreen':
             whaTV.fullscreen(image);
-          } else if (mode === 'crop') {
+            break;
+          case 'crop':
             whaTV.crop(image);
-          } else {
+            break;
+          case 'ambimage':
+            // TODO make ambimage size 80%
+            //whaTV.addClassName(image, 'fullscreen');
+            //whaTV.fullscreen(image, '80%');
+          default:
             image.parentNode.style.width = image.width + 'px';
           }
         },
@@ -355,7 +362,8 @@ var whaTV = {
     }
   },
 
-  fullscreen: function(image) {
+  fullscreen: function(image, size) {
+    if (size === null) size = '100%'
     var windowRatio = window.innerWidth / window.innerHeight,
         imgRatio = image.width / image.height,
         finalHeight;
@@ -365,7 +373,7 @@ var whaTV = {
       finalHeight = (window.innerWidth / image.width) * image.height;
       margin = (window.innerHeight - finalHeight) / 2;
       image.parentNode.style.paddingTop = margin + 'px';
-      image.style.width = '100%';
+      image.style.width = size;
     }
   },
 

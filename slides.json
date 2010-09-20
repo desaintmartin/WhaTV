@@ -1,6 +1,11 @@
 {
   "slides": [
     {"type": "image",
+     "timeout": 3000,
+     "resource": "./assets/invis.jpg",
+     "mode": "ambimage"
+    },
+    {"type": "image",
      "timeout": 3,
      "resource": "./assets/wallpaper.jpg",
      "mode": "crop"
@@ -14,11 +19,6 @@
      "timeout": 3,
      "resource": "./assets/last.jpg",
      "mode": "original"
-    },
-    {"type": "image",
-     "timeout": 3,
-     "resource": "./assets/invis.jpg",
-     "mode": "ambimage"
     },
     {"type": "video",
      "timeout": 10,
