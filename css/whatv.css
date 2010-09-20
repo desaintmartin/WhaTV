@@ -50,6 +50,10 @@ img.image-slide.fullscreen {
 	height: auto;
 }
 
+img.image-slide.crop {
+	position: absolute;
+}
+
 div.ambilightModeVideoGlobalContainer {
 	background: #000;
 	width: 100%;

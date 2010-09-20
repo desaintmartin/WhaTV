@@ -192,6 +192,8 @@ var whaTV = {
         function(e) {
           if (mode === 'fullscreen') {
             whaTV.fullscreen(image);
+          } else if (mode === 'crop') {
+            whaTV.crop(image);
           } else {
             image.parentNode.style.width = image.width + 'px';
           }
@@ -363,6 +365,23 @@ var whaTV = {
       finalHeight = (window.innerWidth / image.width) * image.height;
       margin = (window.innerHeight - finalHeight) / 2;
       image.parentNode.style.paddingTop = margin + 'px';
+      image.style.width = '100%';
+    }
+  },
+
+  crop: function(image) {
+    var windowRatio = window.innerWidth / window.innerHeight,
+        imgRatio = image.width / image.height,
+        finalHeight, finalWidth;
+    if (windowRatio < imgRatio) {
+      finalWidth = (window.innerWidth / image.width) * image.height;
+      margin = - (window.innerHeight - finalWidth) / 2;
+      image.style.marginLeft = margin + 'px';
+      image.style.height = '100%';
+    } else {
+      finalHeight = (window.innerHeight / image.height) * image.width;
+      margin = (window.innerHeight - finalHeight) / 2;
+      image.style.marginTop = margin + 'px';
       image.style.width = '100%';
     }
   }
