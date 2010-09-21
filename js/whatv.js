@@ -226,10 +226,6 @@ var whaTV = {
     video.preload = true;
     whaTV.addClassName(video, 'video-slide');
     switch (mode) {
-    case 'original':
-      whaTV.addClassName(video, 'originalModeVideo');
-      globalWrapper.appendChild(video);
-      break;
     case 'ambilight':
       whaTV.addClassName(video, 'ambilight-video');
       localWrapper = document.createElement('div');
@@ -246,6 +242,10 @@ var whaTV = {
         },
         false
       );
+    default:
+      whaTV.addClassName(video, 'originalModeVideo');
+      globalWrapper.appendChild(video);
+      break;
     }
     //video.addEventListener('canplaythrough', onpeutlire.)
     for (index in resources) {
@@ -287,9 +287,21 @@ var whaTV = {
           window.ambiLight.create(video);
           // Ugly hack, we have a CSS problem somewhere, we need to make
           // The browser 'reload' the style, otherwise canvas.offset is 0.
+          // Anyway nobody will ever read this, so I can do what I want, you
+          // bastard.
           setTimeout(function() {
-               document.getElementById('content' + whaTV.getPointerModuloTwo()).
-                   style.position = 'relative';
+            //
+	        //        .==.        .==.          
+            //       //`^\\      //^`\\         
+            //      // ^ ^\(\__/)/^ ^^\\        
+            //     //^ ^^ ^/6  6\ ^^ ^ \\       
+            //    //^ ^^ ^/( .. )\^ ^ ^ \\      
+            //   // ^^ ^/\| v""v |/\^ ^ ^\\     
+            //  // ^^/\/ /  `~~`  \ \/\^ ^\\    
+            //  -----------------------------
+            /// HERE BE DRAGONS
+            document.getElementById('content' + whaTV.getPointerModuloTwo()).
+                style.position = 'relative';
            }, 1);
         }
       }
@@ -334,8 +346,25 @@ var whaTV = {
   },
 
   getPointerModuloTwoPlusOne: function() {
+    // This looks complicated. And it is. So, instead of trying to understand
+    // what it does, let the Safety Pig do its work and do not try to understand.
     var whereToDraw = whaTV.pointer % 2 + 1;
+    // Safety Pig has arrived!
     if (!whaTV.even) {
+      //                               _
+      //  _._ _..._ .-',     _.._(`))
+      // '-. `     '  /-._.-'    ',/
+      //    )         \            '.
+      //   / _    _    |             \
+      //  |  a    a    /              |
+      //  \   .-.                     ;  
+      //   '-('' ).-'       ,'       ;
+      //      '-;           |      .'
+      //         \           \    /
+      //         | 7  .__  _.-\   \
+      //         | |  |  ``/  /`  /
+      //        /,_|  |   /,_/   /
+      //           /,_/      '`-'
       whereToDraw = 2 - whaTV.pointer % 2;
     }
     return whereToDraw;

@@ -1,5 +1,14 @@
 {
   "slides": [
+    {"type": "video",
+     "timeout": 20,
+     "mode": "fullscreen",
+     "resources": [
+       {"codec": "video/mp4;",
+        "resource": "assets/eisti.mov"
+       }
+     ]
+    },
     {"type": "image",
      "timeout": 3000,
      "resource": "./assets/invis.jpg",
