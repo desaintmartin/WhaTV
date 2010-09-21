@@ -127,6 +127,7 @@ var whaTV = {
     whaTV.notifyReadyOrGo = function() {whaTV.ready = true;};
     setTimeout(whaTV.onSlideTimeout,
                whaTV.slides[whaTV.pointer].timeout * 1000);
+    //TODO : if no timeout specified : do nothing. Only allow that for videos.
     whaTV.incrementPointer();
     whaTV.loadPointedSlideIntoDOM();
   },
@@ -242,10 +243,16 @@ var whaTV = {
         },
         false
       );
+      break;
+    case 'crop':
+      video.addEventListener('loadedmetadata', whaTV.crop, false);
+      whaTV.addClassName(video, 'cropModeVideo');
+      globalWrapper.appendChild(video);
+      break;
+    case 'fullscreen':
     default:
       whaTV.addClassName(video, 'originalModeVideo');
       globalWrapper.appendChild(video);
-      break;
     }
     //video.addEventListener('canplaythrough', onpeutlire.)
     for (index in resources) {
@@ -277,7 +284,7 @@ var whaTV = {
         ambimageWrapper,
         ambilight,
         images,
-        image
+        image;
     if (videos.length === 1) {
       video = videos[0];
       video.play();
@@ -406,23 +413,27 @@ var whaTV = {
     }
   },
 
-  crop: function(image) {
-    var windowRatio = window.innerWidth / window.innerHeight,
-        imgRatio = image.width / image.height,
-        finalHeight, finalWidth;
-    if (windowRatio < imgRatio) {
-      finalWidth = (window.innerWidth / image.width) * image.height;
-      margin = - (window.innerHeight - finalWidth) / 2;
-      image.style.marginLeft = margin + 'px';
-      image.style.height = '100%';
-    } else {
-      finalHeight = (window.innerHeight / image.height) * image.width;
-      margin = (window.innerHeight - finalHeight) / 2;
-      image.style.marginTop = margin + 'px';
-      image.style.width = '100%';
+  crop: function(node) {
+    if (node.target) {
+      node = node.target
     }
-  }
-
+    var windowRatio = window.innerWidth / window.innerHeight,
+        nodeHeight = node.videoHeight ? node.videoHeight : node.height,
+        nodeWidth = node.videoWidth ? node.videoWidth : node.width,
+        nodeRatio = nodeWidth / nodeHeight,
+        finalHeight, finalWidth;
+    if (windowRatio < nodeRatio) {
+      finalWidth = (window.innerWidth / nodeWidth) * nodeHeight;
+      margin = - (window.innerHeight - finalWidth) / 2;
+      node.style.marginLeft = margin + 'px';
+      node.style.height = '100%';
+    } else {
+      finalHeight = (window.innerHeight / nodeHeight) * nodeWidth;
+      margin = (window.innerHeight - finalHeight) / 2;
+      node.style.marginTop = margin + 'px';
+      node.style.width = '100%';
+    }
+  },
 
   /*// Some ideas to some simpler event system
   onSlideTimeout2: function() {
@@ -448,8 +459,12 @@ whaTV.init();
 
 // Expose whaTV to the global object for debugging purposes
 window.w = whaTV;
-window.pause = function() {
+window.p = window.pause = function() {
   whaTV.ready = false;
   whaTV.notifyReadyOrGo = function() {return null;};
+};
+window.pv = function() {
+	p();
+	document.getElementsByTagName('video')[0].pause();
 };
 })(window);

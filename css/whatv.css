@@ -61,8 +61,11 @@ div.ambilightModeVideoGlobalContainer {
 	padding: 100px 0px 0px 0px;
 }
 
-video.originalModeVideo {
+video {
 	background: #000;
+}
+
+video.originalModeVideo {
 	width: 100%;
 	height: 100%;
 }
