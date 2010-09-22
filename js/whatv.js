@@ -298,13 +298,13 @@ var whaTV = {
           // bastard.
           setTimeout(function() {
             //
-	        //        .==.        .==.          
-            //       //`^\\      //^`\\         
-            //      // ^ ^\(\__/)/^ ^^\\        
-            //     //^ ^^ ^/6  6\ ^^ ^ \\       
-            //    //^ ^^ ^/( .. )\^ ^ ^ \\      
-            //   // ^^ ^/\| v""v |/\^ ^ ^\\     
-            //  // ^^/\/ /  `~~`  \ \/\^ ^\\    
+            //        .==.        .==.
+            //       //`^\\      //^`\\
+            //      // ^ ^\(\__/)/^ ^^\\
+            //     //^ ^^ ^/6  6\ ^^ ^ \\
+            //    //^ ^^ ^/( .. )\^ ^ ^ \\
+            //   // ^^ ^/\| v""v |/\^ ^ ^\\
+            //  // ^^/\/ /  `~~`  \ \/\^ ^\\
             //  -----------------------------
             /// HERE BE DRAGONS
             document.getElementById('content' + whaTV.getPointerModuloTwo()).
@@ -318,7 +318,7 @@ var whaTV = {
         image = images[0];
         if (window.ambimage && whaTV.hasClassName(image, 'ambimage')) {
           ambimage.drawAmbimage(image);
-        } else if (window.simpleAmbimage && 
+        } else if (window.simpleAmbimage &&
             (whaTV.hasClassName(image, 'original')) ||
              whaTV.hasClassName(image, 'fullscreen')) {
           simpleAmbimage.create(image);
@@ -354,7 +354,7 @@ var whaTV = {
 
   getPointerModuloTwoPlusOne: function() {
     // This looks complicated. And it is. So, instead of trying to understand
-    // what it does, let the Safety Pig do its work and do not try to understand.
+    // what it does, let the Safety Pig do its work & do not try to understand.
     var whereToDraw = whaTV.pointer % 2 + 1;
     // Safety Pig has arrived!
     if (!whaTV.even) {
@@ -364,7 +364,7 @@ var whaTV = {
       //    )         \            '.
       //   / _    _    |             \
       //  |  a    a    /              |
-      //  \   .-.                     ;  
+      //  \   .-.                     ;
       //   '-('' ).-'       ,'       ;
       //      '-;           |      .'
       //         \           \    /
@@ -399,10 +399,12 @@ var whaTV = {
   },
 
   fullscreen: function(image, size) {
-    if (size === null) size = '100%'
     var windowRatio = window.innerWidth / window.innerHeight,
         imgRatio = image.width / image.height,
         finalHeight;
+    if (size === null) {
+      size = '100%';
+    }
     if (windowRatio > imgRatio) {
       image.style.height = '100%';
     } else {
@@ -415,7 +417,7 @@ var whaTV = {
 
   crop: function(node) {
     if (node.target) {
-      node = node.target
+      node = node.target;
     }
     var windowRatio = window.innerWidth / window.innerHeight,
         nodeHeight = node.videoHeight ? node.videoHeight : node.height,
@@ -433,7 +435,7 @@ var whaTV = {
       node.style.marginTop = margin + 'px';
       node.style.width = '100%';
     }
-  },
+  }
 
   /*// Some ideas to some simpler event system
   onSlideTimeout2: function() {
@@ -464,7 +466,7 @@ window.p = window.pause = function() {
   whaTV.notifyReadyOrGo = function() {return null;};
 };
 window.pv = function() {
-	p();
-	document.getElementsByTagName('video')[0].pause();
+  p();
+  document.getElementsByTagName('video')[0].pause();
 };
 })(window);
