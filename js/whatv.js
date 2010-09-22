@@ -237,7 +237,7 @@ var whaTV = {
       video.addEventListener(
         'loadedmetadata',
         function(e) {
-          video.parentNode.style.width = video.videoWidth + 'px';
+          //video.parentNode.style.width = video.videoWidth + 'px';
           video.height = video.videoHeight;
           video.width = video.videoWidth;
         },
@@ -356,7 +356,7 @@ var whaTV = {
     // This looks complicated. And it is. So, instead of trying to understand
     // what it does, let the Safety Pig do its work & do not try to understand.
     var whereToDraw = whaTV.pointer % 2 + 1;
-    // Safety Pig has arrived!
+    // Safety Pig has landed!
     if (!whaTV.even) {
       //                               _
       //  _._ _..._ .-',     _.._(`))
@@ -416,6 +416,7 @@ var whaTV = {
   },
 
   crop: function(node) {
+    console.log(node.target)
     if (node.target) {
       node = node.target;
     }
@@ -425,13 +426,13 @@ var whaTV = {
         nodeRatio = nodeWidth / nodeHeight,
         finalHeight, finalWidth;
     if (windowRatio < nodeRatio) {
-      finalWidth = (window.innerWidth / nodeWidth) * nodeHeight;
-      margin = - (window.innerHeight - finalWidth) / 2;
+      finalWidth = window.innerHeight * nodeRatio;
+      margin = - Math.abs(window.innerHeight - finalWidth) / 2;
       node.style.marginLeft = margin + 'px';
       node.style.height = '100%';
     } else {
-      finalHeight = (window.innerHeight / nodeHeight) * nodeWidth;
-      margin = (window.innerHeight - finalHeight) / 2;
+      finalHeight = window.innerWidth / nodeRatio;
+      margin = - Math.abs(finalHeight - window.innerHeight) / 2;
       node.style.marginTop = margin + 'px';
       node.style.width = '100%';
     }
