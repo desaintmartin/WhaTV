@@ -17,6 +17,9 @@ var timer = (function() {
   return {
     create: function(nodeId) {
       node = document.getElementById(nodeId);
+      // FIXME clean this : Hack to set fontsize relatively to footer height
+      node.parentNode.style.fontSize = 
+          document.defaultView.getComputedStyle(node.parentNode).height;
       setInterval(updateDate, 1000);
     }
   }
