@@ -251,7 +251,7 @@ var whaTV = {
       break;
     case 'fullscreen':
     default:
-      whaTV.addClassName(video, 'originalModeVideo');
+      whaTV.addClassName(video, 'fullscreenModeVideo');
       globalWrapper.appendChild(video);
     }
     //video.addEventListener('canplaythrough', onpeutlire.)
@@ -319,8 +319,7 @@ var whaTV = {
         if (window.ambimage && whaTV.hasClassName(image, 'ambimage')) {
           ambimage.drawAmbimage(image);
         } else if (window.simpleAmbimage &&
-            (whaTV.hasClassName(image, 'original')) ||
-             whaTV.hasClassName(image, 'fullscreen')) {
+            whaTV.hasClassName(image, 'fullscreen')) {
           simpleAmbimage.create(image);
         }
       }
@@ -416,7 +415,7 @@ var whaTV = {
   },
 
   crop: function(node) {
-    console.log(node.target)
+    console.log(node)
     if (node.target) {
       node = node.target;
     }
@@ -427,7 +426,7 @@ var whaTV = {
         finalHeight, finalWidth;
     if (windowRatio < nodeRatio) {
       finalWidth = window.innerHeight * nodeRatio;
-      margin = - Math.abs(window.innerHeight - finalWidth) / 2;
+      margin = - Math.abs(finalWidth - window.innerWidth) / 2;
       node.style.marginLeft = margin + 'px';
       node.style.height = '100%';
     } else {

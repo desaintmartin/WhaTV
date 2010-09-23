@@ -24,11 +24,11 @@ div.imageContainer {
 	width: 100%;
 	height: 100%;
 }
-div.imageContainer.original, div.imageContainer.ambimage {
+div.imageContainer.ambimage {
 	padding: 100px 0px 0px 0px;
 }
 
-div.localImageContainer.original, div.localImageContainer.ambimage {
+div.localImageContainer.ambimage {
 	position: relative;
 	margin: 0px auto 10px auto;
 }
@@ -54,6 +54,7 @@ img.image-slide.crop {
 	position: absolute;
 }
 
+
 div.ambilightModeVideoGlobalContainer {
 	background: #000;
 	width: 100%;
@@ -65,7 +66,7 @@ video {
 	background: #000;
 }
 
-video.originalModeVideo {
+video.fullscreenModeVideo {
 	width: 100%;
 	height: 100%;
 }
