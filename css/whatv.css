@@ -108,14 +108,24 @@ footer {
 	z-index:5;
 }
 
-footer #quick-messages {
+footer #quick-messages-wrapper {
 	height: 100%;
-	width: 70%;
 	overflow: hidden;
 }
 
+footer #quick-messages-wrapper #quick-messages {
+	width: 1500px;
+	position : relative;
+}
+
 footer #date {
+	-moz-border-radius-topleft: 50% 100%;
+	border-top-left-radius: 50% 100%;
+	padding-left: 35px; /* Hack : it is not relative size */
+	background: url(../images/banner.png) repeat;
+	color: white;
 	position: absolute;
 	top: 0px;
 	right: 0px;
+	text-align: right;
 }

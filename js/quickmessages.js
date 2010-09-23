@@ -11,30 +11,54 @@ var quickMessages = (function() {
   /**
     * The constructor of quickMessages
     */
-  function init(messages) {
-    // FIXME clean this : Hack to set fontsize relatively to footer height
-    node.parentNode.style.fontSize = document.defaultView.getComputedStyle(
-        document.getElementsByTagName('footer')[0]).height;
+  function init() {
     if (!messages.length) {
       //TODO opacity is already 0 by default.
       node.style.opacity = '0px';
       return;
     }
+    // FIXME clean this : Hack to set fontsize relatively to footer height
+    node.parentNode.parentNode.style.fontSize = 
+        document.defaultView.getComputedStyle(node.parentNode).height;
+
+    // We use setTimeout here to wait for other operations to finish
+    // Here, we wait for the fontSize to be understood by browser
+    setTimeout(function() {
+        // Put the div under the window
+        node.style.marginTop =
+            document.defaultView.getComputedStyle(node).height;
+        // Move up the div with an animation
+        // and launch message loop as callback
+        
+        showNextMessage();
+    }, 0);
     node.innerHTML = messages;
   }
 
-  function showNextMessage(message) {
-    /*quick message : 
-      Initialisation : 
-      Au début, monte le div pour qu'il soit visible (auparavant sous la fenêtre)
-      messages : 
-      D'abord caché,
-      puis transition vers le haut pour faire apparaitre message
-      si message trop long pour écran,
-        faire défiler de droite à gauche
-        quand arrivé à la fin, next
-      sinon next dans x secondes*/
+  /**
+    * Show a message, then increment the pointer and call itself when finished
+    */
+  function showNextMessage() {
+    console.log(messages[currentMessage]);
+    incrementPointer();
+    //D'abord caché,
+    //puis transition vers le haut pour faire apparaitre message
+    //si message trop long pour écran,
+    // attendre x secondes
+    //  faire défiler de droite à gauche
+    //    quand arrivé à la fin, next
+    //  sinon next dans x secondes*/
+  }
 
+  /**
+    * This function increment the pointer, obviously.
+    * When reaching end of messages array, we start again.
+    */
+  function incrementPointer() {
+    currentMessage = currentMessage + 1;
+    if (currentMessage === messages.length) {
+      currentMessage = 0;
+    }
   }
 
   return {
@@ -43,9 +67,10 @@ var quickMessages = (function() {
       * @param {Element} messages an array of strings
       * @param {Element} div the div containing messages
       */
-    create: function(messages, divId) {
+    create: function(messageArray, divId) {
       node = document.getElementById(divId);
-      init(messages);
+      messages = messageArray;
+      init();
     }
   }
 })()

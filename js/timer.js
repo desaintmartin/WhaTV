@@ -1,5 +1,5 @@
 'use strict';
-
+// A simple timer used to update the content of the clock
 var timer = (function() {
   var node;
   function updateDate() {

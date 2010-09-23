@@ -6,7 +6,11 @@ var whaTV = {
   defaults: {
     // The html fetching method.
     // Can be one of the following : 'ajax' | 'iframe'
-    htmlMethod: 'iframe'
+    htmlMethod: 'iframe',
+    // The div ID of quickMessages
+    quickMessagesDivId: 'quick-messages',
+    // The div ID of date
+    dateDivId: 'date',
   },
   // Pointer to current slide
   pointer: 0,
@@ -62,11 +66,16 @@ var whaTV = {
     * @param {Element} data the data containing whaT to show.
     */
   ignition: function(data) {
-    console.log("lkj");
     var informations = window.JSON ? JSON.parse(data) : data;
     whaTV.slides = informations.slides;
+    if (window.timer) {
+      timer.create(whaTV.defaults.dateDivId);
+    }
     if (window.quickMessages) {
-      quickMessages.create(informations.messages);
+      quickMessages.create(
+          informations.messages,
+          whaTV.defaults.quickMessagesDivId
+      );
     }
     // TODO : loading screen
     document.getElementById('content1').style.display = 'none';
@@ -484,7 +493,7 @@ window.w = whaTV;
 window.p = window.pause = function() {
   whaTV.ready = false;
   whaTV.notifyReadyOrGo = function() {return null;};
-};
+}();
 window.pv = function() {
   p();
   document.getElementsByTagName('video')[0].pause();

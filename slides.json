@@ -1,7 +1,7 @@
 {
   "slides": [
     {"type": "image",
-     "timeout": 300,
+     "timeout": 3,
      "resource": "./assets/invis.jpg",
      "mode": "ambimage"
     },
