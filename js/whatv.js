@@ -237,7 +237,7 @@ var whaTV = {
       video.addEventListener(
         'loadedmetadata',
         function(e) {
-          //video.parentNode.style.width = video.videoWidth + 'px';
+          video.parentNode.style.width = video.videoWidth + 'px';
           video.height = video.videoHeight;
           video.width = video.videoWidth;
         },
@@ -408,14 +408,13 @@ var whaTV = {
       image.style.height = '100%';
     } else {
       finalHeight = (window.innerWidth / image.width) * image.height;
-      margin = (window.innerHeight - finalHeight) / 2;
+      margin = Math.abs(finalHeight - window.innerHeight) / 2;
       image.parentNode.style.paddingTop = margin + 'px';
-      image.style.width = size;
+      image.style.width = '100%';
     }
   },
 
   crop: function(node) {
-    console.log(node)
     if (node.target) {
       node = node.target;
     }
@@ -459,7 +458,7 @@ var whaTV = {
 
 whaTV.init();
 
-// Expose whaTV to the global object for debugging purposes
+// Expose whaTV to the global context for debugging purposes
 window.w = whaTV;
 window.p = window.pause = function() {
   whaTV.ready = false;
