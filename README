@@ -36,7 +36,7 @@ Adding an options system to specify image and video options (not fully implement
 
 Roadmap :
 =========
-0.0.6 : Option system with (fullscreen, ambimage/ambilight, original, crop) options
+0.0.6 : Option system with (fullscreen, ambimage/ambilight, original, crop) options, every size calculated relatively for images and video for fullscreen, ambilight, crop. Vertical centering.
 0.0.6.1 : ambimage/ambilight is 80% width and max weidth
 0.0.7 : footer with date and Quick Messages
 0.0.8 : animated header

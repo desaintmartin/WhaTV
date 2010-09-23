@@ -25,7 +25,7 @@ var whaTV = {
   ready: false,
 
   // The current version of whaTV being used
-  version: '0.0.1',
+  version: '0.0.6',
 
   init: function() {
     // Reference to self
@@ -237,9 +237,8 @@ var whaTV = {
       video.addEventListener(
         'loadedmetadata',
         function(e) {
-          video.parentNode.style.width = video.videoWidth + 'px';
-          video.height = video.videoHeight;
-          video.width = video.videoWidth;
+          whaTV.fullscreenAmbilight(video);
+          video.parentNode.style.width = video.width + 'px';
         },
         false
       );
@@ -412,6 +411,15 @@ var whaTV = {
       image.parentNode.style.paddingTop = margin + 'px';
       image.style.width = '100%';
     }
+  },
+
+  fullscreenAmbilight: function(video) {
+    var desiredWidth = window.innerWidth * 80 / 100,
+        videoRatio = video.videoWidth / video.videoHeight,
+        desiredHeight = desiredWidth / videoRatio;
+    console.log (videoRatio, desiredWidth, desiredHeight)
+    video.height = desiredHeight;
+    video.width = desiredWidth;
   },
 
   crop: function(node) {
