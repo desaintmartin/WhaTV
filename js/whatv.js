@@ -199,9 +199,7 @@ var whaTV = {
             whaTV.crop(image);
             break;
           case 'ambimage':
-            // TODO make ambimage size 80%
-            //whaTV.addClassName(image, 'fullscreen');
-            //whaTV.fullscreen(image, '80%');
+            whaTV.fullscreenAmbilight(image);
           default:
             image.parentNode.style.width = image.width + 'px';
           }
@@ -231,7 +229,7 @@ var whaTV = {
       whaTV.addClassName(video, 'ambilight-video');
       localWrapper = document.createElement('div');
       localWrapper.appendChild(video);
-      localWrapper.id = 'ambilight-video-wrap';
+      whaTV.addClassName(localWrapper, 'ambilight-video-wrap');
       globalWrapper.appendChild(localWrapper);
       globalWrapper.setAttribute('class', 'ambilightModeVideoGlobalContainer');
       video.addEventListener(
@@ -413,13 +411,23 @@ var whaTV = {
     }
   },
 
-  fullscreenAmbilight: function(video) {
+  fullscreenAmbilight: function(node) {
     var desiredWidth = window.innerWidth * 80 / 100,
-        videoRatio = video.videoWidth / video.videoHeight,
-        desiredHeight = desiredWidth / videoRatio;
-    console.log (videoRatio, desiredWidth, desiredHeight)
-    video.height = desiredHeight;
-    video.width = desiredWidth;
+        
+        nodeRatio = node.videoWidth ? node.videoWidth / node.videoHeight : 
+                                        node.width / node.height,
+        desiredHeight = desiredWidth / nodeRatio;
+    // desiredHeight may be bigger than the window height minus margin (beurk)
+    if (desiredHeight > (window.innerHeight - 40)) {
+      desiredHeight = window.innerHeight - 40;
+      desiredWidth = desiredHeight * nodeRatio;
+    }
+    // FIXME The "minus 10" is ugly, but it refers to the 
+    // CSS div.imageContainer.ambimage padding-top / 2
+    margin = Math.abs(desiredHeight - window.innerHeight) / 2 - 10;
+    node.parentNode.parentNode.style.paddingTop = margin + 'px';
+    node.height = desiredHeight;
+    node.width = desiredWidth;
   },
 
   crop: function(node) {

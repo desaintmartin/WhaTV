@@ -18,19 +18,19 @@ body {
 	height: 100%;
 }
 
-
+/* Images */
 div.imageContainer {
 	background: #000;
 	width: 100%;
 	height: 100%;
 }
 div.imageContainer.ambimage {
-	padding: 100px 0px 0px 0px;
+	padding: 20px 0px 0px 0px;
 }
 
 div.localImageContainer.ambimage {
 	position: relative;
-	margin: 0px auto 10px auto;
+	margin: 0px auto 0px auto;
 }
 
 img.image-slide.original {
@@ -55,11 +55,16 @@ img.image-slide.crop {
 }
 
 
+/* Videos */
 div.ambilightModeVideoGlobalContainer {
 	background: #000;
 	width: 100%;
 	height: 100%;
-	padding: 100px 0px 0px 0px;
+}
+
+div.ambilight-video-wrap {
+    position:relative;
+    margin:0px auto 0px auto;
 }
 
 video {

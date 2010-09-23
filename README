@@ -40,7 +40,7 @@ Roadmap :
 0.0.6.1 : ambimage/ambilight is 80% width and max weidth
 0.0.7 : footer with date and Quick Messages
 0.0.8 : animated header
-0.1.0 : First stable release with proper "finished loading" event firing, fix chromium video bug
+0.1.0 : First stable release with proper "finished loading" event firing, fix chromium video bug, no timeout for videos
 0.2.0 : Widgets support
 0.2.1 : Proof of concept : meteo widget
 0.3.0 : Modular transition system with some examples
