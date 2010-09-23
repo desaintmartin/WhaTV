@@ -34,10 +34,13 @@ Ambilight support,
 Adding an options system to specify image and video options (not fully implemented)
 [Cedric de Saint Martin]
 
+0.0.6 (2010-10-23)
+----------------
+Option system with (fullscreen, ambimage/ambilight, crop) options, every size calculated relatively for images and video,
+Everything is vertically centered.
+
 Roadmap :
 =========
-0.0.6 : Option system with (fullscreen, ambimage/ambilight, original, crop) options, every size calculated relatively for images and video for fullscreen, ambilight, crop. Vertical centering.
-0.0.6.1 : ambimage/ambilight is 80% width and max weidth
 0.0.7 : footer with date and Quick Messages
 0.0.8 : animated header
 0.1.0 : First stable release with proper "finished loading" event firing, fix chromium video bug, no timeout for videos
@@ -51,6 +54,5 @@ Roadmap :
 Slide isolation : a failed slide won't prevent other to show correctly
 Photo album module
 Could it be possible to have x #content, where x is the number of slides?
-Vertical centering
 CSS3 image animation support (examples : http://developer.apple.com/safaridemos/showcase/transitions/) 
 Module system, where we specify urls of extensions files.
