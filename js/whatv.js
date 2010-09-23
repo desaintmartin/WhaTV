@@ -27,42 +27,47 @@ var whaTV = {
   // The current version of whaTV being used
   version: '0.0.6',
 
+  /**
+    * the constructor of whaTV
+    */
   init: function() {
     // Reference to self
     var whaTV = this;
     // Getting slides
     if (window.JSON) {
       if (window.jQuery) {
-        $.get('slides.json', whaTV.showFirstSlide);
+        $.get('slides.json', whaTV.ignition);
       } else if (window.dojo) {
         dojo.xhrGet({
           url: 'slides.json',
           handleAs: 'text',
-          load: whaTV.showFirstSlide
+          load: whaTV.ignition
         });
       }
     } else {
       if (window.jQuery) {
-        $.getJSON('slides.json', whaTV.showFirstSlide);
+        $.getJSON('slides.json', whaTV.ignition);
       } else if (window.dojo) {
         dojo.xhrGet({
           url: 'slides.json',
           handleAs: 'json',
-          load: whaTV.showFirstSlide
+          load: whaTV.ignition
         });
       }
     }
   },
 
-  showFirstSlide: function(data) {
-    whaTV.slides = JSON.parse(data).slides;
-    // TODO : loading screen
-    document.getElementById('content1').style.display = 'none';
-    whaTV.loadPointedSlideIntoDOM();
-  },
-
-  showFirstSlideWithoutJSON: function(json) {
-    whaTV.slides = json.slides;
+  /**
+    * Ignition of The Great Loop. Starts everything
+    * @param {Element} data the data containing whaT to show.
+    */
+  ignition: function(data) {
+    console.log("lkj");
+    var informations = window.JSON ? JSON.parse(data) : data;
+    whaTV.slides = informations.slides;
+    if (window.quickMessages) {
+      quickMessages.create(informations.messages);
+    }
     // TODO : loading screen
     document.getElementById('content1').style.display = 'none';
     whaTV.loadPointedSlideIntoDOM();
