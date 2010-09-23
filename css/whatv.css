@@ -95,13 +95,27 @@ iframe {
 	position:absolute; 
 	top:0px; 
 	left:0px;
+}*/
+
+footer {
+	/*opacity: 0;*/
+	position: absolute;
+	bottom: 0px; 
+	left: 0px; 
+	width: 100%; 
+	height: 10%;
+	font: Arial, Helvetica, sans-sherif; 
+	z-index:5;
 }
 
-footer{
-	position:absolute;
-	bottom:0px; 
-	left:0px; 
-	width:100%; 
-	font:70px/80px Arial, Helvetica, sans-sherif; 
-	z-index:1;
-}*/
+footer #quick-messages {
+	height: 100%;
+	width: 70%;
+	overflow: hidden;
+}
+
+footer #date {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+}
