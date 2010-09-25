@@ -54,7 +54,7 @@ Roadmap :
 =========
 09/26 0.1.0.1 : fix chromium video bug
 09/29 0.1.1 : beautiful CSS for footer, clock up?
-09/02 0.0.8 : animated header
+09/02 0.1.2 : animated header
 10/05 0.2.0 : Widgets support
 10/08 0.2.1 : Proof of concept : meteo widget
 10/11 0.3.0 : Modular transition system with some examples

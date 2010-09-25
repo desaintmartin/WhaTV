@@ -1,6 +1,14 @@
 'use strict';
 
 (function(window, undefined) {
+// Awful hack in global scope if we do not have console object
+if (!window.console) {
+  window.console = {
+    log: function log(){},
+    debug: function debug(){},
+    error: function error(){}
+  }
+}
 // Inside of our object, we will always refer to 'whaTV' to fetch attributes.
 var whaTV = {
   defaults: {
@@ -59,7 +67,7 @@ var whaTV = {
   },
 
   /**
-    * Ignition of The Great Loop. Starts everything
+    * Ignition of The Great Loop. Starts The Everything.
     * @param {Element} data the data containing whaT to show.
     */
   ignition: function(data) {
@@ -242,7 +250,8 @@ var whaTV = {
         globalWrapper = document.createElement('div'),
         // One wrapper to do what you want inside, put in the global wrapper.
         localWrapper,
-        moduleIndex;
+        moduleIndex,
+        canPlay = false;
     video.preload = true;
     whaTV.addClassName(video, 'video-slide');
     switch (mode) {
@@ -273,16 +282,23 @@ var whaTV = {
       globalWrapper.appendChild(video);
     }
     // Firing event when browser think we can play.
-    video.addEventListener('canplaythrough', whaTV.onNextSlideReady);
+    video.addEventListener('canplaythrough', whaTV.onNextSlideReady, false);
     for (index in resources) {
       resource = resources[index].resource;
-      if (false) {//resource in someregexp) {
-        //video.appendChild(whaTV.loadFlash(someflash));
+      //TODO if codec === "flash"
+      //video.appendChild(whaTV.loadFlash(someflash));
+      if (video.canPlayType(resources[index].codec)) {
+        canPlay = true;
+        source = document.createElement('source');
+        source.setAttribute('src', resources[index].resource);
+        source.setAttribute('type', resources[index].codec);
+        video.appendChild(source);
       }
-      source = document.createElement('source');
-      source.setAttribute('src', resources[index].resource);
-      source.setAttribute('type', resources[index].codec);
-      video.appendChild(source);
+    }
+    if (!canPlay) {
+      // We can't play the video : we skip it.
+      whaTV.onNextSlideReady();
+      whaTV.onSlideTimeout();
     }
     return globalWrapper;
   },

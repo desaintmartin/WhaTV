@@ -44,8 +44,8 @@ var quickMessages = (function() {
       return;
     }
     // Set fontsize relatively to footer height
-    height = Number(getComputedStyle(nodeWrapper).height.replace('px', ''));
-    footerWidth = Number(getComputedStyle(nodeWrapper.parentNode).
+    height = Number(getComputedStyle(nodeWrapper, '').height.replace('px', ''));
+    footerWidth = Number(getComputedStyle(nodeWrapper.parentNode, '').
                          width.replace('px', ''));
     nodeWrapper.style.fontSize = height * 0.8 + 'px';
     nodeWrapper.style.lineHeight = height + 'px';
@@ -135,8 +135,8 @@ var quickMessages = (function() {
   function marqueeIfNeeded() {
     var span = messages[currentMessage] ?
             node.children[currentMessage].children[0] : null,
-        difference = getSizeFromStyle(getComputedStyle(span).width) -
-                     getSizeFromStyle(getComputedStyle(nodeWrapper).width);
+        difference = getSizeFromStyle(getComputedStyle(span, '').width) -
+                     getSizeFromStyle(getComputedStyle(nodeWrapper, '').width);
     // If message too large for div, we "marquee" it
     if (difference > 0) {
       $(span).animate({'marginLeft': '-=' + difference},
