@@ -124,12 +124,15 @@ footer #quick-messages-wrapper {
 }
 
 footer #quick-messages-wrapper #quick-messages {
-	width: 1500px;
 	position : relative;
 }
 
-footer #quick-messages-wrapper #quick-messages p {
+footer #quick-messages-wrapper #quick-messages div {
 	background: url(../images/banner.png) repeat;
+}
+footer #quick-messages-wrapper #quick-messages div span {
+	display : inline;
+	position: absolute;
 	margin: 0px;
 }
 

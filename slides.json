@@ -67,10 +67,12 @@
     }
   ],
   "messages": [
+    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa bbaaa a aaa aa aaa aaa aaaa aaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
     "Bien le bonjour!",
+    "Voici un truc un peu long et pas forcément super lisible mais ça doit faire 140 caractères maximum parce qu'on adore Twitter et consorts.",
     "Comment ça va?",
+    "Un truc un peu moins long mais qui va quand meme dépasser de la page, très surement.",
     "Très bien et toi?",
-    "Konishiwa!!",
-    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    "Konnishiwa!!"
   ]
 }

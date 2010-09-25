@@ -3,7 +3,7 @@
 var quickMessages = (function() {
   var defaults = {
     // Default time, in milliseconds, to show a message
-    timeout: 5000,
+    timeout: 500,
     // Default time before starting the loop again
     timeBeforeStartingAgain: 10000,
     // Default speed of animation between two messages
@@ -14,7 +14,7 @@ var quickMessages = (function() {
     // And commit it. Thanks.
   },
       // A pointer to the current message
-      currentMessage = 0,
+      currentMessage = -1,
       // The list of messages
       messages = [],
       // The quickMessage div
@@ -35,16 +35,14 @@ var quickMessages = (function() {
     * while there is messages : we move the content one 'div height' up
     */
   function init() {
-    var index, message;
+    var index, message, div;
     // No message at all, we hide and return
     if (!messages.length) {
       return;
     }
     // Set fontsize relatively to footer height
-    height = Number(document.defaultView.getComputedStyle(nodeWrapper).
-                 height.replace('px', ''));
-    footerWidth = Number(document.defaultView.
-                         getComputedStyle(nodeWrapper.parentNode).
+    height = Number(getComputedStyle(nodeWrapper).height.replace('px', ''));
+    footerWidth = Number(getComputedStyle(nodeWrapper.parentNode).
                          width.replace('px', ''));
     nodeWrapper.style.fontSize = height * 0.8 + 'px';
     nodeWrapper.style.lineHeight = height + 'px';
@@ -55,9 +53,12 @@ var quickMessages = (function() {
 
     // Adding each message in the div
     for (index in messages) {
-      message = document.createElement('p');
-      message.innerHTML = messages[index];
-      node.appendChild(message);
+      message = document.createElement('span');
+      message.innerHTML = messages[index].replace(' ', '&nbsp');
+      div = document.createElement('div');
+      div.style.height = height + 'px';
+      div.appendChild(message)
+      node.appendChild(div);
     }
     // Putting the content one 'div size' under, a first time
     // Before we move up the wrapper
@@ -72,6 +73,9 @@ var quickMessages = (function() {
   function showMessages() {
     // Move up the div with an animation
     // and launch message loop as callback
+    // Reset when we begin the loop
+    node.style.marginTop = height + 'px';
+    currentMessage = -1;
     $(nodeWrapper).animate({'left': '+=' + footerWidth + 'px'},
                            1000,
                            function() {
@@ -96,29 +100,46 @@ var quickMessages = (function() {
     * Show a message, then increment the pointer and call itself when finished
     */
   function showNextMessage() {
+    incrementPointer();
     // If beginning of the loop : 
     // We put the content one 'div size' under
     if (currentMessage === messages.length) {
       $(node).animate({'marginTop': '-=' + height},
                      defaults.transitionSpeed,
                      function() {setTimeout(hideMessages, 1000);});
-      incrementPointer();
       return;
     }
-    if (currentMessage === 0) {
-      node.style.marginTop = height + 'px';
-    }
-    $(node).animate({'marginTop': '-=' + height},
-                    defaults.transitionSpeed,
-                    function() {
-                      setTimeout(showNextMessage, defaults.timeout);
-                    });
-    incrementPointer();
-    //si message trop long pour écran,
     // attendre x secondes
     //  faire défiler de droite à gauche
     //    quand arrivé à la fin, next
     //  sinon next dans x secondes*/
+    $(node).animate({'marginTop': '-=' + height},
+                    defaults.transitionSpeed,
+                    function() {
+                      setTimeout(marqueeIfNeeded, defaults.timeout);
+                    });
+  }
+
+  /**
+    * If message too long : we animate it.
+    **/
+  function marqueeIfNeeded() {
+    var span = messages[currentMessage] ?
+            node.children[currentMessage].children[0] : null,
+        difference = span ?
+                     getSizeFromStyle(getComputedStyle(span).width) -
+                       getSizeFromStyle(getComputedStyle(nodeWrapper).width) :
+                     null;
+    // If message too large for div, we "marquee" it
+    if (difference) {
+      $(span).animate({'marginLeft': '-=' + difference},
+                      15 * difference,
+                      function() {
+                        setTimeout(showNextMessage, defaults.timeout);
+                      });
+    } else {
+      showNextMessage();
+    }
   }
 
   /**
@@ -130,6 +151,10 @@ var quickMessages = (function() {
     if (currentMessage === messages.length + 1) {
       currentMessage = 0;
     }
+  }
+
+  function getSizeFromStyle(CSSSize) {
+    return Number(CSSSize.replace('px', ''));
   }
 
   return {
