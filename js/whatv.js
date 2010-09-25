@@ -120,7 +120,7 @@ var whaTV = {
     // XXX : This is hightly experimental
     //if(content.play) ambiLight.create(content);
     // Simulating fire event when complete
-    setTimeout(whaTV.onNextSlideReady, Math.random() * 4000);
+    setTimeout(whaTV.onNextSlideReady, 500);
   },
 
   makeTransition: function() {
@@ -139,9 +139,12 @@ var whaTV = {
     divToShow.style.display = 'block';
     whaTV.onShow(divToShow);
     whaTV.notifyReadyOrGo = function() {whaTV.ready = true;};
-    setTimeout(whaTV.onSlideTimeout,
-               whaTV.slides[whaTV.pointer].timeout * 1000);
-    //TODO : if no timeout specified : do nothing. Only allow that for videos.
+    // Calls timeout when end of slide
+    // If no timeout specified : do nothing. Only allow that for videos.
+    if (whaTV.slides[whaTV.pointer].timeout) {
+      setTimeout(whaTV.onSlideTimeout,
+                 whaTV.slides[whaTV.pointer].timeout * 1000);
+    }
     whaTV.incrementPointer();
     whaTV.loadPointedSlideIntoDOM();
   },
@@ -298,6 +301,8 @@ var whaTV = {
         image;
     if (videos.length === 1) {
       video = videos[0];
+      video.addEventListener('stalled', whaTV.onSlideTimeout, false);
+      video.addEventListener('ended', whaTV.onSlideTimeout, false);
       video.play();
       if (window.ambiLight) {
         ambilight = div.getElementsByClassName('ambilight-video');
@@ -347,9 +352,32 @@ var whaTV = {
 
   // Utilities
   clearNode: function(node) {
+    // Deleting DOM<->JS cycling references for IE to avoid mem leaks
+    whaTV.purge(node);
+    // Actually deleting children
     if (node.hasChildNodes()) {
       while (node.childNodes.length >= 1) {
         node.removeChild(node.firstChild);
+      }
+    }
+  },
+
+  purge: function purge(d) {
+    var a = d.attributes, i, l, n;
+    if (a) {
+      l = a.length;
+      for (i = 0; i < l; i += 1) {
+        n = a[i].name;
+        if (typeof d[n] === 'function') {
+          d[n] = null;
+        }
+      }
+    }
+    a = d.childNodes;
+    if (a) {
+      l = a.length;
+      for (i = 0; i < l; i += 1) {
+        purge(d.childNodes[i]);
       }
     }
   },

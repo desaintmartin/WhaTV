@@ -1,6 +1,11 @@
 {
   "slides": [
     {"type": "image",
+     "timeout": 5,
+     "resource": "./assets/last2.jpg",
+     "mode": "fullscreen"
+    }, 
+    {"type": "image",
      "timeout": 3,
      "resource": "./assets/invis.jpg",
      "mode": "ambimage"
@@ -10,13 +15,7 @@
      "resource": "./assets/wallpaper.jpg",
      "mode": "crop"
     },
-    {"type": "image",
-     "timeout": 10,
-     "resource": "./assets/last2.jpg",
-     "mode": "fullscreen"
-    }, 
     {"type": "video",
-     "timeout": 20,
      "mode": "crop",
      "resources": [
        {"codec": "video/mp4;",
@@ -25,7 +24,6 @@
      ]
     },
     {"type": "video",
-     "timeout": 15,
      "mode": "fullscreen",
      "resources": [
        {"codec": "video/mp4;",
@@ -34,7 +32,6 @@
      ]
     },
     {"type": "video",
-     "timeout": 5,
      "mode": "ambilight",
      "resources": [
        {"codec": "video/mp4;",
@@ -67,12 +64,12 @@
     }
   ],
   "messages": [
-    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa bbaaa a aaa aa aaa aaa aaaa aaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-    "Bien le bonjour!",
-    "Voici un truc un peu long et pas forcément super lisible mais ça doit faire 140 caractères maximum parce qu'on adore Twitter et consorts.",
-    "Comment ça va?",
-    "Un truc un peu moins long mais qui va quand meme dépasser de la page, très surement.",
-    "Très bien et toi?",
-    "Konnishiwa!!"
+    {"title": "plopinou", "content": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa bbaaa a aaa aa aaa aaa aaaa aaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+    {"title": "Bonjour", "content": "Bien le bonjour!"},
+    {"title": "twitter", "content": "Voici un truc un peu long et pas forcément super lisible mais ça doit faire 140 caractères maximum parce qu'on adore Twitter et consorts."},
+    {"title": "untitre", "content": "Comment ça va?"},
+    {"title": "untitre", "content": "Un truc un peu moins long mais qui va quand meme dépasser de la page, très surement."},
+    {"title": "untitre", "content": "Très bien et toi?"},
+    {"title": "untitre", "content": "Konnishiwa!!"}
   ]
 }

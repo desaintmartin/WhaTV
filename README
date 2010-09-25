@@ -46,7 +46,6 @@ Introducing a footer with a clock and a Quick Messages system.
 
 Roadmap :
 =========
-09/26 0.0.7 : footer with date and Quick Messages
 09/26 0.0.7.1 : beautiful CSS for footer, clock up?
 09/29 0.0.8 : animated header
 09/02 0.1.0 : First stable release with proper "finished loading" event firing, fix chromium video bug, no timeout for videos
@@ -57,8 +56,8 @@ Roadmap :
 1.0.x : Posting server, dynamic fetching of resources from server
 1.1.x : Optional authentication system
 
-Slide isolation : a failed slide won't prevent other to show correctly
 Photo album module
 Could it be possible to have x #content, where x is the number of slides?
 CSS3 image animation support (examples : http://developer.apple.com/safaridemos/showcase/transitions/) 
 Module system, where we specify urls of extensions files.
+quick message system : titles

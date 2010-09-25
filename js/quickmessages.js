@@ -1,15 +1,18 @@
 'use strict';
 
+/**
+  * Message management system, compatible with jQuery UI.
+  **/
 var quickMessages = (function() {
   var defaults = {
     // Default time, in milliseconds, to show a message
-    timeout: 500,
+    timeout: 5000,
     // Default time before starting the loop again
-    timeBeforeStartingAgain: 1000,
+    timeBeforeStartingAgain: 15000,
     // Default speed of animation between two messages
     transitionSpeed: 'slow',
     // Default time after showing div but before showing first message
-    timeBeforeFirstMessage: 500
+    timeBeforeFirstMessage: 150//00
     // If you want to customize other values, please add them here before
     // And commit it. Thanks.
   },
@@ -54,7 +57,7 @@ var quickMessages = (function() {
     // Adding each message in the div
     for (index in messages) {
       message = document.createElement('span');
-      message.innerHTML = messages[index].replace(' ', '&nbsp');
+      message.innerHTML = messages[index].content;
       div = document.createElement('div');
       div.style.height = height + 'px';
       div.appendChild(message);
@@ -64,7 +67,7 @@ var quickMessages = (function() {
     // Before we move up the wrapper
     node.style.marginTop = height + 'px';
     // Let's go.
-    showMessages();
+    setTimeout(showMessages, defaults.timeBeforeFirstMessage);
   }
 
   /**
@@ -85,7 +88,7 @@ var quickMessages = (function() {
                            1000,
                            function() {
                              setTimeout(showNextMessage,
-                                        defaults.timeBeforeFirstMessage);
+                                        2000);
                            });
   }
 
@@ -110,6 +113,7 @@ var quickMessages = (function() {
     // We put the content one 'div size' under
     if (currentMessage === messages.length) {
       $(node).animate({'marginTop': '-=' + height},
+                     //TODO good easing
                      defaults.transitionSpeed,
                      function() {setTimeout(hideMessages, 1000);});
       return;
