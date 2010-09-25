@@ -6,7 +6,7 @@ var timer = (function() {
     if (node) {
       var dt = new Date();
       if (dt.getMinutes() < 10) {
-        node.innerHTML = dt.getHours() + ':0' + 
+        node.innerHTML = dt.getHours() + ':0' +
             dt.getMinutes();
       } else {
         node.innerHTML = dt.getHours() + ':' +
@@ -18,9 +18,9 @@ var timer = (function() {
     create: function(nodeId) {
       node = document.getElementById(nodeId);
       // FIXME clean this : Hack to set fontsize relatively to footer height
-      node.parentNode.style.fontSize = 
+      node.parentNode.style.fontSize =
           document.defaultView.getComputedStyle(node.parentNode).height;
       setInterval(updateDate, 1000);
     }
-  }
-})()
+  };
+})();

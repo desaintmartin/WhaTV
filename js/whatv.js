@@ -10,7 +10,7 @@ var whaTV = {
     // The div ID of quickMessages
     quickMessagesDivId: 'quick-messages',
     // The div ID of date
-    dateDivId: 'date',
+    dateDivId: 'date'
   },
   // Pointer to current slide
   pointer: 0,
@@ -427,16 +427,15 @@ var whaTV = {
 
   fullscreenAmbilight: function(node) {
     var desiredWidth = window.innerWidth * 80 / 100,
-        
-        nodeRatio = node.videoWidth ? node.videoWidth / node.videoHeight : 
-                                        node.width / node.height,
+        nodeRatio = node.videoWidth ? node.videoWidth / node.videoHeight :
+                                      node.width / node.height,
         desiredHeight = desiredWidth / nodeRatio;
     // desiredHeight may be bigger than the window height minus margin (beurk)
     if (desiredHeight > (window.innerHeight - 40)) {
       desiredHeight = window.innerHeight - 40;
       desiredWidth = desiredHeight * nodeRatio;
     }
-    // FIXME The "minus 10" is ugly, but it refers to the 
+    // FIXME The "minus 10" is ugly, but it refers to the
     // CSS div.imageContainer.ambimage padding-top / 2
     margin = Math.abs(desiredHeight - window.innerHeight) / 2 - 10;
     node.parentNode.parentNode.style.paddingTop = margin + 'px';

@@ -28,7 +28,7 @@ var quickMessages = (function() {
 
   /**
     * The constructor of quickMessages
-    * The animation is as follow : 
+    * The animation is as follow :
     * We put the content one 'div height' under
     * We put the wrapper under the window.
     * We show it with an animation
@@ -57,7 +57,7 @@ var quickMessages = (function() {
       message.innerHTML = messages[index].replace(' ', '&nbsp');
       div = document.createElement('div');
       div.style.height = height + 'px';
-      div.appendChild(message)
+      div.appendChild(message);
       node.appendChild(div);
     }
     // Putting the content one 'div size' under, a first time
@@ -98,7 +98,7 @@ var quickMessages = (function() {
                            1000,
                            function() {
                              setTimeout(showMessages,
-	                                    defaults.timeBeforeStartingAgain);
+                                        defaults.timeBeforeStartingAgain);
                            });
   }
   /**
@@ -106,7 +106,7 @@ var quickMessages = (function() {
     */
   function showNextMessage() {
     incrementPointer();
-    // If beginning of the loop : 
+    // If beginning of the loop :
     // We put the content one 'div size' under
     if (currentMessage === messages.length) {
       $(node).animate({'marginTop': '-=' + height},
@@ -163,8 +163,8 @@ var quickMessages = (function() {
   return {
     /**
       * Initiate the quickMessages
-      * @param {Element} messages an array of strings
-      * @param {Element} div the div containing messages
+      * @param {Element} messages an array of strings.
+      * @param {Element} div the div containing messages.
       */
     create: function(messageArray, divId) {
       node = document.getElementById(divId);
@@ -172,5 +172,5 @@ var quickMessages = (function() {
       messages = messageArray;
       init();
     }
-  }
-})()
+  };
+})();
