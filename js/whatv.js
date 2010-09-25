@@ -291,7 +291,10 @@ var whaTV = {
   },
 
 
-  // Pseudo-events
+  /**
+    * Responsible for doing everything when a slide is shown : start a video,
+    * start ambilight, adding event listeners for end of videos, etc.
+    **/
   onShow: function(div) {
     var videos = div.getElementsByClassName('video-slide'),
         video,
