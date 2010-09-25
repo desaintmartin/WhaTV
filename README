@@ -44,11 +44,17 @@ Everything is vertically centered.
 Introducing a footer with a clock and a Quick Messages system.
 [Cedric de Saint Martin]
 
+0.1.0 (2010-10-25)
+----------------
+First stable release with proper "finished loading" event firing, no timeout for videos
+[Cedric de Saint Martin]
+
+
 Roadmap :
 =========
-09/26 0.0.7.1 : beautiful CSS for footer, clock up?
-09/29 0.0.8 : animated header
-09/02 0.1.0 : First stable release with proper "finished loading" event firing, fix chromium video bug, no timeout for videos
+09/26 0.1.0.1 : fix chromium video bug
+09/29 0.1.1 : beautiful CSS for footer, clock up?
+09/02 0.0.8 : animated header
 10/05 0.2.0 : Widgets support
 10/08 0.2.1 : Proof of concept : meteo widget
 10/11 0.3.0 : Modular transition system with some examples
