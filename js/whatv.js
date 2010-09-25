@@ -4,9 +4,6 @@
 // Inside of our object, we will always refer to 'whaTV' to fetch attributes.
 var whaTV = {
   defaults: {
-    // The html fetching method.
-    // Can be one of the following : 'ajax' | 'iframe'
-    htmlMethod: 'iframe',
     // The div ID of quickMessages
     quickMessagesDivId: 'quick-messages',
     // The div ID of date
@@ -82,20 +79,28 @@ var whaTV = {
     whaTV.loadPointedSlideIntoDOM();
   },
 
-  // Load into the DOM the pointed slide and its elements. Fire an event
-  // notifyReadyOrGo when Everything is loaded.
+  /**
+    * Load into the DOM the pointed slide and its elements. calls
+    * notifyReadyOrGo when Everything is loaded.
+    * Assigns the results to one of the "content" divs, after having cleared it.
+    **/
   loadPointedSlideIntoDOM: function() {
     console.log('loadPointedSlideIntoDOM called. preparing slide number ' +
                 whaTV.pointer);
     whaTV.ready = false;
     var currentSlide = whaTV.slides[whaTV.pointer],
         content,
-        hiddenContentDiv;
+        hiddenContentDiv = document.getElementById('content' +
+            whaTV.getPointerModuloTwoPlusOne());
+    // Clears the currently hidden div
+    console.debug('Clearing content' + whaTV.getPointerModuloTwoPlusOne());
+    whaTV.clearNode(hiddenContentDiv);
+    // Calls loaders method depending on slide type. Assigns the resulting
+    // node to "content"
     switch (currentSlide.type) {
       case 'html':
         console.debug('HTML file detected');
-        content = whaTV.defaults.htmlMethod ? whaTV.loadIframe() :
-                                              whaTV.loadIframe();
+        content = whaTV.loadIframe();
         break;
       case 'flash':
         console.debug('Flash file detected');
@@ -108,21 +113,16 @@ var whaTV = {
       case 'video':
         console.debug('Video file detected');
         content = whaTV.loadVideo();
-        //content.addEventListener('ended', whaTV.onSlideTimeout, false);
         break;
     }
-    hiddenContentDiv = document.getElementById('content' +
-        whaTV.getPointerModuloTwoPlusOne());
-    console.debug('Clearing content' + whaTV.getPointerModuloTwoPlusOne());
-    whaTV.clearNode(hiddenContentDiv);
+    // Assigns result to the currently hidden "content" div
     console.debug('Load content' + whaTV.getPointerModuloTwoPlusOne());
     hiddenContentDiv.appendChild(content);
-    // XXX : This is hightly experimental
-    //if(content.play) ambiLight.create(content);
-    // Simulating fire event when complete
-    setTimeout(whaTV.onNextSlideReady, 500);
   },
 
+  /**
+    * Responsible of hiding the "old" slide, and showing the new one
+    **/
   makeTransition: function() {
     var divToHide = document.getElementById('content' +
                                             whaTV.getPointerModuloTwo()
@@ -180,9 +180,12 @@ var whaTV = {
   },
 
 
-  // Loaders
+  // Loaders. they return a fully populated node, ready to be appended
+  // To our page. Also responsible of calling onNextSlideReady when finished
+  // Loading.
   loadIframe: function() {
     var iframe = document.createElement('iframe');
+    iframe.addEventListener('load', whaTV.onNextSlideReady, false);
     iframe.setAttribute('frameborder', '0');
     iframe.setAttribute('src', whaTV.slides[whaTV.pointer].resource);
     iframe.setAttribute('class', 'next_content');
@@ -220,6 +223,7 @@ var whaTV = {
           default:
             image.parentNode.style.width = image.width + 'px';
           }
+          whaTV.onNextSlideReady();
         },
         false
     );
@@ -268,7 +272,8 @@ var whaTV = {
       whaTV.addClassName(video, 'fullscreenModeVideo');
       globalWrapper.appendChild(video);
     }
-    //video.addEventListener('canplaythrough', onpeutlire.)
+    // Firing event when browser think we can play.
+    video.addEventListener('canplaythrough', whaTV.onNextSlideReady);
     for (index in resources) {
       resource = resources[index].resource;
       if (false) {//resource in someregexp) {
@@ -284,6 +289,9 @@ var whaTV = {
 
   loadFlash: function(flashObjectUrl) {
     var flash = document.createElement('embed');
+    // TODO this does not work. We arbitrarily set a timeout.
+    setTimeout(whaTV.onNextSlideReady, 1000);
+    //flash.addEventListener('load', whaTV.onNextSlideReady, false);
     flash.setAttribute('src', flashObjectUrl);
     flash.setAttribute('pluginspage', 'http://www.adobe.com/go/getflashplayer');
     flash.setAttribute('type', 'application/x-shockwave-flash');
@@ -365,6 +373,9 @@ var whaTV = {
     }
   },
 
+  /**
+    * Candidate to be removed : IE is not a target for whatv.
+    **/
   purge: function purge(d) {
     var a = d.attributes, i, l, n;
     if (a) {

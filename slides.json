@@ -33,6 +33,7 @@
     },
     {"type": "video",
      "mode": "ambilight",
+     "timeout": "4",
      "resources": [
        {"codec": "video/mp4;",
         "resource": "./assets/demo2.mp4"
