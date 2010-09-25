@@ -131,7 +131,7 @@ footer #quick-messages-wrapper #quick-messages div {
 	background: url(../images/banner.png) repeat;
 }
 footer #quick-messages-wrapper #quick-messages div span {
-	display : inline;
+	white-space:nowrap;
 	position: absolute;
 	margin: 0px;
 }

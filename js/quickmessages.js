@@ -5,7 +5,7 @@ var quickMessages = (function() {
     // Default time, in milliseconds, to show a message
     timeout: 500,
     // Default time before starting the loop again
-    timeBeforeStartingAgain: 10000,
+    timeBeforeStartingAgain: 1000,
     // Default speed of animation between two messages
     transitionSpeed: 'slow',
     // Default time after showing div but before showing first message
@@ -74,8 +74,13 @@ var quickMessages = (function() {
     // Move up the div with an animation
     // and launch message loop as callback
     // Reset when we begin the loop
+    var index, span;
     node.style.marginTop = height + 'px';
     currentMessage = -1;
+    for (index in messages) {
+      span = node.children[index].children[0];
+      span.style.marginLeft = '';
+    }
     $(nodeWrapper).animate({'left': '+=' + footerWidth + 'px'},
                            1000,
                            function() {
@@ -126,12 +131,10 @@ var quickMessages = (function() {
   function marqueeIfNeeded() {
     var span = messages[currentMessage] ?
             node.children[currentMessage].children[0] : null,
-        difference = span ?
-                     getSizeFromStyle(getComputedStyle(span).width) -
-                       getSizeFromStyle(getComputedStyle(nodeWrapper).width) :
-                     null;
+        difference = getSizeFromStyle(getComputedStyle(span).width) -
+                     getSizeFromStyle(getComputedStyle(nodeWrapper).width);
     // If message too large for div, we "marquee" it
-    if (difference) {
+    if (difference > 0) {
       $(span).animate({'marginLeft': '-=' + difference},
                       15 * difference,
                       function() {
