@@ -493,7 +493,7 @@ window.w = whaTV;
 window.p = window.pause = function() {
   whaTV.ready = false;
   whaTV.notifyReadyOrGo = function() {return null;};
-}();
+};
 window.pv = function() {
   p();
   document.getElementsByTagName('video')[0].pause();
