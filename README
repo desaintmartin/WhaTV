@@ -39,10 +39,15 @@ Adding an options system to specify image and video options (not fully implement
 Option system with (fullscreen, ambimage/ambilight, crop) options, every size calculated relatively for images and video,
 Everything is vertically centered.
 
+0.0.7 (2010-10-25)
+----------------
+Introducing a footer with a clock and a Quick Messages system.
+[Cedric de Saint Martin]
+
 Roadmap :
 =========
 09/26 0.0.7 : footer with date and Quick Messages
-09/26 0.0.7.1 : Fix fullscreen or height problems due to introduction of a footer
+09/26 0.0.7.1 : beautiful CSS for footer, clock up?
 09/29 0.0.8 : animated header
 09/02 0.1.0 : First stable release with proper "finished loading" event firing, fix chromium video bug, no timeout for videos
 10/05 0.2.0 : Widgets support
