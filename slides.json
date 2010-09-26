@@ -27,7 +27,7 @@
      "mode": "fullscreen",
      "resources": [
        {"codec": "video/mp4;",
-        "resource": "assets/eisti.mov"
+        "resource": "assets/chrome.mp4"
        }
      ]
     },
