@@ -234,6 +234,7 @@ var whaTV = {
         function(e) {
           switch (mode) {
           case 'fullscreen':
+            image.parentNode.style.height = '100%';
             whaTV.fullscreen(image);
             break;
           case 'crop':
