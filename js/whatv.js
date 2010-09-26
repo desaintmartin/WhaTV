@@ -157,6 +157,9 @@ var whaTV = {
     whaTV.loadPointedSlideIntoDOM();
   },
 
+  /**
+    * Called when the current showed slide has finished.
+    **/
   onSlideTimeout: function() {
     if (whaTV.ready) {
       whaTV.makeTransition();
@@ -166,17 +169,29 @@ var whaTV = {
     }
   },
 
+  /**
+    * Called when the next slide has finished preloading. Wrapper function,
+    * for comprehension.
+    **/
   onNextSlideReady: function() {
     whaTV.notifyReadyOrGo();
   },
 
+  /**
+    * Called when a slide is ready or when a slide has finished.
+    * This method will be monkeypatched depending on the context : 
+    * If both event have fired, will trigger the next slide, 
+    * Else, will trigger a 'next slide is ready' ready boolean.
+    **/
   notifyReadyOrGo: function() {
     // This function will be overwritten by makeTransition and onSlideTimeout
     // This code is used as is ONLY for first iteration
     whaTV.makeTransition();
   },
 
-  // Increments the pointer. If last slide has been reached, we start again.
+  /**
+    * Increments the pointer. If last slide has been reached, we start again.
+    **/
   incrementPointer: function() {
     whaTV.pointer = whaTV.pointer + 1;
     if (whaTV.pointer === whaTV.slides.length) {
@@ -199,8 +214,6 @@ var whaTV = {
     iframe.setAttribute('class', 'next_content');
     iframe.setAttribute('id', whaTV.pointer);
     iframe.setAttribute('scrolling', 'no');
-    // XXX : May be used to fire the onNextSlideReady event?
-    //iframe.onload = function(){alert('lol')};
     return iframe;
   },
 
@@ -523,24 +536,6 @@ var whaTV = {
     }
   }
 
-  /*// Some ideas to some simpler event system
-  onSlideTimeout2: function() {
-    if (whaTV.ready) {
-      whaTV.makeTransition();
-    }
-    else {
-      whaTV.madeTransition = true;
-    }
-  },
-
-  onNextSlideReady2: function() {
-    if (whaTV.madeTransition) {
-      whaTV.makeTransition();
-    }
-    else {
-      whaTV.ready = true;
-    }
-  },*/
 };
 
 whaTV.init();
