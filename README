@@ -61,6 +61,7 @@ Roadmap :
 0.4.0 : Powerpoint support
 1.0.x : Posting server, dynamic fetching of resources from server
 1.1.x : Optional authentication system
+2.0.x : Video overlay
 
 Photo album module
 Could it be possible to have x #content, where x is the number of slides?
