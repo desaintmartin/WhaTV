@@ -1,181 +1,172 @@
 'use strict';
 
 (function(window, undefined) {
-// Awful hack in global scope if we do not have console object
-if (!window.console) {
-  window.console = {
-    log: function log(){},
-    debug: function debug(){},
-    error: function error(){}
+  // Awful hack in global scope if we do not have console object
+  if (!window.console) {
+    window.console = {
+      log: function log(){},
+      debug: function debug(){},
+      error: function error(){}
+    }
   }
-}
-// Inside of our object, we will always refer to 'whaTV' to fetch attributes.
-var whaTV = {
-  defaults: {
+  var defaults = {
     // The div ID of quickMessages
     quickMessagesDivId: 'quick-messages',
     // The div ID of date
     dateDivId: 'date'
-  },
+  };
   // Pointer to current slide
-  pointer: 0,
+  var pointer = 0;
 
   // Ugly hack to know where to show the slide if not even.
-  even: true,
+  var even = true;
 
   // The informations about slides to show
-  slides: [],
+  var slides = [];
 
   // Current loaded slide as a DOM node
   // TODO replace it by array, to store past slides in memory?
   //loadedSlide: null,
 
   // Boolean to know if next slide is ready to show
-  ready: false,
+  var ready = false;
 
   // The current version of whaTV being used
-  version: '0.0.6',
+  var version = '0.1.0';
 
-  /**
-    * the constructor of whaTV
-    */
-  init: function() {
-    // Reference to self
-    var whaTV = this;
-    // Getting slides
-    if (window.JSON) {
-      if (window.jQuery) {
-        $.get('slides.json', whaTV.ignition);
-      } else if (window.dojo) {
-        dojo.xhrGet({
-          url: 'slides.json',
-          handleAs: 'text',
-          load: whaTV.ignition
-        });
-      }
-    } else {
-      if (window.jQuery) {
-        $.getJSON('slides.json', whaTV.ignition);
-      } else if (window.dojo) {
-        dojo.xhrGet({
-          url: 'slides.json',
-          handleAs: 'json',
-          load: whaTV.ignition
-        });
-      }
+  // Getting slides
+  if (window.JSON) {
+    if (window.jQuery) {
+      $.get('slides.json', ignition);
+    } else if (window.dojo) {
+      dojo.xhrGet({
+        url: 'slides.json',
+        handleAs: 'text',
+        load: ignition
+      });
     }
-  },
-
+  } else {
+    if (window.jQuery) {
+      $.getJSON('slides.json', ignition);
+    } else if (window.dojo) {
+      dojo.xhrGet({
+        url: 'slides.json',
+        handleAs: 'json',
+        load: ignition
+      });
+    }
+  }
+  
   /**
     * Ignition of The Great Loop. Starts The Everything.
     * @param {Element} data the data containing whaT to show.
     */
-  ignition: function(data) {
+  function ignition(data) {
     var informations = window.JSON ? JSON.parse(data) : data;
-    whaTV.slides = informations.slides;
+    slides = informations.slides;
     if (window.timer) {
-      timer.create(whaTV.defaults.dateDivId);
+      timer.create(defaults.dateDivId);
     }
     if (window.quickMessages) {
       quickMessages.create(
           informations.messages,
-          whaTV.defaults.quickMessagesDivId
+          defaults.quickMessagesDivId
       );
     }
     // TODO : loading screen
     document.getElementById('content1').style.display = 'none';
-    whaTV.loadPointedSlideIntoDOM();
-  },
+    loadPointedSlideIntoDOM();
+  }
 
   /**
     * Load into the DOM the pointed slide and its elements. calls
     * notifyReadyOrGo when Everything is loaded.
     * Assigns the results to one of the "content" divs, after having cleared it.
     **/
-  loadPointedSlideIntoDOM: function() {
+  function loadPointedSlideIntoDOM() {
     console.log('loadPointedSlideIntoDOM called. preparing slide number ' +
-                whaTV.pointer);
-    whaTV.ready = false;
-    var currentSlide = whaTV.slides[whaTV.pointer],
+                pointer);
+    ready = false;
+    var currentSlide = slides[pointer],
         content,
         hiddenContentDiv = document.getElementById('content' +
-            whaTV.getPointerModuloTwoPlusOne());
+            getPointerModuloTwoPlusOne());
     // Clears the currently hidden div
-    console.debug('Clearing content' + whaTV.getPointerModuloTwoPlusOne());
-    whaTV.clearNode(hiddenContentDiv);
+    console.debug('Clearing content' + getPointerModuloTwoPlusOne());
+    clearNode(hiddenContentDiv);
     // Calls loaders method depending on slide type. Assigns the resulting
     // node to "content"
     switch (currentSlide.type) {
       case 'html':
         console.debug('HTML file detected');
-        content = whaTV.loadIframe();
+        content = loadIframe();
         break;
       case 'flash':
         console.debug('Flash file detected');
-        content = whaTV.loadFlash(whaTV.slides[whaTV.pointer].resource);
+        content = loadFlash(slides[pointer].resource);
         break;
       case 'image':
         console.debug('Image file detected');
-        content = whaTV.loadImage();
+        content = loadImage();
         break;
       case 'video':
         console.debug('Video file detected');
-        content = whaTV.loadVideo();
+        content = loadVideo();
         break;
     }
     // Assigns result to the currently hidden "content" div
-    console.debug('Load content' + whaTV.getPointerModuloTwoPlusOne());
+    console.debug('Load content' + getPointerModuloTwoPlusOne());
     hiddenContentDiv.appendChild(content);
-  },
+  }
 
   /**
     * Responsible of hiding the "old" slide, and showing the new one
     **/
-  makeTransition: function() {
+  function makeTransition() {
     var divToHide = document.getElementById('content' +
-                                            whaTV.getPointerModuloTwo()
+                                            getPointerModuloTwo()
                                            ),
         divToShow = document.getElementById('content' +
-                                            whaTV.getPointerModuloTwoPlusOne()
+                                            getPointerModuloTwoPlusOne()
                                            );
-    console.log('makeTransition called. Showing slide number ' + whaTV.pointer +
-                ' from #content' + whaTV.getPointerModuloTwoPlusOne() + '.');
-    console.debug('Hidding content' + whaTV.getPointerModuloTwo());
+    console.log('makeTransition called. Showing slide number ' + pointer +
+                ' from #content' + getPointerModuloTwoPlusOne() + '.');
+    console.debug('Hidding content' + getPointerModuloTwo());
     divToHide.style.display = 'none';
-    whaTV.onHide(divToHide);
-    console.debug('Showing content' + whaTV.getPointerModuloTwoPlusOne());
+    onHide(divToHide);
+    console.debug('Showing content' + getPointerModuloTwoPlusOne());
     divToShow.style.display = 'block';
-    whaTV.onShow(divToShow);
-    whaTV.notifyReadyOrGo = function() {whaTV.ready = true;};
+    onShow(divToShow);
+    notifyReadyOrGo = function() {ready = true;};
     // Calls timeout when end of slide
     // If no timeout specified : do nothing. Only allow that for videos.
-    if (whaTV.slides[whaTV.pointer].timeout) {
-      setTimeout(whaTV.onSlideTimeout,
-                 whaTV.slides[whaTV.pointer].timeout * 1000);
+    if (slides[pointer].timeout) {
+      setTimeout(onSlideTimeout,
+                 slides[pointer].timeout * 1000);
     }
-    whaTV.incrementPointer();
-    whaTV.loadPointedSlideIntoDOM();
-  },
+    incrementPointer();
+    loadPointedSlideIntoDOM();
+  }
 
   /**
     * Called when the current showed slide has finished.
     **/
-  onSlideTimeout: function() {
-    if (whaTV.ready) {
-      whaTV.makeTransition();
+  function onSlideTimeout() {
+    if (ready) {
+      makeTransition();
     }
     else {
-      whaTV.notifyReadyOrGo = function() {whaTV.makeTransition();};
+      notifyReadyOrGo = function() {makeTransition();};
     }
-  },
+  }
 
   /**
     * Called when the next slide has finished preloading. Wrapper function,
     * for comprehension.
     **/
-  onNextSlideReady: function() {
-    whaTV.notifyReadyOrGo();
-  },
+  function onNextSlideReady() {
+    notifyReadyOrGo();
+  }
 
   /**
     * Called when a slide is ready or when a slide has finished.
@@ -183,47 +174,47 @@ var whaTV = {
     * If both event have fired, will trigger the next slide, 
     * Else, will trigger a 'next slide is ready' ready boolean.
     **/
-  notifyReadyOrGo: function() {
+  function notifyReadyOrGo() {
     // This function will be overwritten by makeTransition and onSlideTimeout
     // This code is used as is ONLY for first iteration
-    whaTV.makeTransition();
-  },
+    makeTransition();
+  }
 
   /**
     * Increments the pointer. If last slide has been reached, we start again.
     **/
-  incrementPointer: function() {
-    whaTV.pointer = whaTV.pointer + 1;
-    if (whaTV.pointer === whaTV.slides.length) {
-      whaTV.pointer = 0;
-      if (whaTV.slides.length % 2) {
-        whaTV.even = !whaTV.even;
+  function incrementPointer() {
+    pointer = pointer + 1;
+    if (pointer === slides.length) {
+      pointer = 0;
+      if (slides.length % 2) {
+        even = !even;
       }
     }
-  },
+  }
 
 
   // Loaders. they return a fully populated node, ready to be appended
   // To our page. Also responsible of calling onNextSlideReady when finished
   // Loading.
-  loadIframe: function() {
+  function loadIframe() {
     var iframe = document.createElement('iframe');
-    iframe.addEventListener('load', whaTV.onNextSlideReady, false);
+    iframe.addEventListener('load', onNextSlideReady, false);
     iframe.setAttribute('frameborder', '0');
-    iframe.setAttribute('src', whaTV.slides[whaTV.pointer].resource);
+    iframe.setAttribute('src', slides[pointer].resource);
     iframe.setAttribute('class', 'next_content');
-    iframe.setAttribute('id', whaTV.pointer);
+    iframe.setAttribute('id', pointer);
     iframe.setAttribute('scrolling', 'no');
     return iframe;
-  },
+  }
 
-  loadImage: function() {
+  function loadImage() {
     var image = new Image(),
         // One global image wrapper which respect whaTV style, put in #contentx.
         globalWrapper = document.createElement('div'),
         // One wrapper to do what you want inside, put in the global wrapper.
         localWrapper = document.createElement('div'),
-        mode = whaTV.slides[whaTV.pointer].mode;
+        mode = slides[pointer].mode;
     image.setAttribute('class', 'image-slide ' + mode);
     localWrapper.appendChild(image);
     localWrapper.setAttribute('class', 'localImageContainer ' + mode);
@@ -235,28 +226,28 @@ var whaTV = {
           switch (mode) {
           case 'fullscreen':
             image.parentNode.style.height = '100%';
-            whaTV.fullscreen(image);
+            fullscreen(image);
             break;
           case 'crop':
-            whaTV.crop(image);
+            crop(image);
             break;
           case 'ambimage':
-            whaTV.fullscreenAmbilight(image);
+            fullscreenAmbilight(image);
           default:
             image.parentNode.style.width = image.width + 'px';
           }
-          whaTV.onNextSlideReady();
+          onNextSlideReady();
         },
         false
     );
-    image.setAttribute('src', whaTV.slides[whaTV.pointer].resource);
+    image.setAttribute('src', slides[pointer].resource);
     return globalWrapper;
-  },
+  }
 
-  loadVideo: function() {
+  function loadVideo() {
     var video = document.createElement('video'),
-        resources = whaTV.slides[whaTV.pointer].resources,
-        mode = whaTV.slides[whaTV.pointer].mode,
+        resources = slides[pointer].resources,
+        mode = slides[pointer].mode,
         index,
         resource,
         source,
@@ -267,40 +258,40 @@ var whaTV = {
         moduleIndex,
         canPlay = false;
     video.preload = true;
-    whaTV.addClassName(video, 'video-slide');
+    addClassName(video, 'video-slide');
     switch (mode) {
     case 'ambilight':
-      whaTV.addClassName(video, 'ambilight-video');
+      addClassName(video, 'ambilight-video');
       localWrapper = document.createElement('div');
       localWrapper.appendChild(video);
-      whaTV.addClassName(localWrapper, 'ambilight-video-wrap');
+      addClassName(localWrapper, 'ambilight-video-wrap');
       globalWrapper.appendChild(localWrapper);
       globalWrapper.setAttribute('class', 'ambilightModeVideoGlobalContainer');
       video.addEventListener(
         'loadedmetadata',
         function(e) {
-          whaTV.fullscreenAmbilight(video);
+          fullscreenAmbilight(video);
           video.parentNode.style.width = video.width + 'px';
         },
         false
       );
       break;
     case 'crop':
-      video.addEventListener('loadedmetadata', whaTV.crop, false);
-      whaTV.addClassName(video, 'cropModeVideo');
+      video.addEventListener('loadedmetadata', crop, false);
+      addClassName(video, 'cropModeVideo');
       globalWrapper.appendChild(video);
       break;
     case 'fullscreen':
     default:
-      whaTV.addClassName(video, 'fullscreenModeVideo');
+      addClassName(video, 'fullscreenModeVideo');
       globalWrapper.appendChild(video);
     }
     // Firing event when browser think we can play.
-    video.addEventListener('canplaythrough', whaTV.onNextSlideReady, false);
+    video.addEventListener('canplaythrough', onNextSlideReady, false);
     for (index in resources) {
       resource = resources[index].resource;
       //TODO if codec === "flash"
-      //video.appendChild(whaTV.loadFlash(someflash));
+      //video.appendChild(loadFlash(someflash));
       if (video.canPlayType(resources[index].codec)) {
         canPlay = true;
         source = document.createElement('source');
@@ -309,31 +300,34 @@ var whaTV = {
         video.appendChild(source);
       }
     }
+    source = document.createElement('h1');
+    source.innerHTML = 'Unable to read video. Please wait while recovering...';
+    video.appendChild(source);
     if (!canPlay) {
       // We can't play the video : we skip it.
-      whaTV.onNextSlideReady();
-      whaTV.onSlideTimeout();
+      onNextSlideReady();
+      onSlideTimeout();
     }
     return globalWrapper;
-  },
+  }
 
-  loadFlash: function(flashObjectUrl) {
+  function loadFlash(flashObjectUrl) {
     var flash = document.createElement('embed');
     // TODO this does not work. We arbitrarily set a timeout.
-    setTimeout(whaTV.onNextSlideReady, 1000);
-    //flash.addEventListener('load', whaTV.onNextSlideReady, false);
+    setTimeout(onNextSlideReady, 1000);
+    //flash.addEventListener('load', onNextSlideReady, false);
     flash.setAttribute('src', flashObjectUrl);
     flash.setAttribute('pluginspage', 'http://www.adobe.com/go/getflashplayer');
     flash.setAttribute('type', 'application/x-shockwave-flash');
     return flash;
-  },
+  }
 
 
   /**
     * Responsible for doing everything when a slide is shown : start a video,
     * start ambilight, adding event listeners for end of videos, etc.
     **/
-  onShow: function(div) {
+  function onShow(div) {
     var videos = div.getElementsByClassName('video-slide'),
         video,
         ambimageWrapper,
@@ -342,8 +336,8 @@ var whaTV = {
         image;
     if (videos.length === 1) {
       video = videos[0];
-      video.addEventListener('stalled', whaTV.onSlideTimeout, false);
-      video.addEventListener('ended', whaTV.onSlideTimeout, false);
+      video.addEventListener('stalled', onSlideTimeout, false);
+      video.addEventListener('ended', onSlideTimeout, false);
       video.play();
       if (window.ambiLight) {
         ambilight = div.getElementsByClassName('ambilight-video');
@@ -364,7 +358,7 @@ var whaTV = {
             //  // ^^/\/ /  `~~`  \ \/\^ ^\\
             //  -----------------------------
             /// HERE BE DRAGONS
-            document.getElementById('content' + whaTV.getPointerModuloTwo()).
+            document.getElementById('content' + getPointerModuloTwo()).
                 style.position = 'relative';
            }, 1);
         }
@@ -373,40 +367,40 @@ var whaTV = {
       images = div.getElementsByClassName('image-slide');
       if (images.length === 1) {
         image = images[0];
-        if (window.ambimage && whaTV.hasClassName(image, 'ambimage')) {
+        if (window.ambimage && hasClassName(image, 'ambimage')) {
           ambimage.drawAmbimage(image);
         } else if (window.simpleAmbimage &&
-            whaTV.hasClassName(image, 'fullscreen')) {
+            hasClassName(image, 'fullscreen')) {
           simpleAmbimage.create(image);
         }
       }
     }
-  },
+  }
 
-  onHide: function(div) {
+  function onHide(div) {
     var videos = div.getElementsByTagName('video');
     if (videos.length) {
       videos[0].pause();
     }
-  },
+  }
 
 
   // Utilities
-  clearNode: function(node) {
+  function clearNode(node) {
     // Deleting DOM<->JS cycling references for IE to avoid mem leaks
-    whaTV.purge(node);
+    purge(node);
     // Actually deleting children
     if (node.hasChildNodes()) {
       while (node.childNodes.length >= 1) {
         node.removeChild(node.firstChild);
       }
     }
-  },
+  }
 
   /**
-    * Candidate to be removed : IE is not a target for whatv.
+    * Candidate to be removed : IE is not a target for 
     **/
-  purge: function purge(d) {
+  function purge(d) {
     var a = d.attributes, i, l, n;
     if (a) {
       l = a.length;
@@ -424,22 +418,22 @@ var whaTV = {
         purge(d.childNodes[i]);
       }
     }
-  },
+  }
 
-  getPointerModuloTwo: function() {
-    var whereToDraw = 2 - whaTV.pointer % 2;
-    if (!whaTV.even) {
-      whereToDraw = whaTV.pointer % 2 + 1;
+  function getPointerModuloTwo() {
+    var whereToDraw = 2 - pointer % 2;
+    if (!even) {
+      whereToDraw = pointer % 2 + 1;
     }
     return whereToDraw;
-  },
+  }
 
-  getPointerModuloTwoPlusOne: function() {
+  function getPointerModuloTwoPlusOne() {
     // This looks complicated. And it is. So, instead of trying to understand
     // what it does, let the Safety Pig do its work & do not try to understand.
-    var whereToDraw = whaTV.pointer % 2 + 1;
+    var whereToDraw = pointer % 2 + 1;
     // Safety Pig has landed!
-    if (!whaTV.even) {
+    if (!even) {
       //                               _
       //  _._ _..._ .-',     _.._(`))
       // '-. `     '  /-._.-'    ',/
@@ -454,12 +448,12 @@ var whaTV = {
       //         | |  |  ``/  /`  /
       //        /,_|  |   /,_/   /
       //           /,_/      '`-'
-      whereToDraw = 2 - whaTV.pointer % 2;
+      whereToDraw = 2 - pointer % 2;
     }
     return whereToDraw;
-  },
+  }
 
-  hasClassName: function(node, className) {
+  function hasClassName(node, className) {
     var index,
         classes = node.className.split(' ');
     className = className.toUpperCase();
@@ -469,18 +463,18 @@ var whaTV = {
       }
     }
     return false;
-  },
+  }
 
-  addClassName: function(node, className) {
-    if (whaTV.hasClassName(node, className)) return;
+  function addClassName(node, className) {
+    if (hasClassName(node, className)) return;
     if (node.className) {
       node.className = node.className + ' ' + className;
     } else {
       node.className = className;
     }
-  },
+  }
 
-  fullscreen: function(image, size) {
+  function fullscreen(image, size) {
     var windowRatio = window.innerWidth / window.innerHeight,
         imgRatio = image.width / image.height,
         finalHeight;
@@ -495,9 +489,9 @@ var whaTV = {
       image.parentNode.style.paddingTop = margin + 'px';
       image.style.width = '100%';
     }
-  },
+  }
 
-  fullscreenAmbilight: function(node) {
+  function fullscreenAmbilight(node) {
     var desiredWidth = window.innerWidth * 80 / 100,
         nodeRatio = node.videoWidth ? node.videoWidth / node.videoHeight :
                                       node.width / node.height,
@@ -513,9 +507,9 @@ var whaTV = {
     node.parentNode.parentNode.style.paddingTop = margin + 'px';
     node.height = desiredHeight;
     node.width = desiredWidth;
-  },
+  }
 
-  crop: function(node) {
+  function crop(node) {
     if (node.target) {
       node = node.target;
     }
@@ -537,15 +531,11 @@ var whaTV = {
     }
   }
 
-};
-
-whaTV.init();
-
 // Expose whaTV to the global context for debugging purposes
-window.w = whaTV;
+window.w = this;
 window.p = window.pause = function() {
-  whaTV.ready = false;
-  whaTV.notifyReadyOrGo = function() {return null;};
+  ready = false;
+  notifyReadyOrGo = function() {return null;};
 };
 window.pv = function() {
   p();
