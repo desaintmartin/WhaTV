@@ -141,6 +141,7 @@ var quickMessages = (function() {
     if (difference > 0) {
       $(span).animate({'marginLeft': '-=' + difference},
                       15 * difference,
+                      'easeInOutSine',
                       function() {
                         setTimeout(showNextMessage, defaults.timeout);
                       });
