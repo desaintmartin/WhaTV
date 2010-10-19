@@ -1,17 +1,17 @@
 {
   "slides": [
     {"type": "image",
-     "timeout": 5,
+     "timeout": 8,
      "resource": "./assets/last2.jpg",
      "mode": "fullscreen"
     }, 
     {"type": "image",
-     "timeout": 3,
+     "timeout": 8,
      "resource": "./assets/invis.jpg",
      "mode": "ambimage"
     },
     {"type": "image",
-     "timeout": 3,
+     "timeout": 8,
      "resource": "./assets/wallpaper.jpg",
      "mode": "crop"
     },
@@ -33,7 +33,7 @@
     },
     {"type": "video",
      "mode": "ambilight",
-     "timeout": "4",
+     "timeout": "10",
      "resources": [
        {"codec": "video/mp4;",
         "resource": "./assets/demo2.mp4"
@@ -44,23 +44,23 @@
      ]
     },
     {"type": "flash",
-     "timeout": 3,
+     "timeout": 10,
      "resource": "./assets/app.swf"
     },
     {"type": "flash",
-     "timeout": 3,
+     "timeout": 10,
      "resource": "./assets/flexballs.swf"
     },
     {"type": "html",
-     "timeout": 5,
+     "timeout": 10,
      "resource": "./assets/1.html"
     },
     {"type": "html",
-     "timeout": 5,
+     "timeout": 10,
      "resource": "http://google.fr/"
     },
     {"type": "html",
-     "timeout": 3,
+     "timeout": 10,
      "resource": "http://dev.watercooled.org"
     }
   ],

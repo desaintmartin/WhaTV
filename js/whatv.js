@@ -1,6 +1,6 @@
 'use strict';
 
-(function(window, undefined) {
+(function() {
   // Awful hack in global scope if we do not have console object
   if (!window.console) {
     window.console = {
@@ -14,25 +14,21 @@
     quickMessagesDivId: 'quick-messages',
     // The div ID of date
     dateDivId: 'date'
-  };
-  // Pointer to current slide
-  var pointer = 0;
-
-  // Ugly hack to know where to show the slide if not even.
-  var even = true;
-
-  // The informations about slides to show
-  var slides = [];
-
-  // Current loaded slide as a DOM node
-  // TODO replace it by array, to store past slides in memory?
-  //loadedSlide: null,
-
-  // Boolean to know if next slide is ready to show
-  var ready = false;
-
-  // The current version of whaTV being used
-  var version = '0.1.0';
+  },
+      // Pointer to current slide
+      pointer = 0,
+      // Ugly hack to know where to show the slide if not even.
+      even = true,
+      // The informations about slides to show
+      slides = [],
+      // Current loaded slide as a DOM node
+      // TODO replace it by array, to store past slides in memory?
+      //loadedSlide: null,
+      // Boolean to know if next slide is ready to show
+      ready = false,
+      
+      // The current version of whaTV being used
+      version = '0.1.0';
 
   // Getting slides
   if (window.JSON) {
@@ -536,9 +532,9 @@ window.w = this;
 window.p = window.pause = function() {
   ready = false;
   notifyReadyOrGo = function() {return null;};
-};
+}();
 window.pv = function() {
   p();
   document.getElementsByTagName('video')[0].pause();
 };
-})(window);
+})();

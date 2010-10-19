@@ -52,7 +52,7 @@ First stable release with proper "finished loading" event firing, no timeout for
 
 Roadmap :
 =========
-09/29 0.1.1 : beautiful CSS for footer, fix chromium video bug + http://flowplayer.org/index.html, clock up?
+09/29 0.1.1 : beautiful CSS for footer, fix chromium video bug + http://flowplayer.org/index.html
 09/02 0.1.2 : animated header
 10/05 0.2.0 : Widgets support
 10/08 0.2.1 : Proof of concept : meteo widget
@@ -62,6 +62,7 @@ Roadmap :
 1.1.x : Optional authentication system
 2.0.x : Video overlay
 
+http://requirejs.org/
 Photo album module
 Could it be possible to have x #content, where x is the number of slides?
 CSS3 image animation support (examples : http://developer.apple.com/safaridemos/showcase/transitions/) 

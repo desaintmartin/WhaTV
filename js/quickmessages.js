@@ -11,10 +11,10 @@ var quickMessages = (function() {
     timeBeforeStartingAgain: 15000,
     // Default speed of animation between two messages
     transitionSpeed: 'slow',
-    // Default time after showing div but before showing first message
-    timeBeforeFirstMessage: 150//00
+    // Default time before showing first message
+    timeBeforeFirstMessage: 1500//0
     // If you want to customize other values, please add them here before
-    // And commit it. Thanks.
+    // And commit them. Thanks.
   },
       // A pointer to the current message
       currentMessage = -1,
@@ -49,11 +49,17 @@ var quickMessages = (function() {
                          width.replace('px', ''));
     nodeWrapper.style.fontSize = height * 0.8 + 'px';
     nodeWrapper.style.lineHeight = height + 'px';
-    // Put the div under the window
+    // Put the div at the left the window
     nodeWrapper.style.left = - footerWidth + 'px';
     // Set the display from 'none' to 'block'
     nodeWrapper.style.opacity = 1;
 
+    // Adding a first, blank message
+    message = document.createElement('span');
+    div = document.createElement('div');
+    div.style.height = height + 'px';
+    div.appendChild(message);
+    node.appendChild(div);
     // Adding each message in the div
     for (index in messages) {
       message = document.createElement('span');
@@ -63,9 +69,6 @@ var quickMessages = (function() {
       div.appendChild(message);
       node.appendChild(div);
     }
-    // Putting the content one 'div size' under, a first time
-    // Before we move up the wrapper
-    node.style.marginTop = height + 'px';
     // Let's go.
     setTimeout(showMessages, defaults.timeBeforeFirstMessage);
   }
@@ -74,12 +77,16 @@ var quickMessages = (function() {
     * The main loop
     */
   function showMessages() {
-    // Move up the div with an animation
+    // Move right the div with an animation
     // and launch message loop as callback
     // Reset when we begin the loop
     var index, span;
-    node.style.marginTop = height + 'px';
-    currentMessage = -1;
+    // TODO I still do not know what to do when showing messages div.
+    // If I want to see at first a blank div, we need to set to "height"
+    // Otherwise, if I want an empty message (in order to see background)
+    // I will need "0px".
+    node.style.marginTop = '0px'//height + 'px';
+    currentMessage = 0;
     for (index in messages) {
       span = node.children[index].children[0];
       span.style.marginLeft = '';
@@ -88,7 +95,7 @@ var quickMessages = (function() {
                            1000,
                            function() {
                              setTimeout(showNextMessage,
-                                        2000);
+                                        1000);
                            });
   }
 
