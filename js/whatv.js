@@ -532,7 +532,7 @@ window.w = this;
 window.p = window.pause = function() {
   ready = false;
   notifyReadyOrGo = function() {return null;};
-}();
+};
 window.pv = function() {
   p();
   document.getElementsByTagName('video')[0].pause();
