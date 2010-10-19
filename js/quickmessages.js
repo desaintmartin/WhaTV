@@ -6,9 +6,9 @@
 var quickMessages = (function() {
   var defaults = {
     // Default time, in milliseconds, to show a message
-    timeout: 5000,
+    timeout: 500,
     // Default time before starting the loop again
-    timeBeforeStartingAgain: 15000,
+    timeBeforeStartingAgain: 150,//00,
     // Default speed of animation between two messages
     transitionSpeed: 'slow',
     // Default time before showing first message
@@ -17,7 +17,10 @@ var quickMessages = (function() {
     // And commit them. Thanks.
   },
       // A pointer to the current message
-      currentMessage = -1,
+      // Starts at 1, ends at length + 1
+      // It is used to refer to the current span (may be incremented by one
+      // from the messages array)
+      currentMessage,
       // The list of messages
       messages = [],
       // The quickMessage div
@@ -55,11 +58,7 @@ var quickMessages = (function() {
     nodeWrapper.style.opacity = 1;
 
     // Adding a first, blank message
-    message = document.createElement('span');
-    div = document.createElement('div');
-    div.style.height = height + 'px';
-    div.appendChild(message);
-    node.appendChild(div);
+    messages.unshift({title:"", content: ""});
     // Adding each message in the div
     for (index in messages) {
       message = document.createElement('span');
@@ -124,24 +123,27 @@ var quickMessages = (function() {
                      defaults.transitionSpeed,
                      function() {setTimeout(hideMessages, 1000);});
       return;
+    } else {
+      // attendre x secondes
+      //  faire défiler de droite à gauche
+      //    quand arrivé à la fin, next
+      //  sinon next dans x secondes*/
+      $(node).animate({'marginTop': '-=' + height},
+                      defaults.transitionSpeed,
+                      function() {
+                        setTimeout(marqueeIfNeeded, defaults.timeout);
+                      });
     }
-    // attendre x secondes
-    //  faire défiler de droite à gauche
-    //    quand arrivé à la fin, next
-    //  sinon next dans x secondes*/
-    $(node).animate({'marginTop': '-=' + height},
-                    defaults.transitionSpeed,
-                    function() {
-                      setTimeout(marqueeIfNeeded, defaults.timeout);
-                    });
   }
 
   /**
     * If message too long : we animate it.
     **/
   function marqueeIfNeeded() {
-    var span = messages[currentMessage] ?
-            node.children[currentMessage].children[0] : null,
+    var span = node.children[currentMessage].children[0],
+        // Candidate to remove
+        // span = messages[currentMessage] ?
+            //node.children[currentMessage + 1].children[0] : null,
         difference = getSizeFromStyle(getComputedStyle(span, '').width) -
                      getSizeFromStyle(getComputedStyle(nodeWrapper, '').width);
     // If message too large for div, we "marquee" it
