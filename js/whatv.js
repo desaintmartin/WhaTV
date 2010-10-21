@@ -1,12 +1,13 @@
 'use strict';
 
-(function() {
+//(function() {
   // Awful hack in global scope if we do not have console object
   if (!window.console) {
     window.console = {
       log: function log(){},
       debug: function debug(){},
-      error: function error(){}
+      error: function error(){},
+      warn: function warn(){}
     }
   }
   var defaults = {
@@ -24,8 +25,10 @@
       // Current loaded slide as a DOM node
       // TODO replace it by array, to store past slides in memory?
       //loadedSlide: null,
-      // Boolean to know if next slide is ready to show
-      ready = false,
+      // Array of Boolean to know if next slide has finished loading
+      nextSlideReady = [],
+      // Array of Boolean to know if current slide has tiggered timeout
+      slideTimeout = [],
       
       // The current version of whaTV being used
       version = '0.1.0';
@@ -71,7 +74,8 @@
     }
     // TODO : loading screen
     document.getElementById('content1').style.display = 'none';
-    loadPointedSlideIntoDOM();
+    loadPointedSlideIntoDOM(pointer); // Should be 0
+    onSlideTimeout(pointer);
   }
 
   /**
@@ -79,39 +83,39 @@
     * notifyReadyOrGo when Everything is loaded.
     * Assigns the results to one of the "content" divs, after having cleared it.
     **/
-  function loadPointedSlideIntoDOM() {
+  function loadPointedSlideIntoDOM(slideReference) {
     console.log('loadPointedSlideIntoDOM called. preparing slide number ' +
-                pointer);
+                slideReference);
     ready = false;
-    var currentSlide = slides[pointer],
+    var currentSlide = slides[slideReference],
         content,
         hiddenContentDiv = document.getElementById('content' +
-            getPointerModuloTwoPlusOne());
+            getModuloTwoPlusOne(slideReference));
     // Clears the currently hidden div
-    console.debug('Clearing content' + getPointerModuloTwoPlusOne());
+    console.debug('Clearing content' + getModuloTwoPlusOne(slideReference));
     clearNode(hiddenContentDiv);
     // Calls loaders method depending on slide type. Assigns the resulting
     // node to "content"
     switch (currentSlide.type) {
       case 'html':
         console.debug('HTML file detected');
-        content = loadIframe();
+        content = loadIframe(slideReference);
         break;
       case 'flash':
         console.debug('Flash file detected');
-        content = loadFlash(slides[pointer].resource);
+        content = loadFlash(slideReference, slides[slideReference].resource);
         break;
       case 'image':
         console.debug('Image file detected');
-        content = loadImage();
+        content = loadImage(slideReference);
         break;
       case 'video':
         console.debug('Video file detected');
-        content = loadVideo();
+        content = loadVideo(slideReference);
         break;
     }
     // Assigns result to the currently hidden "content" div
-    console.debug('Load content' + getPointerModuloTwoPlusOne());
+    console.debug('Load content' + getModuloTwoPlusOne(slideReference));
     hiddenContentDiv.appendChild(content);
   }
 
@@ -120,39 +124,42 @@
     **/
   function makeTransition() {
     var divToHide = document.getElementById('content' +
-                                            getPointerModuloTwo()
+                                            getModuloTwo(pointer)
                                            ),
         divToShow = document.getElementById('content' +
-                                            getPointerModuloTwoPlusOne()
+                                            getModuloTwoPlusOne(pointer)
                                            );
     console.log('makeTransition called. Showing slide number ' + pointer +
-                ' from #content' + getPointerModuloTwoPlusOne() + '.');
-    console.debug('Hidding content' + getPointerModuloTwo());
+                ' from #content' + getModuloTwoPlusOne(pointer) + '.');
+    console.debug('Hidding content' + getModuloTwo(pointer));
     divToHide.style.display = 'none';
     onHide(divToHide);
-    console.debug('Showing content' + getPointerModuloTwoPlusOne());
+    console.debug('Showing content' + getModuloTwoPlusOne(pointer));
     divToShow.style.display = 'block';
-    onShow(divToShow);
-    notifyReadyOrGo = function() {ready = true;};
+    onShow(pointer, divToShow);
     // Calls timeout when end of slide
     // If no timeout specified : do nothing. Only allow that for videos.
     if (slides[pointer].timeout) {
-      setTimeout(onSlideTimeout,
+      setTimeout(function() {
+                   onSlideTimeout(pointer);
+                 },
                  slides[pointer].timeout * 1000);
     }
     incrementPointer();
-    loadPointedSlideIntoDOM();
+    loadPointedSlideIntoDOM(pointer);
   }
 
   /**
     * Called when the current showed slide has finished.
     **/
-  function onSlideTimeout() {
-    if (ready) {
-      makeTransition();
-    }
-    else {
-      notifyReadyOrGo = function() {makeTransition();};
+  function onSlideTimeout(slideReference) {
+    slideReference = (slideReference) % slides.length
+    console.log(slideReference)
+    if (slideTimeout[slideReference]) {
+      console.error('onSlideTimeout has already been called for this slide');
+    } else {
+      slideTimeout[slideReference] = true;
+      notifyManager(slideReference);
     }
   }
 
@@ -160,20 +167,25 @@
     * Called when the next slide has finished preloading. Wrapper function,
     * for comprehension.
     **/
-  function onNextSlideReady() {
-    notifyReadyOrGo();
+  function onNextSlideReady(slideReference) {
+    console.log('ready', slideReference)
+    if (nextSlideReady[slideReference]) {
+      console.error('onNextSlideReady has already been called for this slide');
+    } else {
+      nextSlideReady[slideReference] = true;
+      notifyManager(slideReference);
+    }
   }
 
   /**
-    * Called when a slide is ready or when a slide has finished.
-    * This method will be monkeypatched depending on the context : 
-    * If both event have fired, will trigger the next slide, 
-    * Else, will trigger a 'next slide is ready' ready boolean.
+    * TODO
     **/
-  function notifyReadyOrGo() {
-    // This function will be overwritten by makeTransition and onSlideTimeout
-    // This code is used as is ONLY for first iteration
-    makeTransition();
+  function notifyManager(slideReference) {
+    if (nextSlideReady[slideReference] && slideTimeout[slideReference]) {
+      nextSlideReady[slideReference] = false;
+      slideTimeout[slideReference] = false;
+      makeTransition();
+    }
   }
 
   /**
@@ -193,24 +205,28 @@
   // Loaders. they return a fully populated node, ready to be appended
   // To our page. Also responsible of calling onNextSlideReady when finished
   // Loading.
-  function loadIframe() {
+  function loadIframe(slideReference) {
     var iframe = document.createElement('iframe');
-    iframe.addEventListener('load', onNextSlideReady, false);
+    iframe.addEventListener('load',
+                            function(e) {
+                              onNextSlideReady(slideReference);
+                            },
+                            false);
     iframe.setAttribute('frameborder', '0');
-    iframe.setAttribute('src', slides[pointer].resource);
+    iframe.setAttribute('src', slides[slideReference].resource);
     iframe.setAttribute('class', 'next_content');
-    iframe.setAttribute('id', pointer);
+    iframe.setAttribute('id', slideReference);
     iframe.setAttribute('scrolling', 'no');
     return iframe;
   }
 
-  function loadImage() {
+  function loadImage(slideReference) {
     var image = new Image(),
         // One global image wrapper which respect whaTV style, put in #contentx.
         globalWrapper = document.createElement('div'),
         // One wrapper to do what you want inside, put in the global wrapper.
         localWrapper = document.createElement('div'),
-        mode = slides[pointer].mode;
+        mode = slides[slideReference].mode;
     image.setAttribute('class', 'image-slide ' + mode);
     localWrapper.appendChild(image);
     localWrapper.setAttribute('class', 'localImageContainer ' + mode);
@@ -232,18 +248,18 @@
           default:
             image.parentNode.style.width = image.width + 'px';
           }
-          onNextSlideReady();
+          onNextSlideReady(slideReference);
         },
         false
     );
-    image.setAttribute('src', slides[pointer].resource);
+    image.setAttribute('src', slides[slideReference].resource);
     return globalWrapper;
   }
 
-  function loadVideo() {
+  function loadVideo(slideReference) {
     var video = document.createElement('video'),
-        resources = slides[pointer].resources,
-        mode = slides[pointer].mode,
+        resources = slides[slideReference].resources,
+        mode = slides[slideReference].mode,
         index,
         resource,
         source,
@@ -283,7 +299,11 @@
       globalWrapper.appendChild(video);
     }
     // Firing event when browser think we can play.
-    video.addEventListener('canplaythrough', onNextSlideReady, false);
+    video.addEventListener('canplaythrough',
+                           function() {
+                             onNextSlideReady(slideReference);
+                           },
+                           false);
     for (index in resources) {
       resource = resources[index].resource;
       //TODO if codec === "flash"
@@ -300,17 +320,21 @@
     source.innerHTML = 'Unable to read video. Please wait while recovering...';
     video.appendChild(source);
     if (!canPlay) {
+      console.warn("Unable to read video. Recovering now...")
       // We can't play the video : we skip it.
-      onNextSlideReady();
-      onSlideTimeout();
+      onNextSlideReady(slideReference);
+      onSlideTimeout(slideReference);
     }
     return globalWrapper;
   }
 
-  function loadFlash(flashObjectUrl) {
+  function loadFlash(slideReference, flashObjectUrl) {
     var flash = document.createElement('embed');
     // TODO this does not work. We arbitrarily set a timeout.
-    setTimeout(onNextSlideReady, 1000);
+    setTimeout(function() {
+                 onNextSlideReady(slideReference);
+               },
+               1000);
     //flash.addEventListener('load', onNextSlideReady, false);
     flash.setAttribute('src', flashObjectUrl);
     flash.setAttribute('pluginspage', 'http://www.adobe.com/go/getflashplayer');
@@ -323,7 +347,7 @@
     * Responsible for doing everything when a slide is shown : start a video,
     * start ambilight, adding event listeners for end of videos, etc.
     **/
-  function onShow(div) {
+  function onShow(slideReference, div) {
     var videos = div.getElementsByClassName('video-slide'),
         video,
         ambimageWrapper,
@@ -332,8 +356,16 @@
         image;
     if (videos.length === 1) {
       video = videos[0];
-      video.addEventListener('stalled', onSlideTimeout, false);
-      video.addEventListener('ended', onSlideTimeout, false);
+      video.addEventListener('stalled',
+                             function() {
+                               onSlideTimeout(slideReference);
+                             },
+                             false);
+      video.addEventListener('ended',
+                             function() {
+                               onSlideTimeout(slideReference);
+                             },
+                             false);
       video.play();
       if (window.ambiLight) {
         ambilight = div.getElementsByClassName('ambilight-video');
@@ -354,7 +386,7 @@
             //  // ^^/\/ /  `~~`  \ \/\^ ^\\
             //  -----------------------------
             /// HERE BE DRAGONS
-            document.getElementById('content' + getPointerModuloTwo()).
+            document.getElementById('content' + getModuloTwo(slideReference)).
                 style.position = 'relative';
            }, 1);
         }
@@ -416,18 +448,18 @@
     }
   }
 
-  function getPointerModuloTwo() {
-    var whereToDraw = 2 - pointer % 2;
+  function getModuloTwo(slideReference) {
+    var whereToDraw = 2 - slideReference % 2;
     if (!even) {
-      whereToDraw = pointer % 2 + 1;
+      whereToDraw = slideReference % 2 + 1;
     }
     return whereToDraw;
   }
 
-  function getPointerModuloTwoPlusOne() {
+  function getModuloTwoPlusOne(slideReference) {
     // This looks complicated. And it is. So, instead of trying to understand
     // what it does, let the Safety Pig do its work & do not try to understand.
-    var whereToDraw = pointer % 2 + 1;
+    var whereToDraw = slideReference % 2 + 1;
     // Safety Pig has landed!
     if (!even) {
       //                               _
@@ -444,7 +476,7 @@
       //         | |  |  ``/  /`  /
       //        /,_|  |   /,_/   /
       //           /,_/      '`-'
-      whereToDraw = 2 - pointer % 2;
+      whereToDraw = 2 - slideReference % 2;
     }
     return whereToDraw;
   }
@@ -527,14 +559,12 @@
     }
   }
 
-// Expose whaTV to the global context for debugging purposes
-window.w = this;
 window.p = window.pause = function() {
   ready = false;
-  notifyReadyOrGo = function() {return null;};
+  notifyManager = function() {return null;};
 };
 window.pv = function() {
   p();
   document.getElementsByTagName('video')[0].pause();
 };
-})();
+//})();
