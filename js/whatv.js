@@ -73,7 +73,6 @@
       );
     }
     // TODO : loading screen
-    document.getElementById('content1').style.display = 'none';
     loadPointedSlideIntoDOM(pointer); // Should be 0
     onSlideTimeout(pointer);
   }
@@ -86,14 +85,14 @@
   function loadPointedSlideIntoDOM(slideReference) {
     console.log('loadPointedSlideIntoDOM called. preparing slide number ' +
                 slideReference);
-    ready = false;
     var currentSlide = slides[slideReference],
         content,
-        hiddenContentDiv = document.getElementById('content' +
-            getModuloTwoPlusOne(slideReference));
-    // Clears the currently hidden div
-    console.debug('Clearing content' + getModuloTwoPlusOne(slideReference));
-    clearNode(hiddenContentDiv);
+        containerDiv = document.createElement('div');
+    // Prepares the newly created div
+    addClassName(containerDiv, 'content');
+    containerDiv.setAttribute('id', 'content' + slideReference);
+    containerDiv.style.display = 'none';
+    document.getElementById('metacontent').appendChild(containerDiv)
     // Calls loaders method depending on slide type. Assigns the resulting
     // node to "content"
     switch (currentSlide.type) {
@@ -115,26 +114,22 @@
         break;
     }
     // Assigns result to the currently hidden "content" div
-    console.debug('Load content' + getModuloTwoPlusOne(slideReference));
-    hiddenContentDiv.appendChild(content);
+    containerDiv.appendChild(content);
   }
 
   /**
     * Responsible of hiding the "old" slide, and showing the new one
     **/
   function makeTransition() {
-    var divToHide = document.getElementById('content' +
-                                            getModuloTwo(pointer)
-                                           ),
-        divToShow = document.getElementById('content' +
-                                            getModuloTwoPlusOne(pointer)
-                                           );
-    console.log('makeTransition called. Showing slide number ' + pointer +
-                ' from #content' + getModuloTwoPlusOne(pointer) + '.');
-    console.debug('Hidding content' + getModuloTwo(pointer));
-    divToHide.style.display = 'none';
-    onHide(divToHide);
-    console.debug('Showing content' + getModuloTwoPlusOne(pointer));
+    var divToHide = document.getElementById('content' + ((slides.length + 
+                    (pointer - 1)) % slides.length)),
+        divToShow = document.getElementById('content' + pointer);
+    console.log('makeTransition called. Showing slide number ' + pointer + '.');
+    if (divToHide) {
+      divToHide.style.display = 'none';
+      onHide(divToHide);
+      divToHide.parentNode.removeChild(divToHide);
+    }
     divToShow.style.display = 'block';
     onShow(pointer, divToShow);
     // Calls timeout when end of slide
@@ -154,7 +149,6 @@
     **/
   function onSlideTimeout(slideReference) {
     slideReference = (slideReference) % slides.length
-    console.log(slideReference)
     if (slideTimeout[slideReference]) {
       console.error('onSlideTimeout has already been called for this slide');
     } else {
@@ -168,7 +162,6 @@
     * for comprehension.
     **/
   function onNextSlideReady(slideReference) {
-    console.log('ready', slideReference)
     if (nextSlideReady[slideReference]) {
       console.error('onNextSlideReady has already been called for this slide');
     } else {
@@ -448,39 +441,6 @@
     }
   }
 
-  function getModuloTwo(slideReference) {
-    var whereToDraw = 2 - slideReference % 2;
-    if (!even) {
-      whereToDraw = slideReference % 2 + 1;
-    }
-    return whereToDraw;
-  }
-
-  function getModuloTwoPlusOne(slideReference) {
-    // This looks complicated. And it is. So, instead of trying to understand
-    // what it does, let the Safety Pig do its work & do not try to understand.
-    var whereToDraw = slideReference % 2 + 1;
-    // Safety Pig has landed!
-    if (!even) {
-      //                               _
-      //  _._ _..._ .-',     _.._(`))
-      // '-. `     '  /-._.-'    ',/
-      //    )         \            '.
-      //   / _    _    |             \
-      //  |  a    a    /              |
-      //  \   .-.                     ;
-      //   '-('' ).-'       ,'       ;
-      //      '-;           |      .'
-      //         \           \    /
-      //         | 7  .__  _.-\   \
-      //         | |  |  ``/  /`  /
-      //        /,_|  |   /,_/   /
-      //           /,_/      '`-'
-      whereToDraw = 2 - slideReference % 2;
-    }
-    return whereToDraw;
-  }
-
   function hasClassName(node, className) {
     var index,
         classes = node.className.split(' ');
@@ -523,7 +483,8 @@
     var desiredWidth = window.innerWidth * 80 / 100,
         nodeRatio = node.videoWidth ? node.videoWidth / node.videoHeight :
                                       node.width / node.height,
-        desiredHeight = desiredWidth / nodeRatio;
+        desiredHeight = desiredWidth / nodeRatio,
+        margin;
     // desiredHeight may be bigger than the window height minus margin (beurk)
     if (desiredHeight > (window.innerHeight - 40)) {
       desiredHeight = window.innerHeight - 40;
@@ -538,14 +499,12 @@
   }
 
   function crop(node) {
-    if (node.target) {
-      node = node.target;
-    }
     var windowRatio = window.innerWidth / window.innerHeight,
         nodeHeight = node.videoHeight ? node.videoHeight : node.height,
         nodeWidth = node.videoWidth ? node.videoWidth : node.width,
         nodeRatio = nodeWidth / nodeHeight,
-        finalHeight, finalWidth;
+        finalHeight, finalWidth,
+        margin;
     if (windowRatio < nodeRatio) {
       finalWidth = window.innerHeight * nodeRatio;
       margin = - Math.abs(finalWidth - window.innerWidth) / 2;
@@ -560,7 +519,6 @@
   }
 
 window.p = window.pause = function() {
-  ready = false;
   notifyManager = function() {return null;};
 };
 window.pv = function() {
