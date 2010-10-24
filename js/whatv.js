@@ -316,7 +316,7 @@
       console.warn("Unable to read video. Recovering now...")
       // We can't play the video : we skip it.
       onNextSlideReady(slideReference);
-      onSlideTimeout(slideReference);
+      //onSlideTimeout(slideReference);
     }
     return globalWrapper;
   }
@@ -407,6 +407,7 @@
 
 
   // Utilities
+  // Candidate to be removed
   function clearNode(node) {
     // Deleting DOM<->JS cycling references for IE to avoid mem leaks
     purge(node);
