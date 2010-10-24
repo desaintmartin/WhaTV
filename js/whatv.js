@@ -379,7 +379,7 @@
             //  // ^^/\/ /  `~~`  \ \/\^ ^\\
             //  -----------------------------
             /// HERE BE DRAGONS
-            document.getElementById('content' + getModuloTwo(slideReference)).
+            document.getElementById('content' + slideReference).
                 style.position = 'relative';
            }, 1);
         }
