@@ -49,10 +49,18 @@ Introducing a footer with a clock and a Quick Messages system.
 First stable release with proper "finished loading" event firing, no timeout for videos
 [Cedric de Saint Martin]
 
+0.1.1 (unreleased)
+---------------
+Adding a new, more robust system for managing slides, each slide is 
+monitored, if something goes wrong, we can know it instantaneously.
+Adding a new container system : each slide has its own container div (was:
+two global div, alterning)
+[Cedric de Saint Martin]
+
 
 Roadmap :
 =========
-09/29 0.1.1 : beautiful CSS for footer, fix chromium video bug + http://flowplayer.org/index.html
+09/29 0.1.1 : beautiful CSS for footer, fix chromium video bug + http://flowplayer.org/index.html, changing way we show slide : one div per slide
 09/02 0.1.2 : animated header
 10/05 0.2.0 : Widgets support
 10/08 0.2.1 : Proof of concept : meteo widget
