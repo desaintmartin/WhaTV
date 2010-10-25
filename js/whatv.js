@@ -86,13 +86,7 @@
     console.log('loadPointedSlideIntoDOM called. preparing slide number ' +
                 slideReference);
     var currentSlide = slides[slideReference],
-        content,
-        containerDiv = document.createElement('div');
-    // Prepares the newly created div
-    addClassName(containerDiv, 'content');
-    containerDiv.setAttribute('id', 'content' + slideReference);
-    containerDiv.style.display = 'none';
-    document.getElementById('metacontent').appendChild(containerDiv)
+        content;
     // Calls loaders method depending on slide type. Assigns the resulting
     // node to "content"
     switch (currentSlide.type) {
@@ -114,7 +108,10 @@
         break;
     }
     // Assigns result to the currently hidden "content" div
-    containerDiv.appendChild(content);
+    addClassName(content, 'content');
+    content.setAttribute('id', 'content' + slideReference);
+    content.style.display = 'none';
+    document.getElementById('metacontent').appendChild(content);
   }
 
   /**
@@ -466,7 +463,8 @@
   function fullscreen(image, size) {
     var windowRatio = window.innerWidth / window.innerHeight,
         imgRatio = image.width / image.height,
-        finalHeight;
+        finalHeight,
+        margin;
     if (size === null) {
       size = '100%';
     }
