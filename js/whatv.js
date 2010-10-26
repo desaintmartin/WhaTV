@@ -8,7 +8,7 @@
       debug: function debug(){},
       error: function error(){},
       warn: function warn(){}
-    }
+    };
   }
   var defaults = {
     // The div ID of quickMessages
@@ -106,6 +106,9 @@
         console.debug('Video file detected');
         content = loadVideo(slideReference);
         break;
+      default:
+        console.error("Unable to detect content type. Aborting.");
+        break;
     }
     // Assigns result to the currently hidden "content" div
     addClassName(content, 'content');
@@ -145,7 +148,7 @@
     * Called when the current showed slide has finished.
     **/
   function onSlideTimeout(slideReference) {
-    slideReference = (slideReference) % slides.length
+    slideReference = (slideReference) % slides.length;
     if (slideTimeout[slideReference]) {
       console.error('onSlideTimeout has already been called for this slide');
     } else {
@@ -155,8 +158,7 @@
   }
 
   /**
-    * Called when the next slide has finished preloading. Wrapper function,
-    * for comprehension.
+    * Called when the next slide has finished preloading.
     **/
   function onNextSlideReady(slideReference) {
     if (nextSlideReady[slideReference]) {
@@ -235,8 +237,10 @@
             break;
           case 'ambimage':
             fullscreenAmbilight(image);
+            break;
           default:
             image.parentNode.style.width = image.width + 'px';
+            break;
           }
           onNextSlideReady(slideReference);
         },
@@ -287,6 +291,7 @@
     default:
       addClassName(video, 'fullscreenModeVideo');
       globalWrapper.appendChild(video);
+      break;
     }
     // Firing event when browser think we can play.
     video.addEventListener('canplaythrough',
@@ -310,7 +315,7 @@
     source.innerHTML = 'Unable to read video. Please wait while recovering...';
     video.appendChild(source);
     if (!canPlay) {
-      console.warn("Unable to read video. Recovering now...")
+      console.warn("Unable to read video. Recovering now...");
       // We can't play the video : we skip it.
       onNextSlideReady(slideReference);
       //onSlideTimeout(slideReference);
@@ -348,12 +353,12 @@
       video = videos[0];
       video.addEventListener('stalled',
                              function() {
-                               onSlideTimeout(slideReference);
+                               onSlideTimeout(slideReference + 1);
                              },
                              false);
       video.addEventListener('ended',
                              function() {
-                               onSlideTimeout(slideReference);
+                               onSlideTimeout(slideReference + 1);
                              },
                              false);
       video.play();
@@ -497,8 +502,9 @@
     node.width = desiredWidth;
   }
 
-  function crop(node) {
-    var windowRatio = window.innerWidth / window.innerHeight,
+  function crop(nodeOrEvent) {
+    var node = nodeOrEvent.target ? nodeOrEvent.target : nodeOrEvent,
+        windowRatio = window.innerWidth / window.innerHeight,
         nodeHeight = node.videoHeight ? node.videoHeight : node.height,
         nodeWidth = node.videoWidth ? node.videoWidth : node.width,
         nodeRatio = nodeWidth / nodeHeight,
