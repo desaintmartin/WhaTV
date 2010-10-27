@@ -6,13 +6,13 @@
 var quickMessages = (function() {
   var defaults = {
     // Default time, in milliseconds, to show a message
-    timeout: 500,
+    timeout: 5000,
     // Default time before starting the loop again
-    timeBeforeStartingAgain: 150,//00,
+    timeBeforeStartingAgain: 1500,
     // Default speed of animation between two messages
     transitionSpeed: 'slow',
     // Default time before showing first message
-    timeBeforeFirstMessage: 1500//0
+    timeBeforeFirstMessage: 1500
     // If you want to customize other values, please add them here before
     // And commit them. Thanks.
   },
