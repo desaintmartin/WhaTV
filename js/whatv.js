@@ -83,10 +83,10 @@
     * Assigns the results to one of the "content" divs, after having cleared it.
     **/
   function loadPointedSlideIntoDOM(slideReference) {
-    console.log('loadPointedSlideIntoDOM called. preparing slide number ' +
-                slideReference);
     var currentSlide = slides[slideReference],
         content;
+    console.log('loadPointedSlideIntoDOM called. preparing slide number ' +
+                slideReference);
     // Calls loaders method depending on slide type. Assigns the resulting
     // node to "content"
     switch (currentSlide.type) {
@@ -111,7 +111,6 @@
         break;
     }
     // Assigns result to the currently hidden "content" div
-    addClassName(content, 'content');
     content.setAttribute('id', 'content' + slideReference);
     content.style.display = 'none';
     document.getElementById('metacontent').appendChild(content);
@@ -500,6 +499,7 @@
     node.parentNode.parentNode.style.paddingTop = margin + 'px';
     node.height = desiredHeight;
     node.width = desiredWidth;
+    node.parentNode.style.width = desiredWidth + 'px';
   }
 
   function crop(nodeOrEvent) {
