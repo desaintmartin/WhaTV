@@ -1,17 +1,17 @@
 {
   "slides": [
     {"type": "image",
-     "timeout": 8,
+     "timeout": 3,
      "resource": "./assets/last2.jpg",
      "mode": "fullscreen"
     }, 
     {"type": "image",
-     "timeout": 8,
+     "timeout": 3,
      "resource": "./assets/invis.jpg",
      "mode": "ambimage"
     },
     {"type": "image",
-     "timeout": 8,
+     "timeout": 3,
      "resource": "./assets/wallpaper.jpg",
      "mode": "crop"
     },
@@ -71,6 +71,7 @@
     {"title": "untitre", "content": "Comment ça va?"},
     {"title": "untitre", "content": "Un truc un peu moins long mais qui va quand meme dépasser de la page, très surement."},
     {"title": "untitre", "content": "Très bien et toi?"},
-    {"title": "untitre", "content": "Konnishiwa!!"}
+    {"title": "untitre", "content": "Konnishiwa!!"},
+    {"title": "untitre", "content": "Konndfgishiwa!Konndfgishiwa!Konndfgishiwa!Konndfgishiwa!Konndfgishiwa!Konndfgishiwa!!Konndfgishiwa!Konndfgishiwa!Konndfgishiwa!Konndfgishiwa!"}
   ]
 }
