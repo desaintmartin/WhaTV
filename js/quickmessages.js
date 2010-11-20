@@ -41,7 +41,7 @@ var quickMessages = (function() {
     * while there is messages : we move the content one 'div height' up
     */
   function init() {
-    var index, message, div;
+    var length, index, message, div;
     // No message at all, we hide and return
     if (!messages.length) {
       return;
@@ -58,9 +58,9 @@ var quickMessages = (function() {
     nodeWrapper.style.opacity = 1;
 
     // Adding a first, blank message
-    messages.unshift({title:"", content: ""});
+    messages.unshift({title: '', content: ''});
     // Adding each message in the div
-    for (index in messages) {
+    for (index = 0, length = messages.length; index < length; index += 1) {
       message = document.createElement('span');
       message.innerHTML = messages[index].content;
       div = document.createElement('div');
@@ -79,14 +79,14 @@ var quickMessages = (function() {
     // Move right the div with an animation
     // and launch message loop as callback
     // Reset when we begin the loop
-    var index, span;
+    var messagesLength = messages.length, index, span;
     // TODO I still do not know what to do when showing messages div.
     // If I want to see at first a blank div, we need to set to "height"
     // Otherwise, if I want an empty message (in order to see background)
     // I will need "0px".
-    node.style.marginTop = '0px'//height + 'px';
+    node.style.marginTop = '0px';//height + 'px';
     currentMessage = 0;
-    for (index in messages) {
+    for (index = 0; index < messagesLength; index += 1) {
       span = node.children[index].children[0];
       span.style.marginLeft = '';
     }
@@ -184,6 +184,7 @@ var quickMessages = (function() {
       node = document.getElementById(divId);
       nodeWrapper = node.parentNode;
       messages = messageArray;
+      window.plop = messageArray;
       init();
     }
   };
