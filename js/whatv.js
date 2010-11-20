@@ -4,10 +4,10 @@
   // Awful hack in global scope if we do not have console object
   if (!window.console) {
     window.console = {
-      log: function log(){},
-      debug: function debug(){},
-      error: function error(){},
-      warn: function warn(){}
+      log: function log() {},
+      debug: function debug() {},
+      error: function error() {},
+      warn: function warn() {}
     };
   }
   var defaults = {
@@ -29,7 +29,6 @@
       nextSlideReady = [],
       // Array of Boolean to know if current slide has tiggered timeout
       slideTimeout = [],
-      
       // The current version of whaTV being used
       version = '0.1.0';
 
@@ -55,7 +54,7 @@
       });
     }
   }
-  
+
   /**
     * Ignition of The Great Loop. Starts The Everything.
     * @param {Element} data the data containing whaT to show.
@@ -107,7 +106,7 @@
         content = loadVideo(slideReference);
         break;
       default:
-        console.error("Unable to detect content type. Aborting.");
+        console.error('Unable to detect content type. Aborting.');
         break;
     }
     // Assigns result to the currently hidden "content" div
@@ -120,7 +119,7 @@
     * Responsible of hiding the "old" slide, and showing the new one
     **/
   function makeTransition() {
-    var divToHide = document.getElementById('content' + ((slides.length + 
+    var divToHide = document.getElementById('content' + ((slides.length +
                     (pointer - 1)) % slides.length)),
         divToShow = document.getElementById('content' + pointer);
     console.log('makeTransition called. Showing slide number ' + pointer + '.');
@@ -252,6 +251,7 @@
   function loadVideo(slideReference) {
     var video = document.createElement('video'),
         resources = slides[slideReference].resources,
+        resourcesLength,
         mode = slides[slideReference].mode,
         index,
         resource,
@@ -298,7 +298,8 @@
                              onNextSlideReady(slideReference);
                            },
                            false);
-    for (index in resources) {
+    resourcesLength = resources.length;
+    for (index = 0; index < resourcesLength; index += 1) {
       resource = resources[index].resource;
       //TODO if codec === "flash"
       //video.appendChild(loadFlash(someflash));
@@ -314,7 +315,7 @@
     source.innerHTML = 'Unable to read video. Please wait while recovering...';
     video.appendChild(source);
     if (!canPlay) {
-      console.warn("Unable to read video. Recovering now...");
+      console.warn('Unable to read video. Recovering now...');
       // We can't play the video : we skip it.
       onNextSlideReady(slideReference);
       //onSlideTimeout(slideReference);
@@ -410,8 +411,6 @@
   // Utilities
   // Candidate to be removed
   function clearNode(node) {
-    // Deleting DOM<->JS cycling references for IE to avoid mem leaks
-    purge(node);
     // Actually deleting children
     if (node.hasChildNodes()) {
       while (node.childNodes.length >= 1) {
@@ -420,35 +419,13 @@
     }
   }
 
-  /**
-    * Candidate to be removed : IE is not a target for 
-    **/
-  function purge(d) {
-    var a = d.attributes, i, l, n;
-    if (a) {
-      l = a.length;
-      for (i = 0; i < l; i += 1) {
-        n = a[i].name;
-        if (typeof d[n] === 'function') {
-          d[n] = null;
-        }
-      }
-    }
-    a = d.childNodes;
-    if (a) {
-      l = a.length;
-      for (i = 0; i < l; i += 1) {
-        purge(d.childNodes[i]);
-      }
-    }
-  }
-
   function hasClassName(node, className) {
     var index,
-        classes = node.className.split(' ');
+        classes = node.className.split(' '),
+        length = classes.length;
     className = className.toUpperCase();
     if (node.className) {
-      for (index in classes) {
+      for (index = 0; index < length; index += 1) {
         if (className == classes[index].toUpperCase()) return node;
       }
     }
