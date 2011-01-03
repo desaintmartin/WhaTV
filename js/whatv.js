@@ -131,8 +131,10 @@
       onHide(divToHide);
       divToHide.parentNode.removeChild(divToHide);
     }
-    divToShow.style.display = 'block';
-    onShow(pointer, divToShow);
+    if (divToShow && divToShow.style) {
+      divToShow.style.display = 'block';
+      onShow(pointer, divToShow);
+    }
     // Calls timeout when end of slide
     // If no timeout specified : do nothing. Only allow that for videos.
     if (slides[pointer].timeout) {
