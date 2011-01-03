@@ -90,19 +90,19 @@
     // node to "content"
     switch (currentSlide.type) {
       case 'html':
-        console.debug('HTML file detected');
+        console.info('HTML file detected');
         content = loadIframe(slideReference);
         break;
       case 'flash':
-        console.debug('Flash file detected');
+        console.info('Flash file detected');
         content = loadFlash(slideReference, slides[slideReference].resource);
         break;
       case 'image':
-        console.debug('Image file detected');
+        console.info('Image file detected');
         content = loadImage(slideReference);
         break;
       case 'video':
-        console.debug('Video file detected');
+        console.info('Video file detected');
         content = loadVideo(slideReference);
         break;
       default:
