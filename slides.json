@@ -4,27 +4,14 @@
      "timeout": 3,
      "resource": "./assets/last2.jpg",
      "mode": "fullscreen"
-    }, 
+    },
     {"type": "image",
      "timeout": 3,
      "resource": "./assets/invis.jpg",
      "mode": "ambimage"
     },
-    {"type": "image",
-     "timeout": 3,
-     "resource": "./assets/wallpaper.jpg",
-     "mode": "crop"
-    },
     {"type": "video",
      "mode": "crop",
-     "resources": [
-       {"codec": "video/mp4;",
-        "resource": "assets/eisti.mov"
-       }
-     ]
-    },
-    {"type": "video",
-     "mode": "fullscreen",
      "resources": [
        {"codec": "video/mp4;",
         "resource": "assets/chrome.mp4"
@@ -32,8 +19,15 @@
      ]
     },
     {"type": "video",
+     "mode": "fullscreen",
+     "resources": [
+       {"codec": "video/mp4;",
+        "resource": "assets/eisti.mov"
+       }
+     ]
+    },
+    {"type": "video",
      "mode": "ambilight",
-     "timeout": "10",
      "resources": [
        {"codec": "video/mp4;",
         "resource": "./assets/demo2.mp4"
@@ -42,6 +36,11 @@
         "resource": "./assets/demo2.ogv"
        }
      ]
+    },
+    {"type": "image",
+     "timeout": 3,
+     "resource": "./assets/wallpaper.jpg",
+     "mode": "crop"
     },
     {"type": "flash",
      "timeout": 10,
