@@ -300,6 +300,7 @@
       break;
     }
     // Firing event when browser think we can play.
+    // Weird : Firefox can wait several minutes before throwing this event.
     video.addEventListener('canplaythrough',
                            function() {
                              onNextSlideReady(slideReference);
