@@ -73,7 +73,7 @@
     }
     // TODO : loading screen
     loadPointedSlideIntoDOM(pointer); // Should be 0
-    onSlideTimeout(pointer);
+    onSlideTimeout(slides.length - 1);
   }
 
   /**
@@ -121,7 +121,10 @@
   function makeTransition() {
     var divToHide = document.getElementById('content' + ((slides.length +
                     (pointer - 1)) % slides.length)),
-        divToShow = document.getElementById('content' + pointer);
+        divToShow = document.getElementById('content' + pointer),
+        // This one is used to store the pointer for callbacks : in the future,
+        // pointer will change, but not localPointer
+        localPointer = pointer;
     console.log('makeTransition called. Showing slide number ' + pointer + '.');
     if (divToHide) {
       divToHide.style.display = 'none';
@@ -134,16 +137,16 @@
     // If no timeout specified : do nothing. Only allow that for videos.
     if (slides[pointer].timeout) {
       setTimeout(function() {
-                   onSlideTimeout(pointer);
+                   onSlideTimeout(localPointer);
                  },
-                 slides[pointer].timeout * 1000);
+                 slides[localPointer].timeout * 1000);
     }
     incrementPointer();
     loadPointedSlideIntoDOM(pointer);
   }
 
   /**
-    * Called when the current showed slide has finished.
+    * Called when the current shown slide has finished.
     **/
   function onSlideTimeout(slideReference) {
     slideReference = (slideReference) % slides.length;
@@ -151,12 +154,12 @@
       console.error('onSlideTimeout has already been called for this slide');
     } else {
       slideTimeout[slideReference] = true;
-      notifyManager(slideReference);
+      notifyManager((slideReference + 1) % slides.length);
     }
   }
 
   /**
-    * Called when the next slide has finished preloading.
+    * Called when a slide (probably the next) has finished preloading.
     **/
   function onNextSlideReady(slideReference) {
     if (nextSlideReady[slideReference]) {
@@ -168,12 +171,14 @@
   }
 
   /**
-    * TODO
+    * We switch to the next slide if the current one has reached timeout
+    * and the next one has finished loading
     **/
   function notifyManager(slideReference) {
-    if (nextSlideReady[slideReference] && slideTimeout[slideReference]) {
+    var endedSlide = (slideReference - 1 + slides.length) % slides.length;
+    if (nextSlideReady[slideReference] && slideTimeout[endedSlide]) {
       nextSlideReady[slideReference] = false;
-      slideTimeout[slideReference] = false;
+      slideTimeout[endedSlide] = false;
       makeTransition();
     }
   }
@@ -315,10 +320,10 @@
     source.innerHTML = 'Unable to read video. Please wait while recovering...';
     video.appendChild(source);
     if (!canPlay) {
-      console.warn('Unable to read video. Recovering now...');
+      console.warn('Unable to read video at slideReference=' + slideReference + '. Recovering now...');
       // We can't play the video : we skip it.
+      onSlideTimeout(slideReference);
       onNextSlideReady(slideReference);
-      //onSlideTimeout(slideReference);
     }
     return globalWrapper;
   }
