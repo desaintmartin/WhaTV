@@ -258,7 +258,6 @@
   function loadVideo(slideReference) {
     var video = document.createElement('video'),
         resources = slides[slideReference].resources,
-        resourcesLength,
         mode = slides[slideReference].mode,
         index,
         resource,
@@ -268,6 +267,7 @@
         // One wrapper to do what you want inside, put in the global wrapper.
         localWrapper,
         moduleIndex,
+        // We will try to determine if we can play the video or not.
         canPlay = false;
     video.preload = "auto";
     addClassName(video, 'video-slide');
@@ -299,15 +299,14 @@
         globalWrapper.appendChild(video);
         break;
     }
-    // Firing event when browser think we can play.
-    // Weird : Firefox can wait several minutes before throwing this event.
+    // Fires event when browser think we can play.
     video.addEventListener('canplaythrough',
                            function() {
                              onNextSlideReady(slideReference);
                            },
                            false);
-    resourcesLength = resources.length;
-    for (index = 0; index < resourcesLength; index += 1) {
+    // Creates all the <source> inside the <video>
+    for (index = 0; index < resources.length; index += 1) {
       resource = resources[index].resource;
       //TODO if codec === "flash"
       //video.appendChild(loadFlash(someflash));
