@@ -30,7 +30,7 @@
       // Array of Boolean to know if current slide has tiggered timeout
       slideTimeout = [],
       // The current version of whaTV being used
-      version = '0.1.0';
+      version = '0.2.0';
 
   // Getting slides
   if (window.JSON) {
@@ -269,35 +269,35 @@
         localWrapper,
         moduleIndex,
         canPlay = false;
-    video.preload = true;
+    video.preload = "auto";
     addClassName(video, 'video-slide');
     switch (mode) {
-    case 'ambilight':
-      addClassName(video, 'ambilight-video');
-      localWrapper = document.createElement('div');
-      localWrapper.appendChild(video);
-      addClassName(localWrapper, 'ambilight-video-wrap');
-      globalWrapper.appendChild(localWrapper);
-      globalWrapper.setAttribute('class', 'ambilightModeVideoGlobalContainer');
-      video.addEventListener(
-        'loadedmetadata',
-        function(e) {
-          fullscreenAmbilight(video);
-          video.parentNode.style.width = video.width + 'px';
-        },
-        false
-      );
-      break;
-    case 'crop':
-      video.addEventListener('loadedmetadata', crop, false);
-      addClassName(video, 'cropModeVideo');
-      globalWrapper.appendChild(video);
-      break;
-    case 'fullscreen':
-    default:
-      addClassName(video, 'fullscreenModeVideo');
-      globalWrapper.appendChild(video);
-      break;
+      case 'ambilight':
+        addClassName(video, 'ambilight-video');
+        localWrapper = document.createElement('div');
+        localWrapper.appendChild(video);
+        addClassName(localWrapper, 'ambilight-video-wrap');
+        globalWrapper.appendChild(localWrapper);
+        globalWrapper.setAttribute('class', 'ambilightModeVideoGlobalContainer');
+        video.addEventListener(
+          'loadedmetadata',
+          function(e) {
+            fullscreenAmbilight(video);
+            video.parentNode.style.width = video.width + 'px';
+          },
+          false
+        );
+        break;
+      case 'crop':
+        video.addEventListener('loadedmetadata', crop, false);
+        addClassName(video, 'cropModeVideo');
+        globalWrapper.appendChild(video);
+        break;
+      case 'fullscreen':
+      default:
+        addClassName(video, 'fullscreenModeVideo');
+        globalWrapper.appendChild(video);
+        break;
     }
     // Firing event when browser think we can play.
     // Weird : Firefox can wait several minutes before throwing this event.
