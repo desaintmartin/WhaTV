@@ -260,17 +260,31 @@
         resources = slides[slideReference].resources,
         mode = slides[slideReference].mode,
         index,
-        resource,
-        source,
         // One global image wrapper which respect whaTV style, put in #contentx.
         globalWrapper = document.createElement('div'),
         // One wrapper to do what you want inside, put in the global wrapper.
         localWrapper,
         moduleIndex,
-        // We will try to determine if we can play the video or not.
-        canPlay = false;
-    video.preload = "auto";
-    addClassName(video, 'video-slide');
+        source,
+        type;
+    for (index = 0; index < resources.length; index += 1) {
+      if (resources[index].codec === "flv") {
+        //video.appendChild(loadFlash(someflash));
+        //break;
+      }
+      if (video.canPlayType(resources[index].codec)) {
+        source = resources[index].resource;
+        type = resources[index].codec;
+        break;
+      }
+    }
+    if (!source) {
+      console.warn('Unable to read video at slide number ' + slideReference +
+                   '. Skipping and recovering now...');
+      onSlideTimeout(slideReference);
+      onNextSlideReady(slideReference);
+    }
+    // Here we can define modules
     switch (mode) {
       case 'ambilight':
         addClassName(video, 'ambilight-video');
@@ -305,28 +319,12 @@
                              onNextSlideReady(slideReference);
                            },
                            false);
-    // Creates all the <source> inside the <video>
-    for (index = 0; index < resources.length; index += 1) {
-      resource = resources[index].resource;
-      //TODO if codec === "flash"
-      //video.appendChild(loadFlash(someflash));
-      if (video.canPlayType(resources[index].codec)) {
-        canPlay = true;
-        source = document.createElement('source');
-        source.setAttribute('src', resources[index].resource);
-        source.setAttribute('type', resources[index].codec);
-        video.appendChild(source);
-      }
-    }
-    source = document.createElement('h1');
-    source.innerHTML = 'Unable to read video. Please wait while recovering...';
-    video.appendChild(source);
-    if (!canPlay) {
-      console.warn('Unable to read video at slideReference=' + slideReference + '. Recovering now...');
-      // We can't play the video : we skip it.
-      onSlideTimeout(slideReference);
-      onNextSlideReady(slideReference);
-    }
+    // Finishing : params and src
+    addClassName(video, 'video-slide');
+    video.preload = "auto";
+    video.setAttribute('src', source);
+    video.setAttribute('type', type);
+
     return globalWrapper;
   }
 
