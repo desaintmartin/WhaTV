@@ -57,10 +57,14 @@ Adding a new container system : each slide has its own container div (was:
 two global div, alterning)
 [Cedric de Saint Martin]
 
+0.2.1 (2011-01-05)
+---------------
+Fixing video bugs, cleaning code, works with Firefox
+[Cedric de Saint Martin]
+
 
 Roadmap :
 =========
-09/29 0.2.1 : beautiful CSS for footer, fix chromium video bug + http://flowplayer.org/index.html
 09/02 0.2.2 : animated header
 10/05 0.3.0 : Widgets support
 10/08 0.3.1 : Proof of concept : meteo widget
@@ -70,9 +74,10 @@ Roadmap :
 1.1.x : Optional authentication system
 2.0.x : Video overlay
 
+Ideas : 
 http://requirejs.org/
 Photo album module
-Could it be possible to have x #content, where x is the number of slides?
 CSS3 image animation support (examples : http://developer.apple.com/safaridemos/showcase/transitions/) 
 Module system, where we specify urls of extensions files.
 quick message system : titles
+flv videos
