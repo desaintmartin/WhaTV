@@ -266,8 +266,7 @@
         localWrapper,
         moduleIndex,
         source,
-        type,
-        canPlay = false;
+        type;
     // Looks for a video we can play
     for (index = 0; index < resources.length; index += 1) {
       if (video.canPlayType(resources[index].codec)) {
@@ -279,23 +278,11 @@
             onNextSlideReady(slideReference);
           },
         false);
-        canPlay = true;
         break;
       }
     }
-    /* Flash. Ingoring for now.
-    // Browser can't play this video. Maybe Flash Player can play it?
-    if (!source) {
-      for (index = 0; index < resources.length; index += 1) {
-        if (resources[index].codec === 'video/flv;') {
-          video = createFlashVideo(resources[index].resource, slideReference);
-          canPlay = true;
-          break;
-        }
-      }
-    }*/
     // Nothing can be played. We skip this slide.
-    if (!canPlay) {
+    if (!source) {
       console.warn('Unable to read video at slide number ' + slideReference +
                    '. Skipping and recovering now...');
       onSlideTimeout(slideReference);
@@ -333,29 +320,11 @@
     // Finishing : params and src
     addClassName(video, 'video-slide');
     video.preload = "auto";
-    if (source) {
-      video.setAttribute('src', source);
-    }
-    if (type) {
-      video.setAttribute('type', type);
-    }
+    video.setAttribute('src', source);
+    video.setAttribute('type', type);
     return globalWrapper;
   }
-  
-  // Flash. Ignoring for now.
-  /*function createFlashVideo(source, slideReference) {
-    var flash = document.createElement('object');
-    flash.setAttribute('pluginspage', 'http://www.adobe.com/go/getflashplayer');
-    flash.setAttribute('type', 'application/x-shockwave-flash');
-    flash.setAttribute('videosource', source);
-    flash.setAttribute('width', 400);
-    flash.setAttribute('height', 300);
-    flash.setAttribute('src', 'medias/player_flv_js.swf');
-    flash.innerHTML = '<param name="movie" value="medias/player_flv_js.swf" />' +
-      '<param name="FlashVars" ' +
-      'value="listener=flashListener&amp;interval=500&amp;bgcolor=000000&amp;buffer=9" />';
-    return flash;
-  }*/
+
 
   function loadFlash(slideReference, flashObjectUrl, video) {
     var flash = document.createElement('embed');
@@ -384,19 +353,7 @@
         ambilight,
         images,
         image;
-    // Flash. Ignoring for now.
-    /*if (objects.length === 1) {
-      window.flashListener = new Object();
-      video = objects[0];
-      window.flashListener.onInit = function() {
-                                      video.SetVariable("method:play", "");
-                                    };
-      window.flashListener.onFinished = function() {
-                                          onSlideTimeout(slideReference);
-                                        };
-      window.flashListener.onUpdate = function() {};
-      video.SetVariable("method:setUrl", '../' + video.getAttribute('videosource'));
-    } else*/ if (videos.length === 1) {
+    if (videos.length === 1) {
       video = videos[0];
       video.addEventListener('stalled',
                              function() {
