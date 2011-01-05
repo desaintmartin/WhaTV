@@ -266,19 +266,36 @@
         localWrapper,
         moduleIndex,
         source,
-        type;
+        type,
+        canPlay = false;
+    // Looks for a video we can play
     for (index = 0; index < resources.length; index += 1) {
-      if (resources[index].codec === "flv") {
-        //video.appendChild(loadFlash(someflash));
-        //break;
-      }
       if (video.canPlayType(resources[index].codec)) {
         source = resources[index].resource;
         type = resources[index].codec;
+        // Fires event when browser think we can play.
+        video.addEventListener('canplaythrough',
+          function() {
+            onNextSlideReady(slideReference);
+          },
+        false);
+        canPlay = true;
         break;
       }
     }
+    /* Flash. Ingoring for now.
+    // Browser can't play this video. Maybe Flash Player can play it?
     if (!source) {
+      for (index = 0; index < resources.length; index += 1) {
+        if (resources[index].codec === 'video/flv;') {
+          video = createFlashVideo(resources[index].resource, slideReference);
+          canPlay = true;
+          break;
+        }
+      }
+    }*/
+    // Nothing can be played. We skip this slide.
+    if (!canPlay) {
       console.warn('Unable to read video at slide number ' + slideReference +
                    '. Skipping and recovering now...');
       onSlideTimeout(slideReference);
@@ -313,22 +330,34 @@
         globalWrapper.appendChild(video);
         break;
     }
-    // Fires event when browser think we can play.
-    video.addEventListener('canplaythrough',
-                           function() {
-                             onNextSlideReady(slideReference);
-                           },
-                           false);
     // Finishing : params and src
     addClassName(video, 'video-slide');
     video.preload = "auto";
-    video.setAttribute('src', source);
-    video.setAttribute('type', type);
-
+    if (source) {
+      video.setAttribute('src', source);
+    }
+    if (type) {
+      video.setAttribute('type', type);
+    }
     return globalWrapper;
   }
+  
+  // Flash. Ignoring for now.
+  /*function createFlashVideo(source, slideReference) {
+    var flash = document.createElement('object');
+    flash.setAttribute('pluginspage', 'http://www.adobe.com/go/getflashplayer');
+    flash.setAttribute('type', 'application/x-shockwave-flash');
+    flash.setAttribute('videosource', source);
+    flash.setAttribute('width', 400);
+    flash.setAttribute('height', 300);
+    flash.setAttribute('src', 'medias/player_flv_js.swf');
+    flash.innerHTML = '<param name="movie" value="medias/player_flv_js.swf" />' +
+      '<param name="FlashVars" ' +
+      'value="listener=flashListener&amp;interval=500&amp;bgcolor=000000&amp;buffer=9" />';
+    return flash;
+  }*/
 
-  function loadFlash(slideReference, flashObjectUrl) {
+  function loadFlash(slideReference, flashObjectUrl, video) {
     var flash = document.createElement('embed');
     // TODO this does not work. We arbitrarily set a timeout.
     setTimeout(function() {
@@ -349,12 +378,25 @@
     **/
   function onShow(slideReference, div) {
     var videos = div.getElementsByClassName('video-slide'),
+        objects = div.getElementsByTagName('object'),
         video,
         ambimageWrapper,
         ambilight,
         images,
         image;
-    if (videos.length === 1) {
+    // Flash. Ignoring for now.
+    /*if (objects.length === 1) {
+      window.flashListener = new Object();
+      video = objects[0];
+      window.flashListener.onInit = function() {
+                                      video.SetVariable("method:play", "");
+                                    };
+      window.flashListener.onFinished = function() {
+                                          onSlideTimeout(slideReference);
+                                        };
+      window.flashListener.onUpdate = function() {};
+      video.SetVariable("method:setUrl", '../' + video.getAttribute('videosource'));
+    } else*/ if (videos.length === 1) {
       video = videos[0];
       video.addEventListener('stalled',
                              function() {
