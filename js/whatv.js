@@ -33,27 +33,7 @@
       version = '0.2.0';
 
   // Getting slides
-  if (window.JSON) {
-    if (window.jQuery) {
-      $.get('slides.json', ignition);
-    } else if (window.dojo) {
-      dojo.xhrGet({
-        url: 'slides.json',
-        handleAs: 'text',
-        load: ignition
-      });
-    }
-  } else {
-    if (window.jQuery) {
-      $.getJSON('slides.json', ignition);
-    } else if (window.dojo) {
-      dojo.xhrGet({
-        url: 'slides.json',
-        handleAs: 'json',
-        load: ignition
-      });
-    }
-  }
+  parseJSON('slides.json', ignition);
 
   /**
     * Ignition of The Great Loop. Starts The Everything.
@@ -503,6 +483,32 @@
       node.style.width = '100%';
     }
   }
+  
+  function parseJSON(url, callback) {
+    if (window.JSON) {
+      if (window.jQuery) {
+        $.get(url, ignition);
+      } else if (window.dojo) {
+        dojo.xhrGet({
+          url: url,
+          handleAs: 'text',
+          load: callback
+        });
+      }
+    } else {
+      if (window.jQuery) {
+        $.getJSON(url, ignition);
+      } else if (window.dojo) {
+        dojo.xhrGet({
+          url: url,
+          handleAs: 'json',
+          load: callback
+        });
+      }
+    }
+  }
+  
+  //return {parseJSON: parseJSON}
 
 window.p = window.pause = function() {
   notifyManager = function() {return null;};
