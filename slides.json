@@ -30,14 +30,6 @@
      ]
     },
     {"type": "video",
-     "mode": "fullscreen",
-     "resources": [
-       {"codec": "video/mp4;",
-        "resource": "assets/eisti.mov"
-       }
-     ]
-    },
-    {"type": "video",
      "mode": "ambilight",
      "timeout": 10,
      "resources": [
@@ -73,6 +65,14 @@
     {"type": "html",
      "timeout": 10,
      "resource": "http://dev.watercooled.org"
+    },
+    {"type": "video",
+     "mode": "fullscreen",
+     "resources": [
+       {"codec": "video/mp4;",
+        "resource": "assets/eisti.mov"
+       }
+     ]
     }
   ],
   "messages": [
