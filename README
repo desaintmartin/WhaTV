@@ -62,22 +62,27 @@ two global div, alterning)
 Fixing video bugs, cleaning code, works with Firefox
 [Cedric de Saint Martin]
 
+0.2.2 (2011-01-17)
+---------------
+Adding fullscreen support
+[Cedric de Saint Martin]
+
 
 Roadmap :
 =========
+0.2.x : fix video transition in some browsers + separate css from logic in QuickMessages + add Youtube support 
 10/05 0.3.0 : Widgets support
 10/08 0.3.1 : Proof of concept : meteo widget
 10/11 0.4.0 : Modular transition system with some examples
 0.5.0 : Powerpoint support
-1.0.x : Posting server, dynamic fetching of resources from server
+1.0.x : Posting server, dynamic fetching of resources from server, maybe use of http://www.w3.org/TR/FileAPI/
 1.1.x : Optional authentication system
 2.0.x : Video overlay
 
 Ideas :
 Header + animated header
-http://requirejs.org/
 Photo album module
 CSS3 image animation support (examples : http://developer.apple.com/safaridemos/showcase/transitions/) 
-Module system, where we specify urls of extensions files.
+Module system, where we specify urls of extensions files + http://requirejs.org/
 quick message system : titles
 flv videos

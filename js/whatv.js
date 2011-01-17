@@ -30,7 +30,7 @@
       // Array of Boolean to know if current slide has tiggered timeout
       slideTimeout = [],
       // The current version of whaTV being used
-      version = '0.2.0';
+      version = '0.2.2';
 
   // Getting slides
   parseJSON('slides.json', ignition);
