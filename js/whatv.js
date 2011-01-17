@@ -31,7 +31,7 @@ var WhaTV = (function() {
       // Array of Boolean to know if current slide has tiggered timeout
       slideTimeout = [],
       // The current version of whaTV being used
-      version = '0.2.2';
+      version = '0.2.4';
 
   // Getting slides
   parseJSON('slides.json', ignition);
