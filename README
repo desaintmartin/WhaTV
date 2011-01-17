@@ -65,7 +65,6 @@ Fixing video bugs, cleaning code, works with Firefox
 
 Roadmap :
 =========
-09/02 0.2.2 : animated header
 10/05 0.3.0 : Widgets support
 10/08 0.3.1 : Proof of concept : meteo widget
 10/11 0.4.0 : Modular transition system with some examples
@@ -74,7 +73,8 @@ Roadmap :
 1.1.x : Optional authentication system
 2.0.x : Video overlay
 
-Ideas : 
+Ideas :
+Header + animated header
 http://requirejs.org/
 Photo album module
 CSS3 image animation support (examples : http://developer.apple.com/safaridemos/showcase/transitions/) 

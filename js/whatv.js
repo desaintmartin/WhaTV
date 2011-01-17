@@ -510,6 +510,7 @@
   
   //return {parseJSON: parseJSON}
 
+// Debug
 window.p = window.pause = function() {
   notifyManager = function() {return null;};
 };
