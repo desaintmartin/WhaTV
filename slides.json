@@ -8,11 +8,6 @@
     {"type": "youtube",
      "resource": "y8Kyi0WNg40"
     },
-    {"type": "image",
-     "timeout": 3,
-     "resource": "./assets/invis.jpg",
-     "mode": "ambimage"
-    },
     {"type": "video",
      "mode": "fullscreen",
      "resources": [
@@ -21,23 +16,16 @@
        }
      ]
     },
+    {"type": "image",
+     "timeout": 3,
+     "resource": "./assets/invis.jpg",
+     "mode": "ambimage"
+    },
     {"type": "video",
      "mode": "crop",
      "resources": [
        {"codec": "video/mp4;",
         "resource": "assets/chrome.mp4"
-       }
-     ]
-    },
-    {"type": "video",
-     "mode": "ambilight",
-     "timeout": 10,
-     "resources": [
-       {"codec": "video/mp4;",
-        "resource": "./assets/demo2.mp4"
-       },
-       {"codec": "video/ogg;",
-        "resource": "./assets/demo2.ogv"
        }
      ]
     },
@@ -67,6 +55,18 @@
      "resource": "http://dev.watercooled.org"
     },
     {"type": "video",
+     "mode": "ambilight",
+     "timeout": 10,
+     "resources": [
+       {"codec": "video/mp4;",
+        "resource": "./assets/demo2.mp4"
+       },
+       {"codec": "video/ogg;",
+        "resource": "./assets/demo2.ogv"
+       }
+     ]
+    },
+    {"type": "video",
      "mode": "fullscreen",
      "resources": [
        {"codec": "video/mp4;",
@@ -76,7 +76,7 @@
     }
   ],
   "messages": [
-    {"title": "plopinou", "content": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa bbaaa a aaa aa aaa aaa aaaa aaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+    {"title": "plopinou", "content": "Bonjour et bienvenue sur la WhaTV. Attention : certaines vidéos mettront des années à charger en raison de ma faible bande passante."},
     {"title": "Bonjour", "content": "Bien le bonjour!"},
     {"title": "twitter", "content": "Voici un truc un peu long et pas forcément super lisible mais ça doit faire 140 caractères maximum parce quon adore Twitter et consorts."},
     {"title": "untitre", "content": "Comment ça va?"},
