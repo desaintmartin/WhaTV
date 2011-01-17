@@ -269,6 +269,9 @@
                    '. Skipping and recovering now...');
       onSlideTimeout(slideReference);
       onNextSlideReady(slideReference);
+      video = document.createElement('div');
+      addClassName(video, 'broken');
+      return document.createElement('div');
     }
     // Here we can define modules
     switch (mode) {
@@ -335,16 +338,20 @@
         ambilight,
         images,
         image;
+    // If our div is broken (example : bad video) we return immediatly
+    if (hasClassName(div, 'broken')) {
+      return;
+    }
     if (videos.length === 1) {
       video = videos[0];
       video.addEventListener('stalled',
                              function() {
-                               onSlideTimeout(slideReference + 1);
+                               onSlideTimeout(slideReference);
                              },
                              false);
       video.addEventListener('ended',
                              function() {
-                               onSlideTimeout(slideReference + 1);
+                               onSlideTimeout(slideReference);
                              },
                              false);
       video.play();
