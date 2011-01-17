@@ -36,11 +36,13 @@
   parseJSON('slides.json', ignition);
 
   /**
-    * Ignition of The Great Loop. Starts The Everything.
+    * Ignition of The Great Loop. Starts The Everything, and put it in
+    * fullscreen if supported.
     * @param {Element} data the data containing whaT to show.
     */
   function ignition(data) {
     var informations = window.JSON ? JSON.parse(data) : data;
+    turnOnFullscreenIfSupported();
     slides = informations.slides;
     if (window.timer) {
       timer.create(defaults.dateDivId);
@@ -505,6 +507,28 @@
           load: callback
         });
       }
+    }
+  }
+  
+  /*
+    * Test if fullscreen if supported. If so, turn it on.
+    * Please see : 
+    * https://bugs.webkit.org/show_bug.cgi?id=49481
+    * https://wiki.mozilla.org/index.php?title=Gecko:FullScreenAPI
+    */
+  function turnOnFullscreenIfSupported() {
+    var body = document.getElementsByTagName('body')[0],
+        fullscreenMethodList = ['webkitRequestFullScreen', 'requestFullScreen'],
+        fullscreenMethodListLength = fullscreenMethodList.length,
+        requestFullscreenMethod = null,
+        index;
+    for (index = 0; index < fullscreenMethodListLength; index = index + 1) {
+      if (body[fullscreenMethodList[index]]) {
+        requestFullscreenMethod = fullscreenMethodList[index];
+      }
+    }
+    if (requestFullscreenMethod) {
+      body[requestFullscreenMethod]();
     }
   }
   
