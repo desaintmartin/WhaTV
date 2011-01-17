@@ -1,6 +1,6 @@
 'use strict';
 
-//(function() {
+var WhaTV = (function() {
   // Awful hack in global scope if we do not have console object
   if (!window.console) {
     window.console = {
@@ -61,44 +61,52 @@
   /**
     * Load into the DOM the pointed slide and its elements. calls
     * notifyReadyOrGo when Everything is loaded.
-    * Assigns the results to one of the "content" divs, after having cleared it.
     **/
   function loadPointedSlideIntoDOM(slideReference) {
-    var currentSlide = slides[slideReference],
-        content;
+    var currentSlide = slides[slideReference];
     console.log('loadPointedSlideIntoDOM called. preparing slide number ' +
                 slideReference);
     // Calls loaders method depending on slide type. Assigns the resulting
-    // node to "content"
+    // node to 'content'
     switch (currentSlide.type) {
       case 'html':
         console.info('HTML file detected');
-        content = loadIframe(slideReference);
+        loadIframe(slideReference);
         break;
       case 'flash':
         console.info('Flash file detected');
-        content = loadFlash(slideReference, slides[slideReference].resource);
+        loadFlash(slideReference, slides[slideReference].resource);
         break;
       case 'image':
         console.info('Image file detected');
-        content = loadImage(slideReference);
+        loadImage(slideReference);
         break;
       case 'video':
         console.info('Video file detected');
-        content = loadVideo(slideReference);
+        loadVideo(slideReference);
+        break;
+      case 'youtube':
+        console.info('Youtube video detected');
+        loadYoutube(slideReference);
         break;
       default:
-        console.error('Unable to detect content type. Aborting.');
+        console.error('FATAL : Unable to detect content type. Aborting.');
         break;
     }
-    // Assigns result to the currently hidden "content" div
+  }
+  
+  /**
+    * Function used to insert the content calculated by loadIage/loadVideo/etc
+    * Into the div called 'metacontent'
+    */
+  function insertIntoMetacontent(content, slideReference) {
     content.setAttribute('id', 'content' + slideReference);
     content.style.display = 'none';
     document.getElementById('metacontent').appendChild(content);
   }
 
   /**
-    * Responsible of hiding the "old" slide, and showing the new one
+    * Responsible of hiding the 'old' slide, and showing the new one
     **/
   function makeTransition() {
     var divToHide = document.getElementById('content' + ((slides.length +
@@ -196,7 +204,8 @@
     iframe.setAttribute('class', 'next_content');
     iframe.setAttribute('id', slideReference);
     iframe.setAttribute('scrolling', 'no');
-    return iframe;
+    
+    insertIntoMetacontent(iframe, slideReference);
   }
 
   function loadImage(slideReference) {
@@ -234,7 +243,8 @@
         false
     );
     image.setAttribute('src', slides[slideReference].resource);
-    return globalWrapper;
+    
+    insertIntoMetacontent(globalWrapper, slideReference);
   }
 
   function loadVideo(slideReference) {
@@ -304,12 +314,12 @@
     }
     // Finishing : params and src
     addClassName(video, 'video-slide');
-    video.preload = "auto";
+    video.preload = 'auto';
     video.setAttribute('src', source);
     video.setAttribute('type', type);
-    return globalWrapper;
+    
+    insertIntoMetacontent(globalWrapper, slideReference);
   }
-
 
   function loadFlash(slideReference, flashObjectUrl, video) {
     var flash = document.createElement('embed');
@@ -322,9 +332,57 @@
     flash.setAttribute('src', flashObjectUrl);
     flash.setAttribute('pluginspage', 'http://www.adobe.com/go/getflashplayer');
     flash.setAttribute('type', 'application/x-shockwave-flash');
-    return flash;
+    
+    insertIntoMetacontent(flash, slideReference);
   }
 
+  function loadYoutube(slideReference) {
+    var swfobject = window.swfobject,
+        content = document.createElement('div'),
+        flash = document.createElement('div'),
+        flashId = 'youtube-video' + slideReference,
+        videoId = slides[slideReference].resource,
+        callbackFunction;
+    // Tests for swfobject presence
+    if (!swfobject) {
+      console.error('FATAL : SWFObject not found.');
+      //TODO onSlideTimeout(slideReference)
+      return flash;
+    }
+    // Adds a sub-div (will be transformed by swfobject) into our content div
+    flash.setAttribute('id', flashId);
+    content.appendChild(flash);
+    // Does the job of insertIntoMetaContent, but without setting
+    // $('#contentX').style.display = 'none', because youtube does not like it.
+    // FIXME fix it
+    content.setAttribute('id', 'content' + slideReference);
+    document.getElementById('metacontent').appendChild(content);
+    // Defines the function used when our flash has loaded
+    callbackFunction = function(e) {
+      if (e.success) {
+        flash = document.getElementById(flashId);
+        onNextSlideReady(slideReference);
+      } else {
+        console.error('Failed to load youtube flash object.');
+        //TODO nextslide
+      }
+    }
+    //TODO setplaybackquality
+    // Loads the youtube flash object
+    swfobject.embedSWF(
+      'http://www.youtube.com/apiplayer?version=3&enablejsapi=1' +
+        '&playerapiid=mycontent' + slideReference,
+      flashId,
+      '100%',
+      '100%',
+      '9',
+      false,
+      false,
+      { allowScriptAccess: 'always' },
+      { videoid: videoId, class: 'youtube-slide' },
+      callbackFunction
+    );
+  }
 
   /**
     * Responsible for doing everything when a slide is shown : start a video,
@@ -332,12 +390,13 @@
     **/
   function onShow(slideReference, div) {
     var videos = div.getElementsByClassName('video-slide'),
-        objects = div.getElementsByTagName('object'),
         video,
         ambimageWrapper,
         ambilight,
-        images,
-        image;
+        images = div.getElementsByClassName('image-slide'),
+        image,
+        objects = div.getElementsByClassName('youtube-slide'),
+        object;
     // If our div is broken (example : bad video) we return immediatly
     if (hasClassName(div, 'broken')) {
       return;
@@ -370,7 +429,7 @@
             //      // ^ ^\(\__/)/^ ^^\\
             //     //^ ^^ ^/6  6\ ^^ ^ \\
             //    //^ ^^ ^/( .. )\^ ^ ^ \\
-            //   // ^^ ^/\| v""v |/\^ ^ ^\\
+            //   // ^^ ^/\| v''v |/\^ ^ ^\\
             //  // ^^/\/ /  `~~`  \ \/\^ ^\\
             //  -----------------------------
             /// HERE BE DRAGONS
@@ -379,24 +438,35 @@
            }, 1);
         }
       }
-    } else {
-      images = div.getElementsByClassName('image-slide');
-      if (images.length === 1) {
-        image = images[0];
-        if (window.ambimage && hasClassName(image, 'ambimage')) {
-          ambimage.drawAmbimage(image);
-        } else if (window.simpleAmbimage &&
-            hasClassName(image, 'fullscreen')) {
-          simpleAmbimage.create(image);
-        }
+    } else if (images.length === 1) {
+      image = images[0];
+      if (window.ambimage && hasClassName(image, 'ambimage')) {
+        ambimage.drawAmbimage(image);
+      } else if (window.simpleAmbimage &&
+          hasClassName(image, 'fullscreen')) {
+        simpleAmbimage.create(image);
       }
+      
+    } else if (objects.length === 1) {
+      object = objects[0];
+      object.addEventListener('onStateChange',
+                              "function(e) {if (e == 0) {" +
+                                "WhaTV.onSlideTimeout(" + slideReference + ");" +
+                              "}}", false);
+      object.loadVideoById(object.getAttribute('videoid'));
     }
   }
 
+  /**
+    * Called to stop and clean the finished slide
+    */
   function onHide(div) {
-    var videos = div.getElementsByTagName('video');
+    var videos = div.getElementsByTagName('video'),
+        youtube = div.getElementsByClassName('youtube-slide');
     if (videos.length) {
       videos[0].pause();
+    } else if (youtube.length) {
+      swfobject.removeSWF(youtube[0].getAttribute('id'));
     }
   }
 
@@ -463,7 +533,7 @@
       desiredHeight = window.innerHeight - 40;
       desiredWidth = desiredHeight * nodeRatio;
     }
-    // FIXME The "minus 10" is ugly, but it refers to the
+    // FIXME The 'minus 10' is ugly, but it refers to the
     // CSS div.imageContainer.ambimage padding-top / 2
     margin = Math.abs(desiredHeight - window.innerHeight) / 2 - 10;
     node.parentNode.parentNode.style.paddingTop = margin + 'px';
@@ -492,7 +562,7 @@
       node.style.width = '100%';
     }
   }
-  
+
   function parseJSON(url, callback) {
     if (window.JSON) {
       if (window.jQuery) {
@@ -516,10 +586,10 @@
       }
     }
   }
-  
+
   /*
     * Test if fullscreen if supported. If so, turn it on.
-    * Please see : 
+    * Please see :
     * https://bugs.webkit.org/show_bug.cgi?id=49481
     * https://wiki.mozilla.org/index.php?title=Gecko:FullScreenAPI
     */
@@ -538,15 +608,15 @@
       body[requestFullscreenMethod]();
     }
   }
-  
-  //return {parseJSON: parseJSON}
 
-// Debug
-window.p = window.pause = function() {
-  notifyManager = function() {return null;};
-};
-window.pv = function() {
-  p();
-  document.getElementsByTagName('video')[0].pause();
-};
-//})();
+  return {parseJSON: parseJSON, onSlideTimeout: onSlideTimeout};
+
+  // Debug
+  window.p = window.pause = function() {
+    notifyManager = function() {return null;};
+  };
+  window.pv = function() {
+    p();
+    document.getElementsByTagName('video')[0].pause();
+  };
+})();

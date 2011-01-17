@@ -5,10 +5,21 @@
      "resource": "./assets/last2.jpg",
      "mode": "fullscreen"
     },
+    {"type": "youtube",
+     "resource": "y8Kyi0WNg40"
+    },
     {"type": "image",
      "timeout": 3,
      "resource": "./assets/invis.jpg",
      "mode": "ambimage"
+    },
+    {"type": "video",
+     "mode": "fullscreen",
+     "resources": [
+       {"codec": "video/flv;",
+        "resource": "assets/kyo.flv"
+       }
+     ]
     },
     {"type": "video",
      "mode": "crop",
@@ -28,6 +39,7 @@
     },
     {"type": "video",
      "mode": "ambilight",
+     "timeout": 10,
      "resources": [
        {"codec": "video/mp4;",
         "resource": "./assets/demo2.mp4"
