@@ -5,6 +5,7 @@ var WhaTV = (function() {
   if (!window.console) {
     window.console = {
       log: function log() {},
+      info: function info() {},
       debug: function debug() {},
       error: function error() {},
       warn: function warn() {}
@@ -354,8 +355,11 @@ var WhaTV = (function() {
     content.appendChild(flash);
     // Does the job of insertIntoMetaContent, but without setting
     // $('#contentX').style.display = 'none', because youtube does not like it.
-    // FIXME fix it
+    // Also setting the height to 100% (for firefox)
+    // see http://lists.deconcept.com/pipermail/swfobject-deconcept.com/2006-May/000317.html
+    // FIXME fix both workarounds
     content.setAttribute('id', 'content' + slideReference);
+    content.style.height = '100%';
     document.getElementById('metacontent').appendChild(content);
     // Defines the function used when our flash has loaded
     callbackFunction = function(e) {
@@ -609,8 +613,6 @@ var WhaTV = (function() {
     }
   }
 
-  return {parseJSON: parseJSON, onSlideTimeout: onSlideTimeout};
-
   // Debug
   window.p = window.pause = function() {
     notifyManager = function() {return null;};
@@ -619,4 +621,6 @@ var WhaTV = (function() {
     p();
     document.getElementsByTagName('video')[0].pause();
   };
+  
+  return {parseJSON: parseJSON, onSlideTimeout: onSlideTimeout};
 })();
