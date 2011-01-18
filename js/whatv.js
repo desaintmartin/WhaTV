@@ -95,7 +95,7 @@ var WhaTV = (function() {
         break;
     }
   }
-  
+
   /**
     * Function used to insert the content calculated by loadIage/loadVideo/etc
     * Into the div called 'metacontent'
@@ -205,7 +205,7 @@ var WhaTV = (function() {
     iframe.setAttribute('class', 'next_content');
     iframe.setAttribute('id', slideReference);
     iframe.setAttribute('scrolling', 'no');
-    
+
     insertIntoMetacontent(iframe, slideReference);
   }
 
@@ -244,7 +244,7 @@ var WhaTV = (function() {
         false
     );
     image.setAttribute('src', slides[slideReference].resource);
-    
+
     insertIntoMetacontent(globalWrapper, slideReference);
   }
 
@@ -292,7 +292,8 @@ var WhaTV = (function() {
         localWrapper.appendChild(video);
         addClassName(localWrapper, 'ambilight-video-wrap');
         globalWrapper.appendChild(localWrapper);
-        globalWrapper.setAttribute('class', 'ambilightModeVideoGlobalContainer');
+        globalWrapper.setAttribute('class',
+                                   'ambilightModeVideoGlobalContainer');
         video.addEventListener(
           'loadedmetadata',
           function(e) {
@@ -318,7 +319,7 @@ var WhaTV = (function() {
     video.preload = 'auto';
     video.setAttribute('src', source);
     video.setAttribute('type', type);
-    
+
     insertIntoMetacontent(globalWrapper, slideReference);
   }
 
@@ -333,7 +334,7 @@ var WhaTV = (function() {
     flash.setAttribute('src', flashObjectUrl);
     flash.setAttribute('pluginspage', 'http://www.adobe.com/go/getflashplayer');
     flash.setAttribute('type', 'application/x-shockwave-flash');
-    
+
     insertIntoMetacontent(flash, slideReference);
   }
 
@@ -355,8 +356,8 @@ var WhaTV = (function() {
     content.appendChild(flash);
     // Does the job of insertIntoMetaContent, but without setting
     // $('#contentX').style.display = 'none', because youtube does not like it.
-    // Also setting the height to 100% (for firefox)
-    // see http://lists.deconcept.com/pipermail/swfobject-deconcept.com/2006-May/000317.html
+    // Also setting the height to 100% (for firefox) : please see
+    // http://lists.deconcept.com/pipermail/swfobject-deconcept.com/2006-May/000317.html
     // FIXME fix both workarounds
     content.setAttribute('id', 'content' + slideReference);
     content.style.height = '100%';
@@ -450,13 +451,13 @@ var WhaTV = (function() {
           hasClassName(image, 'fullscreen')) {
         simpleAmbimage.create(image);
       }
-      
+
     } else if (objects.length === 1) {
       object = objects[0];
       object.addEventListener('onStateChange',
-                              "function(e) {if (e == 0) {" +
-                                "WhaTV.onSlideTimeout(" + slideReference + ");" +
-                              "}}", false);
+                              'function(e) {if (e == 0) {' +
+                                'WhaTV.onSlideTimeout(' + slideReference + ');'+
+                              '}}', false);
       object.loadVideoById(object.getAttribute('videoid'));
     }
   }
@@ -621,6 +622,10 @@ var WhaTV = (function() {
     p();
     document.getElementsByTagName('video')[0].pause();
   };
-  
-  return {parseJSON: parseJSON, onSlideTimeout: onSlideTimeout};
+
+  return {
+    parseJSON: parseJSON,
+    onSlideTimeout: onSlideTimeout,
+    version: version
+  };
 })();
