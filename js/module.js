@@ -224,7 +224,7 @@ WhaTV.module.video = {
 
     return globalWrapper;
   },
-  show: function showVideo(slideReference, div) {
+  show: function showVideo(slideReference, div, onSlideTimeout) {
     var videos = div.getElementsByClassName('video-slide'),
         video,
         ambilight;
@@ -295,12 +295,33 @@ WhaTV.module.flash = {
 
   },
   hide: function hideFlash(slideReference, div) {
-    var youtube = div.getElementsByClassName('flash-slide');
-    if (youtube.length) {
-      swfobject.removeSWF(youtube[0].getAttribute('id'));
-    }
+    
   }
 };
+
+
+/*
+ * Youtube
+ */
+// Youtube API requires a onYouTubePlayerReady global function. Crap.
+// So we implement this function, which will call every function we attach to.
+function onYouTubePlayerReady(e) {
+  var fn;
+  for (fn in onYouTubePlayerReady.fns) {
+    if (onYouTubePlayerReady.fns.hasOwnProperty(fn)) {
+      onYouTubePlayerReady.fns[fn](e);
+    }
+  }
+}
+onYouTubePlayerReady.attach = function attach(name, fn) {
+  onYouTubePlayerReady.fns = onYouTubePlayerReady.fns || {};
+  onYouTubePlayerReady.fns[name] = fn;
+}
+onYouTubePlayerReady.detach = function detach(name) {
+  var index;
+  onYouTubePlayerReady.fns = onYouTubePlayerReady.fns || {};
+      delete onYouTubePlayerReady.fns[name]
+}
 
 WhaTV.module.youtube = {
   load: function loadYoutube(slideReference, slide, onNextSlideReady, skipLoadingSlide) {
@@ -309,6 +330,7 @@ WhaTV.module.youtube = {
         flash = document.createElement('div'),
         flashId = 'youtube-video' + slideReference,
         videoId = slide.resource,
+        playerid =  'youtubeplayer' + slideReference,
         callbackFunction;
     // Tests for swfobject presence
     if (!swfobject) {
@@ -327,22 +349,18 @@ WhaTV.module.youtube = {
     WhaTV.util.addClassName(content, 'swfobject');
     // END OF HARDCODED
     // Defines the function used when our flash has loaded
-    callbackFunction = function(e) {
-      if (e.success) {
+    callbackFunction = function(mplayerid) {
+      if (mplayerid === playerid) {
         flash = document.getElementById(flashId);
-        // HARDCODED
-        setTimeout(function(){onNextSlideReady(slideReference)}, 2000);
-        // END HARDCODED
-      } else {
-        console.error('Failed to load youtube flash object.');
-        //TODO nextslide
+        onNextSlideReady(slideReference);
       }
     }
+    onYouTubePlayerReady.attach(playerid, callbackFunction);
     //TODO setplaybackquality
     // Loads the youtube flash object
     swfobject.embedSWF(
       'http://www.youtube.com/apiplayer?version=3&enablejsapi=1' +
-        '&playerapiid=mycontent' + slideReference,
+        '&playerapiid=' + playerid,
       flashId,
       '100%',
       '100%',
@@ -350,8 +368,8 @@ WhaTV.module.youtube = {
       false,
       false,
       { allowScriptAccess: 'always', WMODE: 'Transparent' },
-      { videoid: videoId, class: 'youtube-slide' },
-      callbackFunction
+      { videoid: videoId, class: 'youtube-slide' }//,
+      //callbackFunction
     );
     return content;
   },
@@ -376,6 +394,7 @@ WhaTV.module.youtube = {
     if (youtube.length) {
       swfobject.removeSWF(youtube[0].getAttribute('id'));
     }
+    onYouTubePlayerReady.detach('youtubeplayer' + slideReference);
   }
 };
 
