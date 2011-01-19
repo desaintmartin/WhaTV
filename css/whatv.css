@@ -11,23 +11,24 @@ body {
 	height:100%;
 }
 
-
+/* Child of body, will contain all slides */
 #metacontent {
 	overflow: hidden;
 	width: 100%;
 	height: 100%;
 }
 
-#metacontent div.currentSlide {
+/* The current slide */
+#metacontent .currentSlide {
   display: block;
   height: 100%;
 }
 
-#metacontent div.nextSlide div.pastSlide {
+/* Other slides */
+#metacontent .nextSlide .pastSlide {
   display: none;
 }
-
-#metacontent div.nextSlideFlash {
+#metacontent .nextSlideFlash {
   height: 0px;
 }
 
