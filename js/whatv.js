@@ -35,9 +35,6 @@ var WhaTV = (function(window) {
       // The current version of whaTV being used
       version = '0.2.4';
 
-  // Getting slides
-  parseJSON('slides.json', ignition);
-
   /**
     * Ignition of The Great Loop. Starts The Everything, and put it in
     * fullscreen if supported.
@@ -107,7 +104,7 @@ var WhaTV = (function(window) {
     addClassName(content, 'nextSlide');
     document.getElementById('metacontent').appendChild(content);
   }
-  
+
   /**
     * Function used to insert the content calculated by loadIage/loadVideo/etc
     * Into the div called 'metacontent'. Does not hide the div,
@@ -158,7 +155,6 @@ var WhaTV = (function(window) {
     * Called when the current shown slide has finished.
     **/
   function onSlideTimeout(slideReference) {
-    console.log(slideReference, pointer)
     slideReference = (slideReference) % slides.length;
     if (slideTimeout[slideReference]) {
       console.error('onSlideTimeout has already been called for this slide');
@@ -196,6 +192,15 @@ var WhaTV = (function(window) {
       }
       makeTransition();
     }
+  }
+
+  /**
+    * Used when the loading slide can't be played. Deletes this slide and load
+    * the next one.
+    */
+  function skipLoadingSlide(slideReference) {
+    onSlideTimeout(slideReference);
+    onNextSlideReady(slideReference);
   }
 
   /**
@@ -300,11 +305,10 @@ var WhaTV = (function(window) {
     if (!source) {
       console.warn('Unable to read video at slide number ' + slideReference +
                    '. Skipping and recovering now...');
-      onSlideTimeout(slideReference);
-      onNextSlideReady(slideReference);
+      skipLoadingSlide(slideReference);
       video = document.createElement('div');
       addClassName(video, 'broken');
-      return document.createElement('div');
+      return video;
     }
     // Here we can define modules
     switch (mode) {
@@ -370,7 +374,8 @@ var WhaTV = (function(window) {
     // Tests for swfobject presence
     if (!swfobject) {
       console.error('FATAL : SWFObject not found.');
-      //TODO onSlideTimeout(slideReference)
+      skipLoadingSlide(slideReference);
+      addClassName(flash, 'broken');
       return flash;
     }
     // Adds a sub-div (will be transformed by swfobject) into our content div
@@ -471,7 +476,7 @@ var WhaTV = (function(window) {
       object = objects[0];
       object.addEventListener('onStateChange',
                               'function(e) {if (e == 0) {' +
-                                'WhaTV.onSlideTimeout(' + slideReference + ');'+
+                               'WhaTV.onSlideTimeout(' + slideReference + ');' +
                               '}}', false);
       object.loadVideoById(object.getAttribute('videoid'));
     }
@@ -522,9 +527,9 @@ var WhaTV = (function(window) {
     } else {
       node.className = className;
     }
-    node.className.replace(/ +/g,' ');
+    node.className.replace(/ +/g, ' ');
   }
-  
+
   function removeClassName(node, className) {
     var reg;
     if (!hasClassName(node, className)) return;
@@ -637,19 +642,22 @@ var WhaTV = (function(window) {
     }
   }
 
-  // Debug
-  window.p = window.pause = function() {
-    notifyManager = function() {return null;};
-  };
-  window.pv = function() {
-    p();
-    document.getElementsByTagName('video')[0].pause();
-  };
+  // Launch WhaTV : parses slides informations, launching ignition
+  parseJSON('slides.json', ignition);
 
   return {
     parseJSON: parseJSON,
     version: version,
     onSlideTimeout: onSlideTimeout,
-    next: function() {onSlideTimeout(pointer);}
+    next: function() {
+      onSlideTimeout(pointer - 1);
+    },
+    stop: function() {
+      notifyManager = function() {return null;};
+    },
+    pause: function() {
+      document.getElementsByTagName('video-slide')[0].pause();
+      clearTimeout(currentTimeout);
+    }
   };
 })(window);
