@@ -5,17 +5,6 @@
      "resource": "./assets/last2.jpg",
      "mode": "fullscreen"
     },
-    {"type": "youtube",
-     "resource": "y8Kyi0WNg40"
-    },
-    {"type": "video",
-     "mode": "fullscreen",
-     "resources": [
-       {"codec": "video/flv;",
-        "resource": "assets/kyo.flv"
-       }
-     ]
-    },
     {"type": "image",
      "timeout": 3,
      "resource": "./assets/invis.jpg",
@@ -28,6 +17,19 @@
         "resource": "assets/chrome.mp4"
        }
      ]
+    },
+    {"type": "video",
+     "mode": "fullscreen",
+     "resources": [
+       {"codec": "video/flv;",
+        "resource": "assets/kyo.flv"
+       }
+     ]
+    },
+    {"type": "youtube",
+     "resource": "y8Kyi0WNg40",
+     "from": "http://www.youtube.com/watch?v=y8Kyi0WNg40",
+     "desription": "Super Vidéo Trop Bien."
     },
     {"type": "image",
      "timeout": 3,
