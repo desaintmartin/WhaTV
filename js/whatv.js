@@ -32,6 +32,9 @@ var WhaTV = (function(window) {
       slideTimeout = [],
       // A pointer to the current setTimeout, so that we can clear it
       currentTimeout = null,
+      // A reference to a potential listener to call in order to send
+      // informations about each slide
+      informationListener = null,
       // The current version of whaTV being used
       version = '0.2.4';
 
@@ -117,7 +120,9 @@ var WhaTV = (function(window) {
   }
 
   /**
-    * Responsible of hiding the 'old' slide, and showing the new one
+    * Responsible of hiding the 'old' slide, showing the new one, setting a
+    * timeout and call an external callback to send informations about the
+    * new slide.
     **/
   function makeTransition() {
     var divToHide = document.getElementById('content' + ((slides.length +
@@ -127,19 +132,26 @@ var WhaTV = (function(window) {
         // pointer will change, but not localPointer
         localPointer = pointer;
     console.log('makeTransition called. Showing slide number ' + pointer + '.');
+    // Destroys the old slide
     if (divToHide) {
       removeClassName(divToHide, 'currentSlide');
       addClassName(divToHide, 'pastSlide');
       onHide(divToHide);
       divToHide.parentNode.removeChild(divToHide);
     }
-    if (divToShow && divToShow.style) {
+    // Shows the new slide
+    if (divToShow) {
       removeClassName(divToShow, 'nextSlide');
       removeClassName(divToShow, 'nextSlideFlash');
       addClassName(divToShow, 'currentSlide');
       onShow(pointer, divToShow);
     }
-    // Calls timeout when end of slide
+    // Calls a callback, if specified.
+    if (informationListener) {
+      informationListener(slides[localPointer]);
+    }
+    // Launch a timeout which will notify that the slide must stop when
+    // time is up.
     // If no timeout specified : do nothing. Only allow that for videos.
     if (slides[pointer].timeout) {
       currentTimeout = setTimeout(function() {
@@ -229,7 +241,6 @@ var WhaTV = (function(window) {
                             false);
     iframe.setAttribute('frameborder', '0');
     iframe.setAttribute('src', slides[slideReference].resource);
-    iframe.setAttribute('class', 'next_content');
     iframe.setAttribute('id', slideReference);
     iframe.setAttribute('scrolling', 'no');
 
@@ -658,6 +669,9 @@ var WhaTV = (function(window) {
     pause: function() {
       document.getElementsByTagName('video-slide')[0].pause();
       clearTimeout(currentTimeout);
+    },
+    registerInformationsListener: function(callback) {
+      informationListener = callback;
     }
   };
 })(window);
