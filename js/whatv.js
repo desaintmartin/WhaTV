@@ -121,6 +121,7 @@ WhaTV.core = (function(window) {
     console.log('makeTransition called. Showing slide number ' + pointer + '.');
     // If previous slide was broken, and current one is broken too (!)
     if (!divToShow) {
+      //TODO debug and clean this code, this has nothing to do here.
       divToHide.setAttribute('id', 'content' + pointer);
       incrementPointer();
       loadPointedSlideIntoDOM(pointer);
