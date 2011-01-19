@@ -355,29 +355,6 @@ WhaTV.module.youtube = {
     // Defines the parent div
     WhaTV.util.addClassName(content, 'flash');
     content.appendChild(flash);
-    /* Old code, maybe used someday
-    // Tests for swfobject presence
-    if (!swfobject) {
-      console.error('FATAL : SWFObject not found.');
-      skipLoadingSlide(slideReference);
-      WhaTV.util.addClassName(flash, 'broken');
-      return flash;
-    }
-    content.setAttribute('id', 'content' + slideReference);
-    WhaTV.util.addClassName(content, 'nextSlideFlash');
-    document.getElementById('metacontent').appendChild(content);
-    swfobject.embedSWF(
-      'http://www.youtube.com/apiplayer?version=3&enablejsapi=1' +
-        '&playerapiid=' + playerid,
-      flashId,
-      '100%',
-      '100%',
-      '9',
-      false,
-      false,
-      { allowScriptAccess: 'always', WMODE: 'Transparent' },
-      { videoid: videoId, class: 'youtube-slide' }
-    );*/
     return content;
   },
   show: function showYoutube(slideReference, div) {
