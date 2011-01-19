@@ -30,6 +30,8 @@ var WhaTV = (function(window) {
       nextSlideReady = [],
       // Array of Boolean to know if current slide has tiggered timeout
       slideTimeout = [],
+      // A pointer to the current setTimeout, so that we can clear it
+      currentTimeout = null,
       // The current version of whaTV being used
       version = '0.2.4';
 
@@ -143,7 +145,7 @@ var WhaTV = (function(window) {
     // Calls timeout when end of slide
     // If no timeout specified : do nothing. Only allow that for videos.
     if (slides[pointer].timeout) {
-      setTimeout(function() {
+      currentTimeout = setTimeout(function() {
                    onSlideTimeout(localPointer);
                  },
                  slides[localPointer].timeout * 1000);
@@ -156,6 +158,7 @@ var WhaTV = (function(window) {
     * Called when the current shown slide has finished.
     **/
   function onSlideTimeout(slideReference) {
+    console.log(slideReference, pointer)
     slideReference = (slideReference) % slides.length;
     if (slideTimeout[slideReference]) {
       console.error('onSlideTimeout has already been called for this slide');
@@ -186,6 +189,11 @@ var WhaTV = (function(window) {
     if (nextSlideReady[slideReference] && slideTimeout[endedSlide]) {
       nextSlideReady[slideReference] = false;
       slideTimeout[endedSlide] = false;
+      // Clears the timeout, if present.
+      if (currentTimeout) {
+        clearTimeout(currentTimeout);
+        currentTimeout = null;
+      }
       makeTransition();
     }
   }
@@ -640,7 +648,8 @@ var WhaTV = (function(window) {
 
   return {
     parseJSON: parseJSON,
+    version: version,
     onSlideTimeout: onSlideTimeout,
-    version: version
+    next: function() {onSlideTimeout(pointer);}
   };
 })(window);
