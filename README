@@ -77,6 +77,13 @@ Better handling of bad video slide
 Adding Youtube videos Support
 [Cedric de Saint Martin]
 
+0.2.5 (2011-01-19)
+---------------
+Adding public methods to our object, allowing to go to next slide,
+pause a video, and adding a callback which will be called to send
+information about each slide.
+[Cedric de Saint Martin]
+
 Roadmap :
 =========
 10/05 0.3.0 : Widgets support
