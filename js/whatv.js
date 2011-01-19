@@ -112,8 +112,8 @@ WhaTV.core = (function(window) {
     * new slide.
     **/
   function makeTransition() {
-    var divToHide = document.getElementById('content' + ((slides.length +
-                    (pointer - 1)) % slides.length)),
+    var finishedSlideIndex = (slides.length + (pointer - 1)) % slides.length,
+        divToHide = document.getElementById('content' + finishedSlideIndex),
         divToShow = document.getElementById('content' + pointer),
         // This one is used to store the pointer for callbacks : in the future,
         // pointer will change, but not localPointer
@@ -138,7 +138,7 @@ WhaTV.core = (function(window) {
     if (divToHide) {
       WhaTV.util.removeClassName(divToHide, 'currentSlide');
       WhaTV.util.addClassName(divToHide, 'pastSlide');
-      onHide(localPointer, divToHide);
+      onHide(finishedSlideIndex, divToHide);
       divToHide.parentNode.removeChild(divToHide);
     }
     // Shows the new slide
@@ -242,7 +242,7 @@ WhaTV.core = (function(window) {
       return;
     }
     // Calls 'show' method of module
-    WhaTV.module[moduleName].show(slideReference, div);
+    WhaTV.module[moduleName].show(slideReference, div, onSlideTimeout);
   }
   
   /**
