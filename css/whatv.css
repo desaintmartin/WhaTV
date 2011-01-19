@@ -18,6 +18,19 @@ body {
 	height: 100%;
 }
 
+#metacontent div.currentSlide {
+  display: block;
+  height: 100%;
+}
+
+#metacontent div.nextSlide div.pastSlide {
+  display: none;
+}
+
+#metacontent div.nextSlideFlash {
+  height: 0px;
+}
+
 /* Images */
 div.imageContainer {
 	background: #000;

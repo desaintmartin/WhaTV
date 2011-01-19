@@ -76,7 +76,7 @@ var WhaTV = (function(window) {
         break;
       case 'flash':
         console.info('Flash file detected');
-        loadFlash(slideReference, slides[slideReference].resource);
+        loadFlash(slideReference);
         break;
       case 'image':
         console.info('Image file detected');
@@ -102,7 +102,18 @@ var WhaTV = (function(window) {
     */
   function insertIntoMetacontent(content, slideReference) {
     content.setAttribute('id', 'content' + slideReference);
-    content.style.display = 'none';
+    addClassName(content, 'nextSlide');
+    document.getElementById('metacontent').appendChild(content);
+  }
+  
+  /**
+    * Function used to insert the content calculated by loadIage/loadVideo/etc
+    * Into the div called 'metacontent'. Does not hide the div,
+    * because youtube does not like it.
+    */
+  function insertIntoMetacontentWithoutHide(content, slideReference) {
+    content.setAttribute('id', 'content' + slideReference);
+    addClassName(content, 'nextSlideFlash');
     document.getElementById('metacontent').appendChild(content);
   }
 
@@ -118,12 +129,15 @@ var WhaTV = (function(window) {
         localPointer = pointer;
     console.log('makeTransition called. Showing slide number ' + pointer + '.');
     if (divToHide) {
-      divToHide.style.display = 'none';
+      removeClassName(divToHide, 'currentSlide');
+      addClassName(divToHide, 'pastSlide');
       onHide(divToHide);
       divToHide.parentNode.removeChild(divToHide);
     }
     if (divToShow && divToShow.style) {
-      divToShow.style.display = 'block';
+      removeClassName(divToShow, 'nextSlide');
+      removeClassName(divToShow, 'nextSlideFlash');
+      addClassName(divToShow, 'currentSlide');
       onShow(pointer, divToShow);
     }
     // Calls timeout when end of slide
@@ -323,7 +337,7 @@ var WhaTV = (function(window) {
     insertIntoMetacontent(globalWrapper, slideReference);
   }
 
-  function loadFlash(slideReference, flashObjectUrl, video) {
+  function loadFlash(slideReference) {
     var flash = document.createElement('embed');
     // TODO this does not work. We arbitrarily set a timeout.
     setTimeout(function() {
@@ -331,7 +345,7 @@ var WhaTV = (function(window) {
                },
                1000);
     //flash.addEventListener('load', onNextSlideReady, false);
-    flash.setAttribute('src', flashObjectUrl);
+    flash.setAttribute('src', slides[slideReference].resource);
     flash.setAttribute('pluginspage', 'http://www.adobe.com/go/getflashplayer');
     flash.setAttribute('type', 'application/x-shockwave-flash');
 
@@ -354,14 +368,7 @@ var WhaTV = (function(window) {
     // Adds a sub-div (will be transformed by swfobject) into our content div
     flash.setAttribute('id', flashId);
     content.appendChild(flash);
-    // Does the job of insertIntoMetaContent, but without setting
-    // $('#contentX').style.display = 'none', because youtube does not like it.
-    // Also setting the height to 100% (for firefox) : please see
-    // http://lists.deconcept.com/pipermail/swfobject-deconcept.com/2006-May/000317.html
-    // FIXME fix both workarounds
-    content.setAttribute('id', 'content' + slideReference);
-    content.style.height = '100%';
-    document.getElementById('metacontent').appendChild(content);
+    insertIntoMetacontentWithoutHide(content, slideReference);
     // Defines the function used when our flash has loaded
     callbackFunction = function(e) {
       if (e.success) {
@@ -384,7 +391,7 @@ var WhaTV = (function(window) {
       false,
       false,
       { allowScriptAccess: 'always', WMODE: 'Transparent' },
-      { videoid: videoId, class: 'youtube-slide' },
+      { videoid: videoId, class: 'youtube-slide flash-slide' },
       callbackFunction
     );
   }
@@ -467,7 +474,7 @@ var WhaTV = (function(window) {
     */
   function onHide(div) {
     var videos = div.getElementsByTagName('video'),
-        youtube = div.getElementsByClassName('youtube-slide');
+        youtube = div.getElementsByClassName('flash-slide');
     if (videos.length) {
       videos[0].pause();
     } else if (youtube.length) {
@@ -507,6 +514,14 @@ var WhaTV = (function(window) {
     } else {
       node.className = className;
     }
+    node.className.replace(/ +/g,' ');
+  }
+  
+  function removeClassName(node, className) {
+    var reg;
+    if (!hasClassName(node, className)) return;
+    reg = new RegExp('(\\s|^)' + className + '(\\s|$)');
+    node.className = node.className.replace(reg, '');
   }
 
   function fullscreen(image, size) {
