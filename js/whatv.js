@@ -49,11 +49,11 @@ WhaTV.core = (function(window) {
     var informations = window.JSON ? JSON.parse(data) : data;
     //WhaTV.util.turnOnFullscreenIfSupported();
     slides = informations.slides;
-    if (window.timer) {
-      timer.create(defaults.dateDivId);
+    if (WhaTV.timer) {
+      WhaTV.timer.create(defaults.dateDivId);
     }
-    if (window.quickMessages) {
-      quickMessages.create(
+    if (WhaTV.quickMessages) {
+      WhaTV.quickMessages.create(
           informations.messages,
           defaults.quickMessagesDivId
       );

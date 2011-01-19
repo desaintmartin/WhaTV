@@ -1,6 +1,9 @@
 'use strict';
+
+window.WhaTV = window.WhaTV || {};
+
 // A simple timer used to update the content of the clock
-var timer = (function() {
+WhaTV.timer = (function() {
   var node;
   function updateDate() {
     if (node) {

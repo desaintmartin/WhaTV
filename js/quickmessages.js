@@ -1,9 +1,11 @@
 'use strict';
 
+window.WhaTV = window.WhaTV || {};
+
 /**
   * Message management system, compatible with jQuery UI.
   **/
-var quickMessages = (function() {
+WhaTV.quickMessages = (function() {
   var defaults = {
     // Default time, in milliseconds, to show a message
     timeout: 5000,
