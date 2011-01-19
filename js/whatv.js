@@ -1,6 +1,6 @@
 'use strict';
 
-var WhaTV = (function() {
+var WhaTV = (function(window) {
   // Awful hack in global scope if we do not have console object
   if (!window.console) {
     window.console = {
@@ -383,7 +383,7 @@ var WhaTV = (function() {
       '9',
       false,
       false,
-      { allowScriptAccess: 'always' },
+      { allowScriptAccess: 'always', WMODE: 'Transparent' },
       { videoid: videoId, class: 'youtube-slide' },
       callbackFunction
     );
@@ -628,4 +628,4 @@ var WhaTV = (function() {
     onSlideTimeout: onSlideTimeout,
     version: version
   };
-})();
+})(window);
