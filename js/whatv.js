@@ -111,7 +111,7 @@ var WhaTV = (function(window) {
     * Into the div called 'metacontent'. Does not hide the div,
     * because youtube does not like it.
     */
-  function insertIntoMetacontentWithoutHide(content, slideReference) {
+  function insertIntoMetacontentForFlash(content, slideReference) {
     content.setAttribute('id', 'content' + slideReference);
     addClassName(content, 'nextSlideFlash');
     document.getElementById('metacontent').appendChild(content);
@@ -368,7 +368,7 @@ var WhaTV = (function(window) {
     // Adds a sub-div (will be transformed by swfobject) into our content div
     flash.setAttribute('id', flashId);
     content.appendChild(flash);
-    insertIntoMetacontentWithoutHide(content, slideReference);
+    insertIntoMetacontentForFlash(content, slideReference);
     // Defines the function used when our flash has loaded
     callbackFunction = function(e) {
       if (e.success) {
