@@ -10,6 +10,11 @@
      "resource": "./assets/invis.jpg",
      "mode": "ambimage"
     },
+    {"type": "youtube",
+     "resource": "y8Kyi0WNg40",
+     "from": "http://www.youtube.com/watch?v=y8Kyi0WNg40",
+     "desription": "Super Vidéo Trop Bien."
+    },
     {"type": "video",
      "mode": "crop",
      "resources": [
@@ -26,10 +31,9 @@
        }
      ]
     },
-    {"type": "youtube",
-     "resource": "y8Kyi0WNg40",
-     "from": "http://www.youtube.com/watch?v=y8Kyi0WNg40",
-     "desription": "Super Vidéo Trop Bien."
+    {"type": "flash",
+     "resource": "assets/lamasticot.swf",
+     "timeout": 3
     },
     {"type": "image",
      "timeout": 3,
@@ -37,23 +41,23 @@
      "mode": "crop"
     },
     {"type": "flash",
-     "timeout": 10,
+     "timeout": 5,
      "resource": "./assets/app.swf"
     },
     {"type": "flash",
-     "timeout": 10,
+     "timeout": 5,
      "resource": "./assets/flexballs.swf"
     },
     {"type": "html",
-     "timeout": 10,
+     "timeout": 5,
      "resource": "./assets/1.html"
     },
     {"type": "html",
-     "timeout": 10,
+     "timeout": 5,
      "resource": "http://google.fr/"
     },
     {"type": "html",
-     "timeout": 10,
+     "timeout": 5,
      "resource": "http://dev.watercooled.org"
     },
     {"type": "video",

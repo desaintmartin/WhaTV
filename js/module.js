@@ -89,7 +89,7 @@ WhaTV.module.html = {
   },
   hide: function hideIframe(slideReference, div) {
 
-  },
+  }
 };
 
 WhaTV.module.image = {
@@ -295,7 +295,7 @@ WhaTV.module.flash = {
 
   },
   hide: function hideFlash(slideReference, div) {
-    
+
   }
 };
 
@@ -316,22 +316,46 @@ function onYouTubePlayerReady(e) {
 onYouTubePlayerReady.attach = function attach(name, fn) {
   onYouTubePlayerReady.fns = onYouTubePlayerReady.fns || {};
   onYouTubePlayerReady.fns[name] = fn;
-}
+};
 onYouTubePlayerReady.detach = function detach(name) {
   var index;
   onYouTubePlayerReady.fns = onYouTubePlayerReady.fns || {};
-      delete onYouTubePlayerReady.fns[name]
-}
+      delete onYouTubePlayerReady.fns[name];
+};
 
 WhaTV.module.youtube = {
   load: function loadYoutube(slideReference, slide, onNextSlideReady, skipLoadingSlide) {
-    var swfobject = window.swfobject,
-        content = document.createElement('div'),
-        flash = document.createElement('div'),
+    // Defines the function used when our flash has loaded
+    function callbackFunction(mplayerid) {
+      if (mplayerid === playerid) {
+        flash = document.getElementById(flashId);
+        onNextSlideReady(slideReference);
+      }
+    }
+    var content = document.createElement('div'),
+        flash = document.createElement('object'),
         flashId = 'youtube-video' + slideReference,
         videoId = slide.resource,
-        playerid =  'youtubeplayer' + slideReference,
-        callbackFunction;
+        playerid = 'youtubeplayer' + slideReference,
+        youtubeUrl = 'http://www.youtube.com/apiplayer?version=3&' +
+        'enablejsapi=1&playerapiid=' + playerid;
+    // Attaching callback function in use when youtube is ready
+    onYouTubePlayerReady.attach(playerid, callbackFunction);
+    //TODO setplaybackquality
+    // Defines the youtube flash object
+    flash.setAttribute('id', flashId);
+    flash.setAttribute('data', youtubeUrl);
+    flash.setAttribute('pluginspage', 'http://www.adobe.com/go/getflashplayer');
+    flash.setAttribute('type', 'application/x-shockwave-flash');
+    flash.setAttribute('videoid', videoId);
+    WhaTV.util.addClassName(flash, 'youtube-slide');
+    flash.innerHTML =
+        '<param name="allowScriptAccess" value="always" />' +
+        '<param name="WMODE" value="Transparent" />';
+    // Defines the parent div
+    WhaTV.util.addClassName(content, 'flash');
+    content.appendChild(flash);
+    /* Old code, maybe used someday
     // Tests for swfobject presence
     if (!swfobject) {
       console.error('FATAL : SWFObject not found.');
@@ -339,25 +363,9 @@ WhaTV.module.youtube = {
       WhaTV.util.addClassName(flash, 'broken');
       return flash;
     }
-    // Adds a sub-div (will be transformed by swfobject) into our content div
-    flash.setAttribute('id', flashId);
-    content.appendChild(flash);
-    // HARDCODED, REPLACE INSERTINTOMETACONTENT
     content.setAttribute('id', 'content' + slideReference);
     WhaTV.util.addClassName(content, 'nextSlideFlash');
     document.getElementById('metacontent').appendChild(content);
-    WhaTV.util.addClassName(content, 'swfobject');
-    // END OF HARDCODED
-    // Defines the function used when our flash has loaded
-    callbackFunction = function(mplayerid) {
-      if (mplayerid === playerid) {
-        flash = document.getElementById(flashId);
-        onNextSlideReady(slideReference);
-      }
-    }
-    onYouTubePlayerReady.attach(playerid, callbackFunction);
-    //TODO setplaybackquality
-    // Loads the youtube flash object
     swfobject.embedSWF(
       'http://www.youtube.com/apiplayer?version=3&enablejsapi=1' +
         '&playerapiid=' + playerid,
@@ -368,9 +376,8 @@ WhaTV.module.youtube = {
       false,
       false,
       { allowScriptAccess: 'always', WMODE: 'Transparent' },
-      { videoid: videoId, class: 'youtube-slide' }//,
-      //callbackFunction
-    );
+      { videoid: videoId, class: 'youtube-slide' }
+    );*/
     return content;
   },
   show: function showYoutube(slideReference, div) {

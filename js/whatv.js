@@ -96,9 +96,9 @@ WhaTV.core = (function(window) {
   function insertIntoMetacontent(content, slideReference) {
     content.setAttribute('id', 'content' + slideReference);
     // Hardcoded
-    if (WhaTV.util.hasClassName(content, 'swfobject')) {
+    if (WhaTV.util.hasClassName(content, 'flash')) {
       WhaTV.util.addClassName(content, 'nextSlideFlash');
-      // document.getElementById('metacontent').appendChild(content);
+      document.getElementById('metacontent').appendChild(content);
     } else {
       WhaTV.util.addClassName(content, 'nextSlide');
       document.getElementById('metacontent').appendChild(content);
@@ -294,7 +294,9 @@ WhaTV.core = (function(window) {
     },
     registerInformationsListener: function(callback) {
       informationListener = callback;
-    }
+    },
+    //debug
+    onNextSlideReady: onNextSlideReady
   };
 })(window);
 
