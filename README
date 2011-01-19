@@ -84,12 +84,20 @@ pause a video, and adding a callback which will be called to send
 information about each slide.
 [Cedric de Saint Martin]
 
+0.5.0 (2011-01-19)
+---------------
+Major refactoring, separating 'core' code to 'modules' and utilities.
+Adding a simple API to add and customize 'modules' (fullscreen, ambilight, etc)
+Adding reference implementations of base modules, and examples of modules
+[Cedric de Saint Martin]
+
+
 Roadmap :
 =========
-10/05 0.3.0 : Widgets support
-10/08 0.3.1 : Proof of concept : meteo widget
-10/11 0.4.0 : Modular transition system with some examples
-0.5.0 : Powerpoint support
+0.5.x : Widgets support
+0.5.x : Proof of concept : meteo widget
+0.6.0 : Modular transition system with some examples
+0.7.0 : Powerpoint support
 1.0.x : Posting server, dynamic fetching of resources from server, maybe use of http://www.w3.org/TR/FileAPI/
 1.1.x : Optional authentication system
 2.0.x : Video overlay

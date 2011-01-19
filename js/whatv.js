@@ -38,7 +38,7 @@ WhaTV.core = (function(window) {
       // informations about each slide
       informationListener = null,
       // The current version of whaTV being used
-      version = '0.2.5';
+      version = '0.5.0';
 
   /**
     * Ignition of The Great Loop. Starts The Everything, and put it in
