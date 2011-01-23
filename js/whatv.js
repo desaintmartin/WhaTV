@@ -47,7 +47,7 @@ WhaTV.core = (function(window) {
     */
   function ignition(data) {
     var informations = window.JSON ? JSON.parse(data) : data;
-    //WhaTV.util.turnOnFullscreenIfSupported();
+    WhaTV.util.turnOnFullscreenIfSupported();
     slides = informations.slides;
     if (WhaTV.timer) {
       WhaTV.timer.create(defaults.dateDivId);
@@ -122,6 +122,7 @@ WhaTV.core = (function(window) {
     // If previous slide was broken, and current one is broken too (!)
     if (!divToShow) {
       //TODO debug and clean this code, this has nothing to do here.
+      // This code put a zombie hidden empty div in metacontent.
       divToHide.setAttribute('id', 'content' + pointer);
       incrementPointer();
       loadPointedSlideIntoDOM(pointer);
@@ -268,8 +269,7 @@ WhaTV.core = (function(window) {
     }
     if (!moduleName) {
       console.error('No suitable div found to show.');
-      return;
-      //TODO error
+      return null;
     }
     return moduleName;
   }
