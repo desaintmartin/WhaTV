@@ -68,7 +68,7 @@ WhaTV.common = {
   }
 };
 
-WhaTV.module = {};
+WhaTV.module = WhaTV.module || {};
 WhaTV.module.html = {
   load: function loadIframe(slideReference, slide, onNextSlideReady, skipLoadingSlide) {
     var iframe = document.createElement('iframe');
