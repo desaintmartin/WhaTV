@@ -44,14 +44,18 @@ WhaTV.util = {
   },
 
   parseJSON: function parseJSON(url, callback) {
+    var JSONCallback = function(data) {
+      data = JSON.parse(data);
+      callback();
+    }
     if (window.JSON) {
       if (window.jQuery) {
-        $.get(url, callback);
+        $.get(url, JSONCallback);
       } else if (window.dojo) {
         dojo.xhrGet({
           url: url,
           handleAs: 'text',
-          load: callback
+          load: JSONCallback
         });
       }
     } else {

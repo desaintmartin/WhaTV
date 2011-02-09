@@ -46,9 +46,8 @@ WhaTV.core = (function(window) {
     * @param {Element} data the data containing whaT to show.
     */
   function ignition(data) {
-    var informations = window.JSON ? JSON.parse(data) : data;
     WhaTV.util.turnOnFullscreenIfSupported();
-    slides = informations.slides;
+    slides = data.slides;
     if (WhaTV.timer) {
       WhaTV.timer.create(defaults.dateDivId);
     }
