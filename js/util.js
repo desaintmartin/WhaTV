@@ -45,8 +45,11 @@ WhaTV.util = {
 
   parseJSON: function parseJSON(url, callback) {
     var JSONCallback = function(data) {
-      data = JSON.parse(data);
-      callback();
+      if (typeof(data) === 'object') {
+        console.warn('JSONCallback should have received a string, not an obj.');
+        callback(data); 
+      }
+      callback(JSON.parse(data));
     }
     if (window.JSON) {
       if (window.jQuery) {

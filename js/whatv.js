@@ -53,7 +53,7 @@ WhaTV.core = (function(window) {
     }
     if (WhaTV.quickMessages) {
       WhaTV.quickMessages.create(
-          informations.messages,
+          data.messages,
           defaults.quickMessagesDivId
       );
     }
