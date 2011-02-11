@@ -1,9 +1,9 @@
 [submodule "common/ambimage"]
 	path = common/ambimage
-	url = git@github.com:WaterCooled/Ambimage.git
+	url = git://github.com/WaterCooled/Ambimage.git
 [submodule "common/simple-ambimage"]
 	path = common/simple-ambimage
-	url = git@github.com:WaterCooled/SimpleAmbimage.git
+	url = git://github.com/WaterCooled/SimpleAmbimage.git
 [submodule "common/ambilight"]
 	path = common/ambilight
-	url = git@github.com:WaterCooled/Ambilight.git
+	url = git://github.com/WaterCooled/Ambilight.git
