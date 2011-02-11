@@ -96,8 +96,10 @@ Roadmap :
 =========
 0.5.x : Widgets support
 0.5.x : Proof of concept : meteo widget
+0.5.5 : Working implementation of external API (next, pause, etc)
 0.6.0 : Modular transition system with some examples
 0.7.0 : Powerpoint support
+0.9.9 : documentation, API and examples
 1.0.x : Posting server, dynamic fetching of resources from server, maybe use of http://www.w3.org/TR/FileAPI/
 1.1.x : Optional authentication system
 2.0.x : Video overlay
