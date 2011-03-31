@@ -289,10 +289,14 @@ WhaTV.core = (function(window) {
       onSlideTimeout(pointer - 1);
     },
     stop: function() {
+      // Currently breaks the loop.
       notifyManager = function() {return null;};
     },
     pause: function() {
-      document.getElementsByTagName('video')[0].pause();
+      var video = document.getElementsByClassName("currentSlide")[0].
+                    getElementsByTagName('video')[0];
+      if (video)
+        video.pause();
       clearTimeout(currentTimeout);
     },
     registerInformationsListener: function(callback) {
