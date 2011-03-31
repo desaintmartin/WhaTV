@@ -1,19 +1,14 @@
 {
   "slides": [
     {"type": "image",
-     "timeout": 3,
+     "timeout": 10,
      "resource": "./assets/last2.jpg",
      "mode": "fullscreen"
     },
     {"type": "image",
-     "timeout": 3,
+     "timeout": 10,
      "resource": "./assets/invis.jpg",
      "mode": "ambimage"
-    },
-    {"type": "youtube",
-     "resource": "y8Kyi0WNg40",
-     "from": "http://www.youtube.com/watch?v=y8Kyi0WNg40",
-     "desription": "Super Vidéo Trop Bien."
     },
     {"type": "video",
      "mode": "crop",
@@ -33,31 +28,31 @@
     },
     {"type": "flash",
      "resource": "assets/lamasticot.swf",
-     "timeout": 3
+     "timeout": 5
     },
     {"type": "image",
-     "timeout": 3,
+     "timeout": 15,
      "resource": "./assets/wallpaper.jpg",
      "mode": "crop"
     },
     {"type": "flash",
-     "timeout": 5,
+     "timeout": 7,
      "resource": "./assets/app.swf"
     },
     {"type": "flash",
-     "timeout": 5,
+     "timeout": 7,
      "resource": "./assets/flexballs.swf"
     },
     {"type": "html",
-     "timeout": 5,
+     "timeout": 7,
      "resource": "./assets/1.html"
     },
     {"type": "html",
-     "timeout": 5,
+     "timeout": 7,
      "resource": "http://google.fr/"
     },
     {"type": "html",
-     "timeout": 5,
+     "timeout": 7,
      "resource": "http://dev.watercooled.org"
     },
     {"type": "video",
