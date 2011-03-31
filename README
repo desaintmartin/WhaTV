@@ -116,7 +116,6 @@ Roadmap :
 =========
 0.5.x : Widgets support
 0.5.x : Proof of concept : meteo widget
-0.5.5 : Working implementation of external API (next, pause, etc)
 0.5.x : First implementation of transitions
 0.6.0 : Modular transition system with some examples
 0.7.0 : Powerpoint support
