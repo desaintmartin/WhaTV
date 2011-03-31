@@ -281,28 +281,58 @@ WhaTV.core = (function(window) {
     WhaTV.util.parseJSON('slides.json', ignition);
   }
 
-  return {
-    init: init,
-    version: version,
-    onSlideTimeout: onSlideTimeout,
-    next: function() {
+  // Now are the public methods
+  var publicMethods = {
+    next: function next() {
       onSlideTimeout(pointer - 1);
     },
-    stop: function() {
+    
+    stop: function stop() {
       // Currently breaks the loop.
       notifyManager = function() {return null;};
     },
-    pause: function() {
-      var video = document.getElementsByClassName("currentSlide")[0].
-                    getElementsByTagName('video')[0];
-      if (video)
-        video.pause();
-      clearTimeout(currentTimeout);
+    
+    pause: function pause() {
+      if (!this.paused) {
+        var video = document.getElementsByClassName("currentSlide")[0].
+                        getElementsByTagName('video')[0];
+        if (video) {
+          video.pause();
+        }
+        clearTimeout(currentTimeout);
+        this.paused = true;
+      }
     },
-    registerInformationsListener: function(callback) {
+    
+    resume: function resume() {
+      if (this.paused) {
+        var video = document.getElementsByClassName("currentSlide")[0].
+                        getElementsByTagName('video')[0];
+        if (video) {
+          video.play();
+        } else {
+          this.next();
+        }
+        this.paused = false();
+      }
+    },
+    
+    registerInformationsListener:
+        function registerInformationsListener(callback) {
       informationListener = callback;
-    },
+    }
+  }
+  
+  return {
+    init: init,
+    version: version,
+    next: publicMethods.next,
+    stop: publicMethods.stop,
+    pause: publicMethods.pause,
+    resume: publicMethods.resume,
+    registerInformationsListener: publicMethods.registerInformationsListener,
     //debug
+    onSlideTimeout: onSlideTimeout,
     onNextSlideReady: onNextSlideReady
   };
 })(window);
