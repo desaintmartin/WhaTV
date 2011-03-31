@@ -288,6 +288,7 @@ WhaTV.module.flash = {
     flash.setAttribute('src', slide.resource);
     flash.setAttribute('pluginspage', 'http://www.adobe.com/go/getflashplayer');
     flash.setAttribute('type', 'application/x-shockwave-flash');
+    flash.setAttribute('wmode', 'transparent');
 
     return flash;
   },
@@ -306,6 +307,7 @@ WhaTV.module.flash = {
 // Youtube API requires a onYouTubePlayerReady global function. Crap.
 // So we implement this function, which will call every function we attach to.
 function onYouTubePlayerReady(e) {
+  console.warn(e)
   var fn;
   for (fn in onYouTubePlayerReady.fns) {
     if (onYouTubePlayerReady.fns.hasOwnProperty(fn)) {
@@ -337,7 +339,7 @@ WhaTV.module.youtube = {
         flashId = 'youtube-video' + slideReference,
         videoId = slide.resource,
         playerid = 'youtubeplayer' + slideReference,
-        youtubeUrl = 'http://www.youtube.com/apiplayer?version=3&' +
+        youtubeUrl = 'http://www.youtube.com/apiplayer?' +
         'enablejsapi=1&playerapiid=' + playerid;
     // Attaching callback function in use when youtube is ready
     onYouTubePlayerReady.attach(playerid, callbackFunction);
