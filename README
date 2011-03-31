@@ -112,6 +112,7 @@ Roadmap :
 0.5.x : Widgets support
 0.5.x : Proof of concept : meteo widget
 0.5.5 : Working implementation of external API (next, pause, etc)
+0.5.x : First implementation of transitions
 0.6.0 : Modular transition system with some examples
 0.7.0 : Powerpoint support
 0.9.9 : documentation, API and examples
@@ -127,3 +128,13 @@ CSS3 image animation support (examples : http://developer.apple.com/safaridemos/
 Module system, where we specify urls of extensions files + http://requirejs.org/
 quick message system : titles
 flv videos
+Fetch from time to time the new list of slides to show
+
+Known Bugs : 
+ - Youtube plugin does not work (due to Flash security restrictions) unless server is at localhost
+ - Quick messages and Date can disappear when showing Flash slide
+ - Quick Messages animations are uglily slow when showing resource-intensive video
+ - Date CSS is ugly and vary from browsers
+ - Chrome : timeout is not respected in videos
+ - Someone reported that loop is stopped somewhere (before video?) (Jérémy)
+ 
