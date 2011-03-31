@@ -17,7 +17,8 @@ WhaTV.core = (function(window) {
     // The div ID of quickMessages
     quickMessagesDivId: 'quick-messages',
     // The div ID of date
-    dateDivId: 'date'
+    dateDivId: 'date',
+    fullscreen: false
   },
       // Pointer to current slide
       pointer = 0,
@@ -46,7 +47,9 @@ WhaTV.core = (function(window) {
     * @param {Element} data the data containing whaT to show.
     */
   function ignition(data) {
-    WhaTV.util.turnOnFullscreenIfSupported();
+    if (defaults.fullscreen) {
+      WhaTV.util.turnOnFullscreenIfSupported();
+    }
     slides = data.slides;
     if (WhaTV.timer) {
       WhaTV.timer.create(defaults.dateDivId);
