@@ -142,3 +142,15 @@ Known Bugs :
  - Chrome : timeout is not respected in videos
  - Someone reported that loop is stopped somewhere (before video?) (Jérémy)
  - Under webkit : videos cause HUGE leaks
+
+
+
+Public API Documentation
+===============
+WhaTV provides an interface to interact with slides. Here is the documentation of the methods contained in this interface.
+
+ - WhaTV.core.version() : returns the current version of the WhaTV system.
+ - WhaTV.core.next() : skip the currently shown slide, and shows the next one.
+ - WhaTV.core.pause() : Pause the current slide, preventing the system from going to the next slide. Also pauses the playing video, if any.
+ - WhaTV.core.resume() : Either resume a paused video or go to the next slide if pause() was previously called.
+ - WhaTV.core.registerInformationsListener(f) : Adds the function "f" to a list of listeners. Each time the system goes to the next slide, it calls each function in the list with an object as parameter describing the new slide (type, location, length, description, etc) (TODO : describe this object).
