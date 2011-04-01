@@ -18,7 +18,8 @@ WhaTV.core = (function(window) {
     quickMessagesDivId: 'quick-messages',
     // The div ID of date
     dateDivId: 'date',
-    fullscreen: false
+    fullscreen: true,
+    transitionDuration: 1000
   },
       // Pointer to current slide
       pointer = 0,
@@ -39,7 +40,7 @@ WhaTV.core = (function(window) {
       // informations about each slide
       informationListener = null,
       // The current version of whaTV being used
-      version = '0.5.0';
+      version = '0.5.1';
 
   /**
     * Ignition of The Great Loop. Starts The Everything, and put it in
@@ -145,28 +146,32 @@ WhaTV.core = (function(window) {
       onHide(finishedSlideIndex, divToHide);
       divToHide.parentNode.removeChild(divToHide);
     }
-    // Shows the new slide
-    if (divToShow) {
-      WhaTV.util.removeClassName(divToShow, 'nextSlide');
-      WhaTV.util.removeClassName(divToShow, 'nextSlideFlash');
-      WhaTV.util.addClassName(divToShow, 'currentSlide');
-      onShow(pointer, divToShow);
-    }
-    // Calls a callback, if specified.
-    if (informationListener) {
-      informationListener(slides[localPointer]);
-    }
-    // Launch a timeout which will notify that the slide must stop when
-    // time is up.
-    // If no timeout specified : do nothing. Only allow that for videos.
-    if (slides[pointer].timeout) {
-      currentTimeout = setTimeout(function() {
-                   onSlideTimeout(localPointer);
-                 },
-                 slides[localPointer].timeout * 1000);
-    }
-    incrementPointer();
-    loadPointedSlideIntoDOM(pointer);
+    // We do a setTimeout here because we want a "transition" - i.e a halt -
+    // Between the two slides.
+    setTimeout(function() {
+      // Shows the new slide
+      if (divToShow) {
+        WhaTV.util.removeClassName(divToShow, 'nextSlide');
+        WhaTV.util.removeClassName(divToShow, 'nextSlideFlash');
+        WhaTV.util.addClassName(divToShow, 'currentSlide');
+        onShow(pointer, divToShow);
+      }
+      // Calls a callback, if specified.
+      if (informationListener) {
+        informationListener(slides[localPointer]);
+      }
+      // Launch a timeout which will notify that the slide must stop when
+      // time is up.
+      // If no timeout specified : do nothing. Only allow that for videos.
+      if (slides[pointer].timeout) {
+        currentTimeout = setTimeout(function() {
+                     onSlideTimeout(localPointer);
+                   },
+                   slides[localPointer].timeout * 1000);
+      }
+      incrementPointer();
+      loadPointedSlideIntoDOM(pointer);
+    }, defaults.transitionDuration);
   }
 
   /**
@@ -248,7 +253,7 @@ WhaTV.core = (function(window) {
     // Calls 'show' method of module
     WhaTV.module[moduleName].show(slideReference, div, onSlideTimeout);
   }
-  
+
   /**
     * Called to stop and clean the finished slide
     */
@@ -262,7 +267,7 @@ WhaTV.core = (function(window) {
     WhaTV.module[moduleName].hide(slideReference, div);
     WhaTV.util.clearNode(div);
   }
-  
+
   function getModuleName(slideReference, div) {
     var moduleName = div.getAttribute('whatvslidetype');
     if (!div) {
@@ -286,15 +291,15 @@ WhaTV.core = (function(window) {
     next: function next() {
       onSlideTimeout(pointer - 1);
     },
-    
+
     stop: function stop() {
       // Currently breaks the loop.
       notifyManager = function() {return null;};
     },
-    
+
     pause: function pause() {
       if (!this.paused) {
-        var video = document.getElementsByClassName("currentSlide")[0].
+        var video = document.getElementsByClassName('currentSlide')[0].
                         getElementsByTagName('video')[0];
         if (video) {
           video.pause();
@@ -303,10 +308,10 @@ WhaTV.core = (function(window) {
         this.paused = true;
       }
     },
-    
+
     resume: function resume() {
       if (this.paused) {
-        var video = document.getElementsByClassName("currentSlide")[0].
+        var video = document.getElementsByClassName('currentSlide')[0].
                         getElementsByTagName('video')[0];
         if (video) {
           video.play();
@@ -316,13 +321,13 @@ WhaTV.core = (function(window) {
         this.paused = false();
       }
     },
-    
+
     registerInformationsListener:
         function registerInformationsListener(callback) {
       informationListener = callback;
     }
-  }
-  
+  };
+
   return {
     init: init,
     version: version,
