@@ -168,12 +168,21 @@ WhaTV.module.video = {
       if (video.canPlayType(resources[index].codec)) {
         source = resources[index].resource;
         type = resources[index].codec;
-        // Fires event when browser think we can play.
-        video.addEventListener('canplaythrough',
-          function() {
+        // Fires event when browser thinks we can play.
+        // Note : on iPhone, <video> won't load automatically. So if we are
+        // on iPhone, we arbitrary call onNextSlideReady so that the user can
+        // click in the video to manually start it.
+        if (!(navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i))) {
+          video.addEventListener('canplaythrough',
+            function() {
+              onNextSlideReady(slideReference);
+            },
+          false);
+        } else {
+          setTimeout(function() {
             onNextSlideReady(slideReference);
-          },
-        false);
+          }, 1000);
+        }
         break;
       }
     }
