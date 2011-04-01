@@ -141,6 +141,7 @@ Known Bugs :
  - Chrome : timeout is not respected in videos
  - Someone reported that loop is stopped somewhere (before video?) (Jérémy)
  - Under webkit : videos cause HUGE leaks
+ - Broken div are not garbage collected.
 
 
 
