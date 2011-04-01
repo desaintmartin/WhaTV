@@ -278,7 +278,19 @@ WhaTV.module.video = {
 WhaTV.module.flash = {
   load: function loadFlash(slideReference, slide,
                            onNextSlideReady, skipLoadingSlide) {
-    var flash = document.createElement('embed');
+    var flash;
+    
+    // If Flash is not supported
+    if (!navigator.plugins["Shockwave Flash"]) {
+      console.warn('Unable to load Flash at slide number ' + slideReference +
+                   '. Skipping and recovering now...');
+      skipLoadingSlide(slideReference);
+      flash = document.createElement('div');
+      WhaTV.util.addClassName(flash, 'broken');
+      return flash;
+    }
+
+    flash = document.createElement('embed');
     // TODO this does not work. We arbitrarily set a timeout.
     setTimeout(function() {
                  onNextSlideReady(slideReference);
