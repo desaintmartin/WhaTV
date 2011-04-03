@@ -153,7 +153,7 @@ footer #quick-messages-wrapper #quick-messages div {
 footer #quick-messages-wrapper #quick-messages div span {
   white-space:nowrap;
   position: absolute;
-  margin: 0px;
+  margin: 0;
 }
 
 header {
@@ -168,8 +168,8 @@ header {
 }
 
 header #date {
-  -moz-border-radius-bottomleft: 50% 100%;
-  border-bottom-left-radius: 50% 100%;
+  -moz-border-radius-bottomleft: 1em 0.8em;
+  border-bottom-left-radius: 1em 0.8em;
   padding-left: 35px; /* Hack : it is not relative size */
   background: url(../images/banner.png) repeat;
   -webkit-box-shadow: 3px -10px 5px;
