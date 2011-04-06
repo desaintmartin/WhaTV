@@ -7,17 +7,20 @@ browsers or embedded in entreprise diffusion systems.
 Install :
 =========
 To simply try WhaTV, clone it and activate submodules :
-$ git clone git://github.com/WaterCooled/WhaTV
-$ cd WhaTV
-$ git submodule init
-$ git submodule update
+    $ git clone git://github.com/WaterCooled/WhaTV
+    $ cd WhaTV
+    $ git submodule init
+    $ git submodule update
 
 You then need a simple webserver (apache, ngninx, lighttpd...) to run it.
 
 If you want to modify it, fork it with github or another git utility.
 
-You can also view it online from a (slow) webserver : 
-http://whatv.watercooled.org
+You can also view it online from a webserver : 
+http://whatv.eistiens.net
+
+Mailing list is currently private, but will soon be available to subscriptions.
+
 
 Changelog :
 =========
