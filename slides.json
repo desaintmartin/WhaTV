@@ -53,7 +53,7 @@
     },
     {"type": "html",
      "timeout": 7,
-     "resource": "http://dev.watercooled.org"
+     "resource": "http://www.eistiens.net"
     },
     {"type": "video",
      "mode": "ambilight",
