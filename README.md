@@ -110,6 +110,8 @@ Adding reference implementations of base modules, and examples of modules
 ----------------
 Add correct implementation of WhaTV.core.pause() and WhaTV.core.resume()
 Fix bug where messages and date were disappearing when showing Flash slide
+Solved several bugs on various platforms
+[Cedric de Saint Martin]
 
 
 Roadmap :
@@ -133,6 +135,7 @@ Module system, where we specify urls of extensions files + http://requirejs.org/
 quick message system : titles
 flv videos
 Fetch from time to time the new list of slides to show
+http://net.tutsplus.com/tutorials/tools-and-tips/learn-how-to-develop-for-the-iphone/
 
 Known Bugs : 
  - Youtube plugin does not work (due to Flash security restrictions) unless server is at localhost
