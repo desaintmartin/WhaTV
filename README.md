@@ -7,10 +7,10 @@ browsers or embedded in entreprise diffusion systems.
 Install :
 =========
 To simply try WhaTV, clone it and activate submodules :
-    `$ git clone git://github.com/WaterCooled/WhaTV`
-    `$ cd WhaTV`
-    `$ git submodule init`
-    `$ git submodule update`
+    `$ git clone git://github.com/WaterCooled/WhaTV`  
+    `$ cd WhaTV`  
+    `$ git submodule init`  
+    `$ git submodule update`  
 
 You then need a simple webserver (apache, ngninx, lighttpd...) to run it.
 
