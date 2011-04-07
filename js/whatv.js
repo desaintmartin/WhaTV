@@ -98,7 +98,7 @@ WhaTV.core = (function(window) {
     */
   function insertIntoMetacontent(content, slideReference) {
     content.setAttribute('id', 'content' + slideReference);
-    // Hardcoded
+    // FIXME Hardcoded
     if (WhaTV.util.hasClassName(content, 'flash')) {
       WhaTV.util.addClassName(content, 'nextSlideFlash');
       document.getElementById('metacontent').appendChild(content);
@@ -210,6 +210,8 @@ WhaTV.core = (function(window) {
       slideTimeout[endedSlide] = false;
       // Clears the timeout, if present.
       if (currentTimeout) {
+        // FIXME Why ??? Usecases ?
+        console.debug("Remaining timeout");
         clearTimeout(currentTimeout);
         currentTimeout = null;
       }
@@ -230,13 +232,8 @@ WhaTV.core = (function(window) {
     * Increments the pointer. If last slide has been reached, we start again.
     **/
   function incrementPointer() {
-    pointer = pointer + 1;
-    if (pointer === slides.length) {
-      pointer = 0;
-      if (slides.length % 2) {
-        even = !even;
-      }
-    }
+    pointer = (pointer + 1) % (slides.length - 1);
+    even = (slides.length % 2 === 0);
   }
 
 
@@ -329,7 +326,12 @@ WhaTV.core = (function(window) {
   };
 
   return {
+    // TODO Consistency : all should be methods and in public namespace
+    // and we can return later the object just above.
+    //
+    // Initialization method
     init: init,
+    // Version string
     version: version,
     next: publicMethods.next,
     stop: publicMethods.stop,

@@ -336,10 +336,12 @@ function onYouTubePlayerReady(e) {
     }
   }
 }
+// Document this …
 onYouTubePlayerReady.attach = function attach(name, fn) {
   onYouTubePlayerReady.fns = onYouTubePlayerReady.fns || {};
   onYouTubePlayerReady.fns[name] = fn;
 };
+// … and that
 onYouTubePlayerReady.detach = function detach(name) {
   var index;
   onYouTubePlayerReady.fns = onYouTubePlayerReady.fns || {};
