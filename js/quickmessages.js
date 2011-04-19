@@ -14,7 +14,7 @@ WhaTV.quickMessages = (function() {
     // Default speed of animation between two messages
     transitionSpeed: 'slow',
     // Default time before showing first message
-    timeBeforeFirstMessage: 2500
+    timeBeforeFirstMessage: 4000
     // If you want to customize other values, please add them here before
     // And commit them. Thanks.
   },

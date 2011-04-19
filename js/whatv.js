@@ -283,7 +283,8 @@ WhaTV.core = (function(window) {
     WhaTV.util.parseJSON('slides.json', ignition);
   }
 
-  // Now are the public methods
+  // Now are the public methods, encapsulated in an object in order to not
+  // pollute WhaTV.core scope.
   var publicMethods = {
     next: function next() {
       onSlideTimeout(pointer - 1);

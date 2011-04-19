@@ -172,7 +172,8 @@ WhaTV.module.video = {
         // Note : on iPhone, <video> won't load automatically. So if we are
         // on iPhone, we arbitrary call onNextSlideReady so that the user can
         // click in the video to manually start it.
-        if (!(navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i))) {
+        if (!(navigator.userAgent.match(/iPhone/i)) ||
+            (navigator.userAgent.match(/iPod/i))) {
           video.addEventListener('canplaythrough',
             function() {
               onNextSlideReady(slideReference);
