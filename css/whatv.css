@@ -34,7 +34,7 @@ body {
   display: none;
 }
 #metacontent .nextSlideFlash {
-  height: 0px;
+  height:0;
 }
 
 /* Images */
@@ -44,12 +44,12 @@ div.imageContainer {
   height: 100%;
 }
 div.imageContainer.ambimage {
-  padding: 20px 0px 0px 0px;
+  padding: 20px0 0px 0px;
 }
 
 div.localImageContainer.ambimage {
   position: relative;
-  margin: 0px auto 0px auto;
+  margin:0 auto 0px auto;
 }
 
 img.image-slide.original {
@@ -83,7 +83,7 @@ div.ambilightModeVideoGlobalContainer {
 
 div.ambilight-video-wrap {
   position:relative;
-  margin:0px auto 0px auto;
+  margin:0px auto0 auto;
 }
 
 video {
@@ -119,8 +119,8 @@ left:0px;
 
 footer {
   position: absolute;
-  bottom: 0px;
-  left: 0px; 
+  bottom:0;
+  left:0; 
   width: 100%; 
   height: 10%;
   font: Arial, Helvetica, sans-sherif; 
@@ -130,12 +130,12 @@ footer {
 
 footer #quick-messages-wrapper {
   position:absolute;
-  bottom: 0px;
+  bottom:0;
   height: 80%;
   width: 100%;
   overflow: hidden;
   background-position: right;
-  top: 0px;
+  top:0;
   opacity: 0;
   /*border-top : 3px solid black;
   border-bottom : 3px solid black;
@@ -158,8 +158,8 @@ footer #quick-messages-wrapper #quick-messages div span {
 
 header {
   position: absolute;
-  top: 0px;
-  left: 0px; 
+  top:0;
+  left:0; 
   width: 100%;
   height: 10%;
   font: Arial, Helvetica, sans-sherif; 
@@ -174,7 +174,7 @@ header #date {
   background: url(../images/banner.png) repeat;
   -webkit-box-shadow: 3px -10px 5px;
   position: absolute;
-  top: 0px;
-  right: 0px;
+  top:0;
+  right:0;
   text-align: right;
 }
