@@ -6,7 +6,7 @@ browsers or embedded in entreprise diffusion systems.
 
 Install :
 =========
-To simply try WhaTV, clone it and activate submodules :
+To simply try WhaTV, clone it and activate submodules :  
     `$ git clone git://github.com/WaterCooled/WhaTV`  
     `$ cd WhaTV`  
     `$ git submodule init`  
@@ -141,10 +141,11 @@ Ideas :
 * flv videos
 * Fetch from time to time the new list of slides to show
 * http://net.tutsplus.com/tutorials/tools-and-tips/learn-how-to-develop-for-the-iphone/
+* It seems that webkit (chrome, safari) has a memleak with <video> (please see https://bugs.webkit.org/show_bug.cgi?id=46560). Add a reload() function to avoid it.
 
 Known Bugs : 
 ==========
-* Youtube plugin does not work (due to Flash security restrictions) unless server is at localhost
+* Youtube plugin does not work (due to Flash security restrictions) unless server is at localhost (see http://code.google.com/apis/youtube/iframe_api_reference.html#Loading_a_Video_Player and http://code.google.com/apis/youtube/player_parameters.html?playerVersion=HTML5#Overview)
 * Quick Messages animations are uglily slow when showing resource-intensive video
 * Date CSS is ugly and vary from browsers
 * Chrome : timeout is not respected in videos
