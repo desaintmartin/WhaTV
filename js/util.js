@@ -47,7 +47,7 @@ WhaTV.util = {
     var JSONCallback = function(data) {
       if (typeof(data) === 'object') {
         console.warn('JSONCallback should have received a string, not an obj.');
-        callback(data); 
+        callback(data);
       }
       callback(JSON.parse(data));
     }
