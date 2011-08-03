@@ -46,31 +46,23 @@ WhaTV.util = {
   parseJSON: function parseJSON(url, callback) {
     var JSONCallback = function(data) {
       if (typeof(data) === 'object') {
-        console.warn('JSONCallback should have received a string, not an obj.');
         callback(data);
+      } else if (typeof(data) === 'string') {
+        callback(JSON.parse(data));
+      } else {
+          throw 'Cannot parse JSON.';
       }
-      callback(JSON.parse(data));
-    }
-    if (window.JSON) {
-      if (window.jQuery) {
-        $.get(url, JSONCallback);
-      } else if (window.dojo) {
-        dojo.xhrGet({
-          url: url,
-          handleAs: 'text',
-          load: JSONCallback
-        });
-      }
+    };
+    if (window.jQuery) {
+      $.getJSON(url, callback);
+    } else if (window.dojo) {
+      dojo.xhrGet({
+        url: url,
+        handleAs: 'json',
+        load: callback
+      });
     } else {
-      if (window.jQuery) {
-        $.getJSON(url, callback);
-      } else if (window.dojo) {
-        dojo.xhrGet({
-          url: url,
-          handleAs: 'json',
-          load: callback
-        });
-      }
+      throw 'Cannot do XHR. Maybe jQuery or chosen lib is not present';
     }
   },
 
