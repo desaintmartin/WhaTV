@@ -44,12 +44,12 @@ div.imageContainer {
   height: 100%;
 }
 div.imageContainer.ambimage {
-  padding: 20px0 0px 0px;
+  padding: 20px 0 0 0;
 }
 
 div.localImageContainer.ambimage {
   position: relative;
-  margin:0 auto 0px auto;
+  margin:0 auto 0 auto;
 }
 
 img.image-slide.original {
@@ -83,7 +83,7 @@ div.ambilightModeVideoGlobalContainer {
 
 div.ambilight-video-wrap {
   position:relative;
-  margin:0px auto0 auto;
+  margin:0 auto 0 auto;
 }
 
 video {
