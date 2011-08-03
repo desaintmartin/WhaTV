@@ -43,6 +43,9 @@ WhaTV.util = {
     node.className = node.className.replace(reg, '');
   },
 
+  /**
+   * Fetch an url using "get" xhr, then parse it as JSON.
+   */
   parseJSON: function parseJSON(url, callback) {
     var JSONCallback = function(data) {
       if (typeof(data) === 'object') {
@@ -66,12 +69,12 @@ WhaTV.util = {
     }
   },
 
-  /*
-    * Test if fullscreen if supported. If so, turn it on.
-    * Please see :
-    * https://bugs.webkit.org/show_bug.cgi?id=49481
-    * https://wiki.mozilla.org/index.php?title=Gecko:FullScreenAPI
-    */
+  /**
+   * Test if fullscreen if supported. If so, turn it on.
+   * Please see :
+   * https://bugs.webkit.org/show_bug.cgi?id=49481
+   * https://wiki.mozilla.org/index.php?title=Gecko:FullScreenAPI
+   */
   turnOnFullscreenIfSupported: function turnOnFullscreenIfSupported() {
     var body = document.getElementsByTagName('body')[0],
         fullscreenMethodList = ['webkitRequestFullScreen', 'requestFullScreen'],
