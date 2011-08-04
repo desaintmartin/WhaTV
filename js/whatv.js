@@ -185,7 +185,8 @@ WhaTV.core = (function(window) {
   }
 
   /**
-   * Called when a slide (probably the next) has finished preloading.
+   * Called when a slide (probably the next, but not always) has finished
+   * preloading.
    */
   function onNextSlideReady(slideReference) {
     if (nextSlideReady[slideReference]) {
