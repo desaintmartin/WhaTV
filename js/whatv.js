@@ -27,9 +27,6 @@ WhaTV.core = (function(window) {
       even = true,
       // The informations about slides to show
       slides = [],
-      // Current loaded slide as a DOM node
-      // TODO replace it by array, to store past slides in memory?
-      //loadedSlide: null,
       // Array of Boolean to know if next slide has finished loading
       nextSlideReady = [],
       // Array of Boolean to know if current slide has tiggered timeout
