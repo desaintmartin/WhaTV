@@ -185,8 +185,8 @@ WhaTV.core = (function(window) {
   }
 
   /**
-    * Called when a slide (probably the next) has finished preloading.
-    **/
+   * Called when a slide (probably the next) has finished preloading.
+   */
   function onNextSlideReady(slideReference) {
     if (nextSlideReady[slideReference]) {
       console.error('onNextSlideReady has already been called for this slide');
@@ -197,9 +197,10 @@ WhaTV.core = (function(window) {
   }
 
   /**
-    * We switch to the next slide if the current one has reached timeout
-    * and the next one has finished loading
-    **/
+   * This function acts as a filter when something calls to show next slide.
+   * We switch to the next slide only if the current one has reached timeout
+   * AND if the next one has finished loading.
+   */
   function notifyManager(slideReference) {
     var endedSlide = (slideReference - 1 + slides.length) % slides.length;
     if (nextSlideReady[slideReference] && slideTimeout[endedSlide]) {
