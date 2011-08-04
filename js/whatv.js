@@ -2,10 +2,12 @@
 
 window.WhaTV = window.WhaTV || {};
 
-WhaTV.core = (function(window) {
+// We use global as argument to not depend on an environment. Usually, it is
+// "window" in web browsers.
+window.WhaTV.core = (function(global) {
   // Awful hack in global scope if we do not have console object
-  if (!window.console) {
-    window.console = {
+  if (!global.console) {
+    global.console = {
       log: function log() {},
       info: function info() {},
       debug: function debug() {},
@@ -40,20 +42,20 @@ WhaTV.core = (function(window) {
       version = '0.5.1';
 
   /**
-    * Ignition of The Great Loop. Starts The Everything, and put it in
-    * fullscreen if supported.
-    * @param {Element} data the data containing whaT to show.
-    */
+   * Ignition of The Great Loop. Starts The Everything, and put it in
+   * fullscreen if supported.
+   * @param {Element} data the data containing whaT to show.
+   */
   function ignition(data) {
     if (defaults.fullscreen) {
       WhaTV.util.turnOnFullscreenIfSupported();
     }
     slides = data.slides;
-    if (WhaTV.timer) {
-      WhaTV.timer.create(defaults.dateDivId);
+    if (global.WhaTV.timer) {
+      global.WhaTV.timer.create(defaults.dateDivId);
     }
-    if (WhaTV.quickMessages) {
-      WhaTV.quickMessages.create(
+    if (global.WhaTV.quickMessages) {
+      global.WhaTV.quickMessages.create(
           data.messages,
           defaults.quickMessagesDivId
       );
@@ -64,61 +66,63 @@ WhaTV.core = (function(window) {
   }
 
   /**
-    * Load into the DOM the pointed slide and its elements. calls
-    * notifyReadyOrGo when Everything is loaded.
-    **/
+   * Load into the DOM the pointed slide and its elements. calls
+   * notifyReadyOrGo when Everything is loaded.
+   */
   function loadPointedSlideIntoDOM(slideReference) {
     var currentSlide = slides[slideReference],
         content;
-    console.log('loadPointedSlideIntoDOM called. preparing slide number ' +
-                slideReference);
+    global.console.log('loadPointedSlideIntoDOM called. preparing slide ' + 
+                       'number ' + slideReference);
     // Calls loaders method depending on slide type. Assigns the resulting
     // node to 'content'
-    if (WhaTV.module &&
-        WhaTV.module[currentSlide.type] &&
-        WhaTV.module[currentSlide.type].load) {
-      content = WhaTV.module[currentSlide.type].load(slideReference,
-                                                     currentSlide,
-                                                     onNextSlideReady,
-                                                     skipLoadingSlide);
+    if (global.WhaTV.module &&
+        global.WhaTV.module[currentSlide.type] &&
+        global.WhaTV.module[currentSlide.type].load) {
+      content = global.WhaTV.module[currentSlide.type].load(slideReference,
+                                                            currentSlide,
+                                                            onNextSlideReady,
+                                                            skipLoadingSlide);
       content.setAttribute('whatvslidetype', currentSlide.type);
       insertIntoMetacontent(content, slideReference);
     } else {
-      console.error('FATAL : Unable to detect content type. Aborting.');
+      global.console.error('FATAL : Unable to detect content type. Aborting.');
     }
   }
 
   /**
-    * Function used to insert the content calculated by loadIage/loadVideo/etc
-    * Into the div called 'metacontent'. If swfobject, Does not hide the div,
-    * because swfobject does not like it.
-    */
+   * Function used to insert the content calculated by loadIage/loadVideo/etc
+   * Into the div called 'metacontent'. If swfobject, Does not hide the div,
+   * because swfobject does not like it.
+   */
   function insertIntoMetacontent(content, slideReference) {
     content.setAttribute('id', 'content' + slideReference);
     // FIXME Hardcoded
-    if (WhaTV.util.hasClassName(content, 'flash')) {
-      WhaTV.util.addClassName(content, 'nextSlideFlash');
-      document.getElementById('metacontent').appendChild(content);
+    if (global.WhaTV.util.hasClassName(content, 'flash')) {
+      global.WhaTV.util.addClassName(content, 'nextSlideFlash');
+      global.document.getElementById('metacontent').appendChild(content);
     } else {
-      WhaTV.util.addClassName(content, 'nextSlide');
-      document.getElementById('metacontent').appendChild(content);
+      global.WhaTV.util.addClassName(content, 'nextSlide');
+      global.document.getElementById('metacontent').appendChild(content);
     }
   }
 
 
   /**
-    * Responsible of hiding the 'old' slide, showing the new one, setting a
-    * timeout and call an external callback to send informations about the
-    * new slide.
-    **/
+   * Responsible of hiding the 'old' slide, showing the new one, setting a
+   * timeout and call an external callback to send informations about the
+   * new slide.
+   */
   function makeTransition() {
     var finishedSlideIndex = (slides.length + (pointer - 1)) % slides.length,
-        divToHide = document.getElementById('content' + finishedSlideIndex),
-        divToShow = document.getElementById('content' + pointer),
+        divToHide = global.document.getElementById('content' +
+                                                   finishedSlideIndex),
+        divToShow = global.document.getElementById('content' + pointer),
         // This one is used to store the pointer for callbacks : in the future,
         // pointer will change, but not localPointer
         localPointer = pointer;
-    console.log('makeTransition called. Showing slide number ' + pointer + '.');
+    global.console.log('makeTransition called. Showing slide number ' +
+                       pointer + '.');
     // If previous slide was broken, and current one is broken too (!)
     if (!divToShow) {
       //TODO debug and clean this code, this has nothing to do here.
@@ -129,7 +133,7 @@ WhaTV.core = (function(window) {
       return;
     }
     // If slide is broken, we skip everything
-    if (WhaTV.util.hasClassName(divToShow, 'broken')) {
+    if (global.WhaTV.util.hasClassName(divToShow, 'broken')) {
       divToShow.parentNode.removeChild(divToShow);
       divToHide.setAttribute('id', 'content' + pointer);
       incrementPointer();
@@ -138,8 +142,8 @@ WhaTV.core = (function(window) {
     }
     // Destroys the old slide
     if (divToHide) {
-      WhaTV.util.removeClassName(divToHide, 'currentSlide');
-      WhaTV.util.addClassName(divToHide, 'pastSlide');
+      global.WhaTV.util.removeClassName(divToHide, 'currentSlide');
+      global.WhaTV.util.addClassName(divToHide, 'pastSlide');
       onHide(finishedSlideIndex, divToHide);
       divToHide.parentNode.removeChild(divToHide);
     }
@@ -148,9 +152,9 @@ WhaTV.core = (function(window) {
     setTimeout(function() {
       // Shows the new slide
       if (divToShow) {
-        WhaTV.util.removeClassName(divToShow, 'nextSlide');
-        WhaTV.util.removeClassName(divToShow, 'nextSlideFlash');
-        WhaTV.util.addClassName(divToShow, 'currentSlide');
+        global.WhaTV.util.removeClassName(divToShow, 'nextSlide');
+        global.WhaTV.util.removeClassName(divToShow, 'nextSlideFlash');
+        global.WhaTV.util.addClassName(divToShow, 'currentSlide');
         onShow(pointer, divToShow);
       }
       // Calls a callback, if specified.
@@ -161,7 +165,7 @@ WhaTV.core = (function(window) {
       // time is up.
       // If no timeout specified : do nothing. Only allow that for videos.
       if (slides[pointer].timeout) {
-        currentTimeout = setTimeout(function() {
+        currentTimeout = global.setTimeout(function() {
                      onSlideTimeout(localPointer);
                    },
                    slides[localPointer].timeout * 1000);
@@ -172,12 +176,13 @@ WhaTV.core = (function(window) {
   }
 
   /**
-    * Called when the current shown slide has finished.
-    **/
+   * Called when the current shown slide has finished.
+   */
   function onSlideTimeout(slideReference) {
     slideReference = (slideReference) % slides.length;
     if (slideTimeout[slideReference]) {
-      console.error('onSlideTimeout has already been called for this slide');
+      global.console.error('onSlideTimeout has already been called for this' +
+                           ' slide');
     } else {
       slideTimeout[slideReference] = true;
       notifyManager((slideReference + 1) % slides.length);
@@ -190,7 +195,8 @@ WhaTV.core = (function(window) {
    */
   function onNextSlideReady(slideReference) {
     if (nextSlideReady[slideReference]) {
-      console.error('onNextSlideReady has already been called for this slide');
+      global.console.error('onNextSlideReady has already been called for' +
+                           ' this slide');
     } else {
       nextSlideReady[slideReference] = true;
       notifyManager(slideReference);
@@ -210,7 +216,7 @@ WhaTV.core = (function(window) {
       // Clears the timeout, if present.
       if (currentTimeout) {
         // FIXME Why ??? Usecases ?
-        console.debug("Remaining timeout");
+        global.console.debug("Remaining timeout");
         clearTimeout(currentTimeout);
         currentTimeout = null;
       }
@@ -219,17 +225,17 @@ WhaTV.core = (function(window) {
   }
 
   /**
-    * Used when the loading slide can't be played. Deletes this slide and load
-    * the next one.
-    */
+   * Used when the loading slide can't be played. Deletes this slide and load
+   * the next one.
+   */
   function skipLoadingSlide(slideReference) {
     onSlideTimeout(slideReference);
     onNextSlideReady(slideReference);
   }
 
   /**
-    * Increments the pointer. If last slide has been reached, we start again.
-    **/
+   * Increments the pointer. If last slide has been reached, we start again.
+   */
   function incrementPointer() {
     pointer = (pointer + 1) % (slides.length - 1);
     even = (slides.length % 2 === 0);
@@ -237,41 +243,41 @@ WhaTV.core = (function(window) {
 
 
   /**
-    * Responsible for doing everything when a slide is shown : start a video,
-    * start ambilight, adding event listeners for end of videos, etc.
-    **/
+   * Responsible for doing everything when a slide is shown : start a video,
+   * start ambilight, adding event listeners for end of videos, etc.
+   */
   function onShow(slideReference, div) {
     var moduleName = getModuleName(slideReference, div);
     // If our div is broken (example : bad video) we return immediatly
-    if (WhaTV.util.hasClassName(div, 'broken')) {
+    if (global.WhaTV.util.hasClassName(div, 'broken')) {
       return;
     }
     // Calls 'show' method of module
-    WhaTV.module[moduleName].show(slideReference, div, onSlideTimeout);
+    global.WhaTV.module[moduleName].show(slideReference, div, onSlideTimeout);
   }
 
   /**
-    * Called to stop and clean the finished slide
-    */
+   * Called to stop and clean the finished slide
+   */
   function onHide(slideReference, div) {
     var moduleName = getModuleName(slideReference, div);
     // If our div is broken (example : bad video) we return immediatly
-    if (WhaTV.util.hasClassName(div, 'broken')) {
+    if (global.WhaTV.util.hasClassName(div, 'broken')) {
       return;
     }
     // Calls 'hide' method of module
-    WhaTV.module[moduleName].hide(slideReference, div);
-    WhaTV.util.clearNode(div);
+    global.WhaTV.module[moduleName].hide(slideReference, div);
+    global.WhaTV.util.clearNode(div);
   }
 
   function getModuleName(slideReference, div) {
     var moduleName = div.getAttribute('whatvslidetype');
     if (!div) {
-      console.warn('Warning : content to show is empty. Skipping');
+      global.console.warn('Warning : content to show is empty. Skipping');
       return;
     }
     if (!moduleName) {
-      console.error('No suitable div found to show.');
+      global.console.error('No suitable div found to show.');
       return null;
     }
     return moduleName;
@@ -279,7 +285,7 @@ WhaTV.core = (function(window) {
 
   function init() {
     // Launch WhaTV : parses slides informations, launching ignition
-    WhaTV.util.parseJSON('slides.json', ignition);
+    global.WhaTV.util.parseJSON('slides.json', ignition);
   }
 
   // Now are the public methods, encapsulated in an object in order to not
@@ -296,7 +302,7 @@ WhaTV.core = (function(window) {
 
     pause: function pause() {
       if (!this.paused) {
-        var video = document.getElementsByClassName('currentSlide')[0].
+        var video = global.document.getElementsByClassName('currentSlide')[0].
                         getElementsByTagName('video')[0];
         if (video) {
           video.pause();
@@ -308,7 +314,7 @@ WhaTV.core = (function(window) {
 
     resume: function resume() {
       if (this.paused) {
-        var video = document.getElementsByClassName('currentSlide')[0].
+        var video = global.document.getElementsByClassName('currentSlide')[0].
                         getElementsByTagName('video')[0];
         if (video) {
           video.play();
@@ -344,4 +350,4 @@ WhaTV.core = (function(window) {
   };
 })(window);
 
-WhaTV.core.init();
+window.WhaTV.core.init();
