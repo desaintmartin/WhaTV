@@ -1,13 +1,19 @@
 'use strict';
 
 window.WhaTV = window.WhaTV || {};
+// In this file, you will find two types of contents : 
+// WhaTV common functions, and WhaTV modules. See comments below.
 
-// Loaders. they return a fully populated node, ready to be appended
-// To our page. Also responsible of calling onNextSlideReady when finished
-// Loading.
-
-// Common functions used in built-in modules. Example : fullscreen, crop.
+/**
+ * Common functions. Those function can be used in modules (example : 
+ * showing image in fullscreen is a module (image module) using common function
+ * (fullscreen common function).
+ */
 WhaTV.common = {
+  /**
+   * Put content in fullscreen (ie as big as possible without part of content
+   * Getting out of the viewport.
+   */
   fullscreen: function fullscreen(image, size) {
     var windowRatio = window.innerWidth / window.innerHeight,
         imgRatio = image.width / image.height,
@@ -26,6 +32,10 @@ WhaTV.common = {
     }
   },
 
+  /**
+   * Put content in fullscreen (ie as big as possible without part of content
+   * Getting out of the viewport). Also prepares content for Ambilight.
+   */ 
   fullscreenAmbilight: function fullscreenAmbilight(node) {
     var desiredWidth = window.innerWidth * 80 / 100,
         nodeRatio = node.videoWidth ? node.videoWidth / node.videoHeight :
@@ -46,6 +56,11 @@ WhaTV.common = {
     node.parentNode.style.width = desiredWidth + 'px';
   },
 
+  /**
+   * Put content in crop fullscreen (ie as big as possible, possibly part of
+   * content will get out of the viewport. Keeping ratio.
+   * http://en.wikipedia.org/wiki/Cropping_(image)
+   */ 
   crop: function crop(nodeOrEvent) {
     var node = nodeOrEvent.target ? nodeOrEvent.target : nodeOrEvent,
         windowRatio = window.innerWidth / window.innerHeight,
@@ -68,6 +83,13 @@ WhaTV.common = {
   }
 };
 
+
+/**
+ * Here are WhaTV Modules. They are loaders : they return a fully populated
+ * node, ready to be appended to our page. Also responsible of calling
+ * onNextSlideReady when finished loading.
+ *You can add your own module to WhaTV.module.
+ */
 WhaTV.module = WhaTV.module || {};
 WhaTV.module.html = {
   load: function loadIframe(slideReference, slide, onNextSlideReady, skipLoadingSlide) {
