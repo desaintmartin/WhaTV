@@ -24,6 +24,12 @@ Mailing list is currently private, but will soon be available to subscriptions. 
 Changelog :
 =========
 
+0.5.2 (2011-08-05)
+------------------
+> Add basic transition system [Cedric de Saint Martin]
+> Minor CSS compactation and improvements [fcharton]
+> Minor code cleanup and review [Cedric de Saint Martin, fcharton]
+
 0.5.1 (2011-03-31)
 ----------------
 > Add correct implementation of WhaTV.core.pause() and WhaTV.core.resume()
@@ -117,40 +123,10 @@ Changelog :
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 Roadmap :
 =========
 * 0.5.x : Widgets support
 * 0.5.x : Proof of concept : meteo widget
-* 0.5.x : First implementation of transitions
 * 0.6.0 : Modular transition system with some examples
 * 0.7.0 : Powerpoint support
 * 0.9.9 : documentation, API and examples
