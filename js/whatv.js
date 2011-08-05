@@ -61,7 +61,6 @@ WhaTV.core = (function WhaTVCoreInitClosure(global, WhaTV) {
           defaults.quickMessagesDivId
       );
     }
-    // TODO : loading screen
     loadPointedSlideIntoDOM(pointer); // Should be 0
     onSlideTimeout(slides.length - 1);
   }
@@ -344,11 +343,11 @@ WhaTV.core = (function WhaTVCoreInitClosure(global, WhaTV) {
     // Version string
     version: version,
     next: publicMethods.next,
-    stop: publicMethods.stop,
     pause: publicMethods.pause,
     resume: publicMethods.resume,
     registerInformationsListener: publicMethods.registerInformationsListener,
     //debug
+    stop: publicMethods.stop,
     onSlideTimeout: onSlideTimeout,
     onNextSlideReady: onNextSlideReady
   };
