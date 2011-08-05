@@ -1,4 +1,4 @@
-var WhaTV = WhaTV || {};
+window.WhaTV = window.WhaTV || {};
 
 // We use global as argument to not depend on an environment. Usually, it is
 // "window" in web browsers.
