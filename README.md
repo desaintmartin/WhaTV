@@ -6,65 +6,63 @@ browsers or embedded in entreprise diffusion systems.
 
 Install :
 =========
-To simply try WhaTV, clone it and activate submodules :  
-    `$ git clone git://github.com/WaterCooled/WhaTV`  
-    `$ cd WhaTV`  
-    `$ git submodule init`  
-    `$ git submodule update`  
+To simply try WhaTV, clone it and activate submodules :
+    `$ git clone git://github.com/WaterCooled/WhaTV`
+    `$ cd WhaTV`
+    `$ git submodule update --init --recursive`
 
 You then need a simple webserver (apache, ngninx, lighttpd...) to run it.
 
 If you want to modify it, fork it with github or another git utility.
 
-You can also view it online from a webserver : 
+You can also view an online demo : 
 http://whatv.eistiens.net
 
-Mailing list is currently private, but will soon be available to subscriptions.
+Mailing list is currently private, but will soon be available to subscriptions. If you are interested, drop me a note.
 
 
 Changelog :
 =========
 
-0.0.1 (2010-09-11)
+0.5.1 (2011-03-31)
 ----------------
-> Initial release.
+> Add correct implementation of WhaTV.core.pause() and WhaTV.core.resume()
+> Fix bug where messages and date were disappearing when showing Flash slide
+> Solved several bugs on various platforms
 > [Cedric de Saint Martin]
 
-0.0.2 (2010-09-11)
-----------------
-> Iframe and video full support with proper css.
+0.5.0 (2011-01-19)
+---------------
+> Major refactoring, separating 'core' code to 'modules' and utilities.
+> Adding a simple API to add and customize 'modules' (fullscreen, ambilight, etc)
+> Adding reference implementations of base modules, and examples of modules
 > [Cedric de Saint Martin]
 
-0.0.3 (2010-09-11)
-----------------
-> Adding Flash support.
+0.2.5 (2011-01-19)
+---------------
+> Adding public methods to our object, allowing to go to next slide,
+> pause a video, and adding a callback which will be called to send
+> information about each slide.
 > [Cedric de Saint Martin]
 
-0.0.4 (2010-10-18)
-----------------
-> Adding modular Ambimage support.
+0.2.4 (2011-01-17)
+---------------
+> Adding Youtube videos Support
 > [Cedric de Saint Martin]
 
-0.0.5 (2010-10-19)
-----------------
-> Get rid of majority of jquery calls,
-> Ambilight support,
-> Adding an options system to specify image and video options (not fully implemented)
+0.2.3 (2011-01-17)
+---------------
+> Better handling of bad video slide
 > [Cedric de Saint Martin]
 
-0.0.6 (2010-10-23)
-----------------
-> Option system with (fullscreen, ambimage/ambilight, crop) options, every size calculated relatively for images and video,
-> Everything is vertically centered.
-
-0.0.7 (2010-10-25)
-----------------
-> Introducing a footer with a clock and a Quick Messages system.
+0.2.2 (2011-01-17)
+---------------
+> Adding fullscreen support
 > [Cedric de Saint Martin]
 
-0.1.0 (2010-10-25)
-----------------
-> First stable release with proper "finished loading" event firing, no timeout for videos
+0.2.1 (2011-01-05)
+---------------
+> Fixing video bugs, cleaning code, works with Firefox
 > [Cedric de Saint Martin]
 
 0.2.0 (2010-10-27)
@@ -75,46 +73,77 @@ Changelog :
 > two global div, alterning)
 > [Cedric de Saint Martin]
 
-0.2.1 (2011-01-05)
----------------
-> Fixing video bugs, cleaning code, works with Firefox
-> [Cedric de Saint Martin]
-
-0.2.2 (2011-01-17)
----------------
-> Adding fullscreen support
-> [Cedric de Saint Martin]
-
-0.2.3 (2011-01-17)
----------------
-> Better handling of bad video slide
-> [Cedric de Saint Martin]
-
-0.2.4 (2011-01-17)
----------------
-> Adding Youtube videos Support
-> [Cedric de Saint Martin]
-
-0.2.5 (2011-01-19)
----------------
-> Adding public methods to our object, allowing to go to next slide,
-> pause a video, and adding a callback which will be called to send
-> information about each slide.
-> [Cedric de Saint Martin]
-
-0.5.0 (2011-01-19)
----------------
-> Major refactoring, separating 'core' code to 'modules' and utilities.
-> Adding a simple API to add and customize 'modules' (fullscreen, ambilight, etc)
-> Adding reference implementations of base modules, and examples of modules
-> [Cedric de Saint Martin]
-
-0.5.1 (2011-03-31)
+0.1.0 (2010-10-25)
 ----------------
-> Add correct implementation of WhaTV.core.pause() and WhaTV.core.resume()
-> Fix bug where messages and date were disappearing when showing Flash slide
-> Solved several bugs on various platforms
+> First stable release with proper "finished loading" event firing, no timeout for videos
 > [Cedric de Saint Martin]
+
+0.0.7 (2010-10-25)
+----------------
+> Introducing a footer with a clock and a Quick Messages system.
+> [Cedric de Saint Martin]
+
+0.0.6 (2010-10-23)
+----------------
+> Option system with (fullscreen, ambimage/ambilight, crop) options, every size calculated relatively for images and video,
+> Everything is vertically centered.
+
+0.0.5 (2010-10-19)
+----------------
+> Get rid of majority of jquery calls,
+> Ambilight support,
+> Adding an options system to specify image and video options (not fully implemented)
+> [Cedric de Saint Martin]
+
+0.0.4 (2010-10-18)
+----------------
+> Adding modular Ambimage support.
+> [Cedric de Saint Martin]
+
+0.0.3 (2010-09-11)
+----------------
+> Adding Flash support.
+> [Cedric de Saint Martin]
+
+0.0.2 (2010-09-11)
+----------------
+> Iframe and video full support with proper css.
+> [Cedric de Saint Martin]
+
+0.0.1 (2010-09-11)
+----------------
+> Initial release.
+> [Cedric de Saint Martin]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 Roadmap :
@@ -149,7 +178,7 @@ Known Bugs :
 * Quick Messages animations are uglily slow when showing resource-intensive video
 * Date CSS is ugly and vary from browsers
 * Chrome : timeout is not respected in videos
-* Someone reported that loop is stopped somewhere (before video?) (JŽrŽmy)
+* Someone reported that loop is stopped somewhere (before video?) (Jï¿½rï¿½my)
 * Under webkit : videos cause HUGE leaks
 * Broken div are not garbage collected.
 
