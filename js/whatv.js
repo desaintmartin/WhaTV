@@ -98,7 +98,8 @@ WhaTV.core = (function(global, WhaTV) {
    */
   function insertIntoMetacontent(content, slideReference) {
     content.setAttribute('id', 'content' + slideReference);
-    // FIXME Hardcoded
+    // FIXME Hardcoded. No module should interfere with core. Either improve
+    // The module, or improve the core.
     if (WhaTV.util.hasClassName(content, 'flash')) {
       WhaTV.util.addClassName(content, 'nextSlideFlash');
       global.document.getElementById('metacontent').appendChild(content);
