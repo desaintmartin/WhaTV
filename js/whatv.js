@@ -1,10 +1,11 @@
-'use strict';
-
-window.WhaTV = window.WhaTV || {};
+var WhaTV = WhaTV || {};
 
 // We use global as argument to not depend on an environment. Usually, it is
 // "window" in web browsers.
-window.WhaTV.core = (function(global) {
+WhaTV.core = (function(global, WhaTV) {
+  // ECMAScript 5 strict mode, function mode.
+  'use strict';
+
   // Awful hack in global scope if we do not have console object
   if (!global.console) {
     global.console = {
@@ -51,11 +52,11 @@ window.WhaTV.core = (function(global) {
       WhaTV.util.turnOnFullscreenIfSupported();
     }
     slides = data.slides;
-    if (global.WhaTV.timer) {
-      global.WhaTV.timer.create(defaults.dateDivId);
+    if (WhaTV.timer) {
+      WhaTV.timer.create(defaults.dateDivId);
     }
-    if (global.WhaTV.quickMessages) {
-      global.WhaTV.quickMessages.create(
+    if (WhaTV.quickMessages) {
+      WhaTV.quickMessages.create(
           data.messages,
           defaults.quickMessagesDivId
       );
@@ -76,10 +77,10 @@ window.WhaTV.core = (function(global) {
                        'number ' + slideReference);
     // Calls loaders method depending on slide type. Assigns the resulting
     // node to 'content'
-    if (global.WhaTV.module &&
-        global.WhaTV.module[currentSlide.type] &&
-        global.WhaTV.module[currentSlide.type].load) {
-      content = global.WhaTV.module[currentSlide.type].load(slideReference,
+    if (WhaTV.module &&
+        WhaTV.module[currentSlide.type] &&
+        WhaTV.module[currentSlide.type].load) {
+      content = WhaTV.module[currentSlide.type].load(slideReference,
                                                             currentSlide,
                                                             onNextSlideReady,
                                                             skipLoadingSlide);
@@ -98,11 +99,11 @@ window.WhaTV.core = (function(global) {
   function insertIntoMetacontent(content, slideReference) {
     content.setAttribute('id', 'content' + slideReference);
     // FIXME Hardcoded
-    if (global.WhaTV.util.hasClassName(content, 'flash')) {
-      global.WhaTV.util.addClassName(content, 'nextSlideFlash');
+    if (WhaTV.util.hasClassName(content, 'flash')) {
+      WhaTV.util.addClassName(content, 'nextSlideFlash');
       global.document.getElementById('metacontent').appendChild(content);
     } else {
-      global.WhaTV.util.addClassName(content, 'nextSlide');
+      WhaTV.util.addClassName(content, 'nextSlide');
       global.document.getElementById('metacontent').appendChild(content);
     }
   }
@@ -133,7 +134,7 @@ window.WhaTV.core = (function(global) {
       return;
     }
     // If slide is broken, we skip everything
-    if (global.WhaTV.util.hasClassName(divToShow, 'broken')) {
+    if (WhaTV.util.hasClassName(divToShow, 'broken')) {
       divToShow.parentNode.removeChild(divToShow);
       divToHide.setAttribute('id', 'content' + pointer);
       incrementPointer();
@@ -142,8 +143,8 @@ window.WhaTV.core = (function(global) {
     }
     // Destroys the old slide
     if (divToHide) {
-      global.WhaTV.util.removeClassName(divToHide, 'currentSlide');
-      global.WhaTV.util.addClassName(divToHide, 'pastSlide');
+      WhaTV.util.removeClassName(divToHide, 'currentSlide');
+      WhaTV.util.addClassName(divToHide, 'pastSlide');
       onHide(finishedSlideIndex, divToHide);
       divToHide.parentNode.removeChild(divToHide);
     }
@@ -152,9 +153,9 @@ window.WhaTV.core = (function(global) {
     setTimeout(function() {
       // Shows the new slide
       if (divToShow) {
-        global.WhaTV.util.removeClassName(divToShow, 'nextSlide');
-        global.WhaTV.util.removeClassName(divToShow, 'nextSlideFlash');
-        global.WhaTV.util.addClassName(divToShow, 'currentSlide');
+        WhaTV.util.removeClassName(divToShow, 'nextSlide');
+        WhaTV.util.removeClassName(divToShow, 'nextSlideFlash');
+        WhaTV.util.addClassName(divToShow, 'currentSlide');
         onShow(pointer, divToShow);
       }
       // Calls a callback, if specified.
@@ -249,11 +250,11 @@ window.WhaTV.core = (function(global) {
   function onShow(slideReference, div) {
     var moduleName = getModuleName(slideReference, div);
     // If our div is broken (example : bad video) we return immediatly
-    if (global.WhaTV.util.hasClassName(div, 'broken')) {
+    if (WhaTV.util.hasClassName(div, 'broken')) {
       return;
     }
     // Calls 'show' method of module
-    global.WhaTV.module[moduleName].show(slideReference, div, onSlideTimeout);
+    WhaTV.module[moduleName].show(slideReference, div, onSlideTimeout);
   }
 
   /**
@@ -262,12 +263,12 @@ window.WhaTV.core = (function(global) {
   function onHide(slideReference, div) {
     var moduleName = getModuleName(slideReference, div);
     // If our div is broken (example : bad video) we return immediatly
-    if (global.WhaTV.util.hasClassName(div, 'broken')) {
+    if (WhaTV.util.hasClassName(div, 'broken')) {
       return;
     }
     // Calls 'hide' method of module
-    global.WhaTV.module[moduleName].hide(slideReference, div);
-    global.WhaTV.util.clearNode(div);
+    WhaTV.module[moduleName].hide(slideReference, div);
+    WhaTV.util.clearNode(div);
   }
 
   function getModuleName(slideReference, div) {
@@ -285,7 +286,7 @@ window.WhaTV.core = (function(global) {
 
   function init() {
     // Launch WhaTV : parses slides informations, launching ignition
-    global.WhaTV.util.parseJSON('slides.json', ignition);
+    WhaTV.util.parseJSON('slides.json', ignition);
   }
 
   // Now are the public methods, encapsulated in an object in order to not
@@ -348,6 +349,6 @@ window.WhaTV.core = (function(global) {
     onSlideTimeout: onSlideTimeout,
     onNextSlideReady: onNextSlideReady
   };
-})(window);
+})(window, WhaTV);
 
-window.WhaTV.core.init();
+WhaTV.core.init();
