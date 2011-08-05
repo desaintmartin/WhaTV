@@ -2,7 +2,7 @@ var WhaTV = WhaTV || {};
 
 // We use global as argument to not depend on an environment. Usually, it is
 // "window" in web browsers.
-WhaTV.core = (function(global, WhaTV) {
+WhaTV.core = (function WhaTVCoreInitClosure(global, WhaTV) {
   // ECMAScript 5 strict mode, function mode.
   'use strict';
 
@@ -215,9 +215,9 @@ WhaTV.core = (function(global, WhaTV) {
     if (nextSlideReady[slideReference] && slideTimeout[endedSlide]) {
       nextSlideReady[slideReference] = false;
       slideTimeout[endedSlide] = false;
-      // Clears the timeout, if present.
+      // Clears the timeout, if present. Can happen if slide decided by itself
+      // to finish, or if the slide is/has broke(n).
       if (currentTimeout) {
-        // FIXME Why ??? Usecases ?
         global.console.debug("Remaining timeout");
         clearTimeout(currentTimeout);
         currentTimeout = null;
@@ -299,6 +299,7 @@ WhaTV.core = (function(global, WhaTV) {
 
     stop: function stop() {
       // Currently breaks the loop.
+      // Non reversible, only present for debug purposes.
       notifyManager = function() {return null;};
     },
 
@@ -333,10 +334,11 @@ WhaTV.core = (function(global, WhaTV) {
     }
   };
 
+  // For javascript dummies : the whole function WhaTVCoreInitClosure returns
+  // an object, which has access to the whole content of the function. You
+  // (i.e window) don't have access to anything in this function outside of
+  // this returned object.
   return {
-    // TODO Consistency : all should be methods and in public namespace
-    // and we can return later the object just above.
-    //
     // Initialization method
     init: init,
     // Version string
