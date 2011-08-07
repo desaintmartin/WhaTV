@@ -92,6 +92,7 @@ WhaTV.common = {
  */
 WhaTV.module = WhaTV.module || {};
 WhaTV.module.html = {
+  //FIXME Unused 'skipLoadingSlide'
   load: function loadIframe(slideReference, slide, onNextSlideReady, skipLoadingSlide) {
     var iframe = document.createElement('iframe');
     iframe.addEventListener('load',
@@ -115,6 +116,7 @@ WhaTV.module.html = {
 };
 
 WhaTV.module.image = {
+  //FIXME Unused 'skipLoadingSlide'
   load: function loadImage(slideReference, slide, onNextSlideReady, skipLoadingSlide) {
     var image = new Image(),
         // One global image wrapper which respect whaTV style, put in #contentx.
@@ -154,6 +156,7 @@ WhaTV.module.image = {
     return globalWrapper;
   },
   show: function showImage(slideReference, div) {
+    //FIXME Unused 'ambimageWrapper'
     var ambimageWrapper,
         images = div.getElementsByClassName('image-slide'),
         image;
@@ -182,7 +185,7 @@ WhaTV.module.video = {
         globalWrapper = document.createElement('div'),
         // One wrapper to do what you want inside, put in the global wrapper.
         localWrapper,
-        moduleIndex,
+        moduleIndex, //FIXME Unused
         source,
         type;
     // Looks for a video we can play
@@ -351,7 +354,7 @@ WhaTV.module.flash = {
 // Youtube API requires a onYouTubePlayerReady global function. Crap.
 // So we implement this function, which will call every function we attach to.
 function onYouTubePlayerReady(e) {
-  console.warn(e)
+  console.warn(e);
   var fn;
   for (fn in onYouTubePlayerReady.fns) {
     if (onYouTubePlayerReady.fns.hasOwnProperty(fn)) {
@@ -366,7 +369,7 @@ onYouTubePlayerReady.attach = function attach(name, fn) {
 };
 // … and that
 onYouTubePlayerReady.detach = function detach(name) {
-  var index;
+  var index; //FIXME Unused
   onYouTubePlayerReady.fns = onYouTubePlayerReady.fns || {};
       delete onYouTubePlayerReady.fns[name];
 };
