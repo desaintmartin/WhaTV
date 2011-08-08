@@ -77,13 +77,6 @@
     }
   ],
   "messages": [
-    {"title": "plopinou", "content": "Bonjour et bienvenue sur la WhaTV. Attention : certaines vidéos mettront des années à charger en raison de ma faible bande passante."},
-    {"title": "Bonjour", "content": "Bien le bonjour!"},
-    {"title": "twitter", "content": "Voici un truc un peu long et pas forcément super lisible mais ça doit faire 140 caractères maximum parce quon adore Twitter et consorts."},
-    {"title": "untitre", "content": "Comment ça va?"},
-    {"title": "untitre", "content": "Un truc un peu moins long mais qui va quand meme dépasser de la page, très surement."},
-    {"title": "untitre", "content": "Très bien et toi?"},
-    {"title": "untitre", "content": "こんにちは。This is an i18n test :) Ich liebe Eiß essen ! «Ils ne savaient pas que c'était impossible, alors ils l'ont fait», Mark Twain"},
     {"title": "untitre", "content": "Konndfgishiwa!Konndfgishiwa!Konndfgishiwa!Konndfgishiwa!Konndfgishiwa!Konndfgishiwa!!Konndfgishiwa!Konndfgishiwa!Konndfgishiwa!Konndfgishiwa!"}
   ]
 }

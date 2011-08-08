@@ -12,7 +12,7 @@ window.WhaTV = window.WhaTV || {};
 WhaTV.common = {
   /**
    * Put content in fullscreen (ie as big as possible without part of content
-   * Getting out of the viewport.
+   * Getting out of the viewport).
    */
   fullscreen: function fullscreen(image, size) {
     var windowRatio = window.innerWidth / window.innerHeight,
@@ -88,7 +88,7 @@ WhaTV.common = {
  * Here are WhaTV Modules. They are loaders : they return a fully populated
  * node, ready to be appended to our page. Also responsible of calling
  * onNextSlideReady when finished loading.
- *You can add your own module to WhaTV.module.
+ * You can add your own module to WhaTV.module.
  */
 WhaTV.module = WhaTV.module || {};
 WhaTV.module.html = {
