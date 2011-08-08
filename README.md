@@ -150,6 +150,7 @@ Ideas :
 
 Known Bugs : 
 ==========
+* Youtube API is outdated, thus does not work. (Louis)
 * Youtube plugin does not work (due to Flash security restrictions) unless server is at localhost (see http://code.google.com/apis/youtube/iframe_api_reference.html#Loading_a_Video_Player and http://code.google.com/apis/youtube/player_parameters.html?playerVersion=HTML5#Overview)
 * Quick Messages animations are uglily slow when showing resource-intensive video
 * Date CSS is ugly and vary from browsers
@@ -158,6 +159,10 @@ Known Bugs :
 * Under webkit : videos cause HUGE leaks
 * Broken div are not garbage collected.
 
+
+Module API Documentation
+===============
+FIXME write it.
 
 
 Public API Documentation
