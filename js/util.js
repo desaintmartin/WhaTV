@@ -47,16 +47,6 @@ WhaTV.util = {
    * Fetch an url using "get" xhr, then parse it as JSON.
    */
   parseJSON: function parseJSON(url, callback) {
-    //FIXME Unused 'JSONCallback'
-    var JSONCallback = function(data) {
-      if (typeof(data) === 'object') {
-        callback(data);
-      } else if (typeof(data) === 'string') {
-        callback(JSON.parse(data));
-      } else {
-          throw 'Cannot parse JSON.';
-      }
-    };
     if (window.jQuery) {
       $.getJSON(url, callback);
     } else if (window.dojo) {

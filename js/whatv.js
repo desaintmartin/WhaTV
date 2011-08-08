@@ -248,7 +248,7 @@ WhaTV.core = (function WhaTVCoreInitClosure(global, WhaTV) {
    * start ambilight, adding event listeners for end of videos, etc.
    */
   function onShow(slideReference, div) {
-    var moduleName = getModuleName(slideReference, div);
+    var moduleName = getModuleName(div);
     // If our div is broken (example : bad video) we return immediatly
     if (WhaTV.util.hasClassName(div, 'broken')) {
       return;
@@ -261,7 +261,7 @@ WhaTV.core = (function WhaTVCoreInitClosure(global, WhaTV) {
    * Called to stop and clean the finished slide
    */
   function onHide(slideReference, div) {
-    var moduleName = getModuleName(slideReference, div);
+    var moduleName = getModuleName(div);
     // If our div is broken (example : bad video) we return immediatly
     if (WhaTV.util.hasClassName(div, 'broken')) {
       return;
@@ -271,13 +271,13 @@ WhaTV.core = (function WhaTVCoreInitClosure(global, WhaTV) {
     WhaTV.util.clearNode(div);
   }
 
-  //FIXME Unused 'slideReference'
-  function getModuleName(slideReference, div) {
-    var moduleName = div.getAttribute('whatvslidetype');
+  function getModuleName(div) {
+    var moduleName;
     if (!div) {
       global.console.warn('Warning : content to show is empty. Skipping');
-      return; //FIXME Should return null ?
+      return null;
     }
+    moduleName = div.getAttribute('whatvslidetype');
     if (!moduleName) {
       global.console.error('No suitable div found to show.');
       return null;

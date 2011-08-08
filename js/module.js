@@ -156,9 +156,7 @@ WhaTV.module.image = {
     return globalWrapper;
   },
   show: function showImage(slideReference, div) {
-    //FIXME Unused 'ambimageWrapper'
-    var ambimageWrapper,
-        images = div.getElementsByClassName('image-slide'),
+    var images = div.getElementsByClassName('image-slide'),
         image;
     if (images.length === 1) {
       image = images[0];
@@ -185,7 +183,6 @@ WhaTV.module.video = {
         globalWrapper = document.createElement('div'),
         // One wrapper to do what you want inside, put in the global wrapper.
         localWrapper,
-        moduleIndex, //FIXME Unused
         source,
         type;
     // Looks for a video we can play
@@ -362,14 +359,13 @@ function onYouTubePlayerReady(e) {
     }
   }
 }
-// Document this …
+// FIXME Document this …
 onYouTubePlayerReady.attach = function attach(name, fn) {
   onYouTubePlayerReady.fns = onYouTubePlayerReady.fns || {};
   onYouTubePlayerReady.fns[name] = fn;
 };
 // … and that
 onYouTubePlayerReady.detach = function detach(name) {
-  var index; //FIXME Unused
   onYouTubePlayerReady.fns = onYouTubePlayerReady.fns || {};
       delete onYouTubePlayerReady.fns[name];
 };

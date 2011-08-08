@@ -117,20 +117,16 @@ WhaTV.quickMessages = (function() {
     */
   function showNextMessage() {
     incrementPointer();
-    // If beginning of the loop :
-    // We put the content one 'div size' under
+    // We move up the div containing the message to show it to the user. Then, if the
+    // Message is too long, we animate it from right to left.
+    // FIXME test, document and factor this function.
     if (currentMessage === messages.length) {
       $(node).animate({'marginTop': '-=' + height},
                      //TODO good easing
                      defaults.transitionSpeed,
+                     //FIXME what if the message is too long??
                      function() {setTimeout(hideMessages, 1000);});
-      //no return statement needed as the last statement of a 'void' function
-      //return;
     } else {
-      // attendre x secondes
-      //  faire défiler de droite à gauche
-      //    quand arrivé à la fin, next
-      //  sinon next dans x secondes*/
       $(node).animate({'marginTop': '-=' + height},
                       defaults.transitionSpeed,
                       function() {
