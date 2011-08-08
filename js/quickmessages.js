@@ -1,11 +1,10 @@
-'use strict';
-
 window.WhaTV = window.WhaTV || {};
 
 /**
-  * Message management system, compatible with jQuery UI.
-  **/
+ * Message management system, compatible with jQuery UI.
+ */
 WhaTV.quickMessages = (function() {
+  'use strict';
   var defaults = {
     // Default time, in milliseconds, to show a message
     timeout: 5000,
@@ -35,13 +34,13 @@ WhaTV.quickMessages = (function() {
       footerWidth;
 
   /**
-    * The constructor of quickMessages
-    * The animation is as follow :
-    * We put the content one 'div height' under
-    * We put the wrapper under the window.
-    * We show it with an animation
-    * while there is messages : we move the content one 'div height' up
-    */
+   * The constructor of quickMessages
+   * The animation is as follow :
+   * We put the content one 'div height' under
+   * We put the wrapper under the window.
+   * We show it with an animation
+   * while there is messages : we move the content one 'div height' up
+   */
   function init() {
     var length, index, message, div;
     // No message at all, we hide and return
@@ -75,18 +74,13 @@ WhaTV.quickMessages = (function() {
   }
 
   /**
-    * The main loop
-    */
+   * The main loop. At the beginning, the messages bar div is at the right of
+   * the window, outside of user view. To show it, we move this div to the
+   * left. Then , we call function responsible for showing a message.
+   */
   function showMessages() {
-    // Move right the div with an animation
-    // and launch message loop as callback
-    // Reset when we begin the loop
     var messagesLength = messages.length, index, span;
-    // TODO I still do not know what to do when showing messages div.
-    // If I want to see at first a blank div, we need to set to "height"
-    // Otherwise, if I want an empty message (in order to see background)
-    // I will need "0px".
-    node.style.marginTop = '0px';//height + 'px';
+    node.style.marginTop = '0px';
     currentMessage = 0;
     for (index = 0; index < messagesLength; index += 1) {
       span = node.children[index].children[0];
@@ -101,9 +95,9 @@ WhaTV.quickMessages = (function() {
   }
 
   /**
-    * When the end of the loop is reached, we hide everything for a while
-    * Then start again!
-    */
+   * When the end of the loop is reached, we hide everything for a while
+   * Then start again!
+   */
   function hideMessages() {
     $(nodeWrapper).animate({'left': '-=' + footerWidth + 'px'},
                            1000,
@@ -113,36 +107,32 @@ WhaTV.quickMessages = (function() {
                            });
   }
   /**
-    * Show a message, then increment the pointer and call itself when finished
-    */
+   * Show/animate a message, then increment the pointer.
+   */
   function showNextMessage() {
     incrementPointer();
-    // We move up the div containing the message to show it to the user. Then, if the
-    // Message is too long, we animate it from right to left.
-    // FIXME test, document and factor this function.
+    // If last message has finished showing : we hide the message bar.
     if (currentMessage === messages.length) {
       $(node).animate({'marginTop': '-=' + height},
-                     //TODO good easing
                      defaults.transitionSpeed,
-                     //FIXME what if the message is too long??
-                     function() {setTimeout(hideMessages, 1000);});
+                     function hideMessageBar() {
+                       setTimeout(hideMessages, 1000);
+                     });
     } else {
+      // Normal case : we show the message, then call marquee function
       $(node).animate({'marginTop': '-=' + height},
                       defaults.transitionSpeed,
-                      function() {
+                      function AnimateCurrentMessage() {
                         setTimeout(marqueeIfNeeded, defaults.timeout);
                       });
     }
   }
 
   /**
-    * If message too long : we animate it.
-    **/
+   * If message too long : we animate it from right to left.
+   */
   function marqueeIfNeeded() {
     var span = node.children[currentMessage].children[0],
-        // Candidate to remove
-        // span = messages[currentMessage] ?
-            //node.children[currentMessage + 1].children[0] : null,
         difference = getSizeFromStyle(getComputedStyle(span, '').width) -
                      getSizeFromStyle(getComputedStyle(nodeWrapper, '').width);
     // If message too large for div, we "marquee" it
@@ -159,9 +149,9 @@ WhaTV.quickMessages = (function() {
   }
 
   /**
-    * This function increment the pointer, obviously.
-    * When reaching end of messages array, we start again.
-    */
+   * This function increment the pointer, obviously.
+   * When reaching end of messages array, we start again.
+   */
   function incrementPointer() {
     currentMessage = currentMessage + 1;
     if (currentMessage === messages.length + 1) {
@@ -175,10 +165,10 @@ WhaTV.quickMessages = (function() {
 
   return {
     /**
-      * Initiate the quickMessages
-      * @param {Element} messages an array of strings.
-      * @param {Element} div the div containing messages.
-      */
+     * Initiate the quickMessages
+     * @param {String[]} messageArray an array of strings.
+     * @param {HTMLElement} div the div containing messages.
+     */
     create: function(messageArray, divId) {
       node = document.getElementById(divId);
       nodeWrapper = node.parentNode;
