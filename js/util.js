@@ -47,6 +47,7 @@ WhaTV.util = {
    * Fetch an url using "get" xhr, then parse it as JSON.
    */
   parseJSON: function parseJSON(url, callback) {
+    //FIXME Unused 'JSONCallback'
     var JSONCallback = function(data) {
       if (typeof(data) === 'object') {
         callback(data);

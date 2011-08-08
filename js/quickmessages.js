@@ -124,7 +124,8 @@ WhaTV.quickMessages = (function() {
                      //TODO good easing
                      defaults.transitionSpeed,
                      function() {setTimeout(hideMessages, 1000);});
-      return;
+      //no return statement needed as the last statement of a 'void' function
+      //return;
     } else {
       // attendre x secondes
       //  faire défiler de droite à gauche

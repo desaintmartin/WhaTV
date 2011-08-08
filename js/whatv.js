@@ -271,11 +271,12 @@ WhaTV.core = (function WhaTVCoreInitClosure(global, WhaTV) {
     WhaTV.util.clearNode(div);
   }
 
+  //FIXME Unused 'slideReference'
   function getModuleName(slideReference, div) {
     var moduleName = div.getAttribute('whatvslidetype');
     if (!div) {
       global.console.warn('Warning : content to show is empty. Skipping');
-      return;
+      return; //FIXME Should return null ?
     }
     if (!moduleName) {
       global.console.error('No suitable div found to show.');
@@ -323,7 +324,7 @@ WhaTV.core = (function WhaTVCoreInitClosure(global, WhaTV) {
         } else {
           this.next();
         }
-        this.paused = false();
+        this.paused = false;
       }
     },
 
