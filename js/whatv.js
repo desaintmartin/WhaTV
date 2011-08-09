@@ -26,8 +26,6 @@ WhaTV.core = (function WhaTVCoreInitClosure(global, WhaTV) {
   },
       // Pointer to current slide
       pointer = 0,
-      // Ugly hack to know where to show the slide if not even.
-      even = true,
       // The informations about slides to show
       slides = [],
       // Array of Boolean to know if next slide has finished loading
@@ -238,8 +236,7 @@ WhaTV.core = (function WhaTVCoreInitClosure(global, WhaTV) {
    * Increments the pointer. If last slide has been reached, we start again.
    */
   function incrementPointer() {
-    pointer = (pointer + 1) % (slides.length - 1);
-    even = (slides.length % 2 === 0);
+    pointer = (pointer + 1) % (slides.length);
   }
 
 
