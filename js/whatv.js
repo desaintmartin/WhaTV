@@ -38,7 +38,7 @@ WhaTV.core = (function WhaTVCoreInitClosure(global, WhaTV) {
       // informations about each slide
       informationListener = null,
       // The current version of whaTV being used
-      version = '0.5.2';
+      version = '0.5.2.1';
 
   /**
    * Ignition of The Great Loop. Starts The Everything, and put it in
@@ -282,11 +282,6 @@ WhaTV.core = (function WhaTVCoreInitClosure(global, WhaTV) {
     return moduleName;
   }
 
-  function init() {
-    // Launch WhaTV : parses slides informations, launching ignition
-    WhaTV.util.parseJSON('slides.json', ignition);
-  }
-
   // Now are the public methods, encapsulated in an object in order to not
   // pollute WhaTV.core scope.
   var publicMethods = {
@@ -331,13 +326,14 @@ WhaTV.core = (function WhaTVCoreInitClosure(global, WhaTV) {
     }
   };
 
+  // Launch WhaTV : parses slides informations, launching ignition
+  WhaTV.util.parseJSON('slides.json', ignition);
+  
   // For javascript dummies : the whole function WhaTVCoreInitClosure returns
   // an object, which has access to the whole content of the function. You
   // (i.e window) don't have access to anything in this function outside of
   // this returned object.
   return {
-    // Initialization method
-    init: init,
     // Version string
     version: version,
     next: publicMethods.next,
@@ -350,5 +346,3 @@ WhaTV.core = (function WhaTVCoreInitClosure(global, WhaTV) {
     onNextSlideReady: onNextSlideReady
   };
 })(window, WhaTV);
-
-WhaTV.core.init();

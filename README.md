@@ -24,6 +24,10 @@ Mailing list is currently private, but will soon be available to subscriptions. 
 Changelog :
 =========
 
+0.5.2.1 (2011-08-09)
+------------------
+* Correct slide pointer incrementation [Cedric de Saint Martin]
+
 0.5.2 (2011-08-05)
 ------------------
 * Add basic transition system [Cedric de Saint Martin]
@@ -151,13 +155,13 @@ Ideas :
 Known Bugs : 
 ==========
 * In case of failure of a module, the main loop should not be stopped.
+* "Remaining timeout" after some slides. Inspect this bug.
 * Incompatibility with Chrome 15 (jQuery 1.6.2 bug?)
 * Youtube API is outdated, thus does not work. (Louis)
 * Youtube plugin does not work (due to Flash security restrictions) unless server is at localhost (see http://code.google.com/apis/youtube/iframe_api_reference.html#Loading_a_Video_Player and http://code.google.com/apis/youtube/player_parameters.html?playerVersion=HTML5#Overview)
 * Quick Messages animations are uglily slow when showing resource-intensive video
 * Date CSS is ugly and vary from browsers
 * Chrome : timeout is not respected in videos
-* Someone reported that loop is stopped somewhere (before video?) (J�r�my)
 * Under webkit : videos cause HUGE leaks
 * Broken div are not garbage collected.
 
