@@ -2,7 +2,7 @@ window.WhaTV = window.WhaTV || {};
 
 // We use global as argument to not depend on an environment. Usually, it is
 // "window" in web browsers.
-WhaTV.core = (function WhaTVCoreInitClosure(global, WhaTV) {
+WhaTV.core = (function WhaTVCoreClosure(global, WhaTV) {
   // ECMAScript 5 strict mode, function mode.
   'use strict';
 
@@ -59,7 +59,7 @@ WhaTV.core = (function WhaTVCoreInitClosure(global, WhaTV) {
           defaults.quickMessagesDivId
       );
     }
-    loadPointedSlideIntoDOM(pointer); // Should be 0
+    loadPointedSlideIntoDOM(pointer); // pointer is 0 at this point
     onSlideTimeout(slides.length - 1);
   }
 
@@ -69,18 +69,25 @@ WhaTV.core = (function WhaTVCoreInitClosure(global, WhaTV) {
    */
   function loadPointedSlideIntoDOM(slideReference) {
     var currentSlide = slides[slideReference],
+        moduleName = currentSlide.type,
         content;
     global.console.log('loadPointedSlideIntoDOM called. preparing slide ' + 
                        'number ' + slideReference);
     // Calls loaders method depending on slide type. Assigns the resulting
     // node to 'content'
     if (WhaTV.module &&
-        WhaTV.module[currentSlide.type] &&
-        WhaTV.module[currentSlide.type].load) {
-      content = WhaTV.module[currentSlide.type].load(slideReference,
-                                                            currentSlide,
-                                                            onNextSlideReady,
-                                                            skipLoadingSlide);
+        WhaTV.module[moduleName] &&
+        WhaTV.module[moduleName].load) {
+      try {
+        content = WhaTV.module[currentSlide.type].load(slideReference,
+                                                       currentSlide,
+                                                       onNextSlideReady,
+                                                       skipLoadingSlide);
+      } catch (e) {
+        console.error("Module " + moduleName + " crashed when loading for " +
+                      "slide number " + pointer + " : " + e);
+        //FIXME skip slide
+      }
       content.setAttribute('whatvslidetype', currentSlide.type);
       insertIntoMetacontent(content, slideReference);
     } else {
@@ -147,7 +154,7 @@ WhaTV.core = (function WhaTVCoreInitClosure(global, WhaTV) {
       divToHide.parentNode.removeChild(divToHide);
     }
     // We do a setTimeout here because we want a "transition" - i.e a halt -
-    // Between the two slides.
+    // Between the two slides. Like advertising on TV.
     setTimeout(function() {
       // Shows the new slide
       if (divToShow) {
@@ -250,8 +257,15 @@ WhaTV.core = (function WhaTVCoreInitClosure(global, WhaTV) {
     if (WhaTV.util.hasClassName(div, 'broken')) {
       return;
     }
-    // Calls 'show' method of module
-    WhaTV.module[moduleName].show(slideReference, div, onSlideTimeout);
+    try {
+      // Calls 'show' method of module
+      WhaTV.module[moduleName].show(slideReference, div, onSlideTimeout);
+    } catch (e) {
+      // Module has crashed. Fortunately we don't trust it, and we skip it.
+      console.error("Module " + moduleName + " crashed when showing slide " +
+                    "number " + pointer + " : \n" + e.stack);
+      onSlideTimeout(slideReference);
+    }
   }
 
   /**
@@ -263,8 +277,14 @@ WhaTV.core = (function WhaTVCoreInitClosure(global, WhaTV) {
     if (WhaTV.util.hasClassName(div, 'broken')) {
       return;
     }
-    // Calls 'hide' method of module
-    WhaTV.module[moduleName].hide(slideReference, div);
+    try {
+      // Calls 'hide' method of module
+      WhaTV.module[moduleName].hide(slideReference, div);
+    } catch (e) {
+      // Module has crashed. Fortunately we don't trust it, and we skip it.
+      console.error("Module " + moduleName + " crashed when hiding slide " +
+                    "number " + pointer + " : \n" + e.stack);
+    }
     WhaTV.util.clearNode(div);
   }
 
