@@ -57,23 +57,19 @@ Changelog :
 
 0.2.4 (2011-01-17)
 ---------------
-* Adding Youtube videos Support
-* [Cedric de Saint Martin]
+* Adding Youtube videos Support [Cedric de Saint Martin]
 
 0.2.3 (2011-01-17)
 ---------------
-* Better handling of bad video slide
-* [Cedric de Saint Martin]
+* Better handling of bad video slide [Cedric de Saint Martin]
 
 0.2.2 (2011-01-17)
 ---------------
-* Adding fullscreen support
-* [Cedric de Saint Martin]
+* Adding fullscreen support [Cedric de Saint Martin]
 
 0.2.1 (2011-01-05)
 ---------------
-* Fixing video bugs, cleaning code, works with Firefox
-* [Cedric de Saint Martin]
+* Fixing video bugs, cleaning code, works with Firefox [Cedric de Saint Martin]
 
 0.2.0 (2010-10-27)
 ---------------
@@ -86,12 +82,12 @@ Changelog :
 0.1.0 (2010-10-25)
 ----------------
 * First stable release with proper "finished loading" event firing, no timeout for videos
-* [Cedric de Saint Martin]
+[Cedric de Saint Martin]
 
 0.0.7 (2010-10-25)
 ----------------
 * Introducing a footer with a clock and a Quick Messages system.
-* [Cedric de Saint Martin]
+[Cedric de Saint Martin]
 
 0.0.6 (2010-10-23)
 ----------------
@@ -107,8 +103,7 @@ Changelog :
 
 0.0.4 (2010-10-18)
 ----------------
-* Adding modular Ambimage support.
-* [Cedric de Saint Martin]
+* Adding modular Ambimage support. [Cedric de Saint Martin]
 
 0.0.3 (2010-09-11)
 ----------------
@@ -117,13 +112,11 @@ Changelog :
 
 0.0.2 (2010-09-11)
 ----------------
-* Iframe and video full support with proper css.
-* [Cedric de Saint Martin]
+* Iframe and video full support with proper css. [Cedric de Saint Martin]
 
 0.0.1 (2010-09-11)
 ----------------
-* Initial release.
-* [Cedric de Saint Martin]
+* Initial release. [Cedric de Saint Martin]
 
 
 
@@ -156,7 +149,6 @@ Known Bugs :
 ==========
 * In case of failure of a module, the main loop should not be stopped.
 * "Remaining timeout" after some slides. Inspect this bug.
-* Incompatibility with Chrome 15 (jQuery 1.6.2 bug?)
 * Youtube API is outdated, thus does not work. (Louis)
 * Youtube plugin does not work (due to Flash security restrictions) unless server is at localhost (see http://code.google.com/apis/youtube/iframe_api_reference.html#Loading_a_Video_Player and http://code.google.com/apis/youtube/player_parameters.html?playerVersion=HTML5#Overview)
 * Quick Messages animations are uglily slow when showing resource-intensive video
