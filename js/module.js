@@ -439,8 +439,8 @@ WhaTV.module.crashLoad = {
 };
 WhaTV.module.crashShow = {
   load: function loadCrash(slideReference, slide, onNextSlideReady, skipLoadingSlide) {
-    setTimeout(onNextSlideReady);
-    return document.CreateElement('div');
+    setTimeout(function() {onNextSlideReady(slideReference)});
+    return document.createElement('div');
   },
   show: function showCrash(slideReference, div) {
     throw "Pwned by evil module";
@@ -449,8 +449,8 @@ WhaTV.module.crashShow = {
 };
 WhaTV.module.crashHide = {
   load: function loadCrash(slideReference, slide, onNextSlideReady, skipLoadingSlide) {
-    setTimeout(onNextSlideReady);
-    return document.CreateElement('div');
+    setTimeout(function() {onNextSlideReady(slideReference)});
+    return document.createElement('div');
   },
   show: function showCrash(slideReference, div) {},
   hide: function hideCrash(slideReference, div) {

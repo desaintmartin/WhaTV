@@ -3,7 +3,7 @@ window.WhaTV = window.WhaTV || {};
 // We use global as argument to not depend on an environment. Usually, it is
 // "window" in web browsers.
 WhaTV.core = (function WhaTVCoreClosure(global, WhaTV) {
-  // ECMAScript 5 strict mode, function mode.
+  // ECMAScript 5 strict mode, function scope.
   'use strict';
 
   // Awful hack in global scope if we do not have console object
@@ -38,7 +38,7 @@ WhaTV.core = (function WhaTVCoreClosure(global, WhaTV) {
       // informations about each slide
       informationListener = null,
       // The current version of whaTV being used
-      version = '0.5.2.1';
+      version = '0.5.3';
 
   /**
    * Ignition of The Great Loop. Starts The Everything, and put it in
@@ -83,13 +83,13 @@ WhaTV.core = (function WhaTVCoreClosure(global, WhaTV) {
                                                        currentSlide,
                                                        onNextSlideReady,
                                                        skipLoadingSlide);
+        content.setAttribute('whatvslidetype', currentSlide.type);
+        insertIntoMetacontent(content, slideReference);
       } catch (e) {
         console.error("Module " + moduleName + " crashed when loading for " +
                       "slide number " + pointer + " : " + e);
-        //FIXME skip slide
+        skipLoadingSlide(slideReference);
       }
-      content.setAttribute('whatvslidetype', currentSlide.type);
-      insertIntoMetacontent(content, slideReference);
     } else {
       global.console.error('FATAL : Unable to detect content type. Aborting.');
     }
@@ -235,6 +235,7 @@ WhaTV.core = (function WhaTVCoreClosure(global, WhaTV) {
    * the next one.
    */
   function skipLoadingSlide(slideReference) {
+    console.warn("Skipping slide number " + slideReference);
     onSlideTimeout(slideReference);
     onNextSlideReady(slideReference);
   }
