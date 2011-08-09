@@ -429,3 +429,33 @@ WhaTV.module.youtube = {
   }
 };
 
+// And now, for fun, some test modules
+WhaTV.module.crashLoad = {
+  load: function loadCrash(slideReference, slide, onNextSlideReady, skipLoadingSlide) {
+    throw "Pwned by evil module";
+  },
+  show: function showCrash(slideReference, div) {},
+  hide: function hideCrash(slideReference, div) {}
+};
+WhaTV.module.crashShow = {
+  load: function loadCrash(slideReference, slide, onNextSlideReady, skipLoadingSlide) {
+    setTimeout(onNextSlideReady);
+    return document.CreateElement('div');
+  },
+  show: function showCrash(slideReference, div) {
+    throw "Pwned by evil module";
+  },
+  hide: function hideCrash(slideReference, div) {}
+};
+WhaTV.module.crashHide = {
+  load: function loadCrash(slideReference, slide, onNextSlideReady, skipLoadingSlide) {
+    setTimeout(onNextSlideReady);
+    return document.CreateElement('div');
+  },
+  show: function showCrash(slideReference, div) {},
+  hide: function hideCrash(slideReference, div) {
+    throw "Pwned by evil module";
+  }
+};
+
+
