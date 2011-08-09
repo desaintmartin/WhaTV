@@ -150,6 +150,8 @@ Ideas :
 
 Known Bugs : 
 ==========
+* In case of failure of a module, the main loop should not be stopped.
+* Incompatibility with Chrome 15 (jQuery 1.6.2 bug?)
 * Youtube API is outdated, thus does not work. (Louis)
 * Youtube plugin does not work (due to Flash security restrictions) unless server is at localhost (see http://code.google.com/apis/youtube/iframe_api_reference.html#Loading_a_Video_Player and http://code.google.com/apis/youtube/player_parameters.html?playerVersion=HTML5#Overview)
 * Quick Messages animations are uglily slow when showing resource-intensive video
