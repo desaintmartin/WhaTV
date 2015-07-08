@@ -32,6 +32,7 @@ WhaTV.quickMessages = (function() {
       height,
       // The width of the wrapper
       footerWidth,
+      messagePadding,
       shown = false,
       readyToShowEventName = 'readyToShowMessages',
       readyToHideEventName = 'readyToHideMessages',
@@ -54,6 +55,7 @@ WhaTV.quickMessages = (function() {
     height = Number(getComputedStyle(nodeWrapper, '').height.replace('px', ''));
     footerWidth = Number(getComputedStyle(nodeWrapper.parentNode, '').
                          width.replace('px', ''));
+    messagePadding = footerWidth * 0.02;
     console.debug('quickMessages: height = ' + height + ', width = ' + footerWidth);
     nodeWrapper.style.fontSize = height * 0.8 + 'px';
     nodeWrapper.style.lineHeight = height + 'px';
@@ -78,6 +80,8 @@ WhaTV.quickMessages = (function() {
     for (index = 0, length = messages.length; index < length; index += 1) {
       message = document.createElement('span');
       message.innerHTML = messages[index];
+      message.style.paddingLeft = messagePadding + 'px';
+      message.style.paddingRight = messagePadding + 'px';
       div = document.createElement('div');
       div.style.height = height + 'px';
       div.appendChild(message);
@@ -153,7 +157,8 @@ WhaTV.quickMessages = (function() {
   function marqueeIfNeeded() {
     if (!shown) { return; }
     var span = node.children[currentMessage].children[0],
-        difference = getSizeFromStyle(getComputedStyle(span, '').width) -
+        difference = messagePadding * 2 +
+                     getSizeFromStyle(getComputedStyle(span, '').width) -
                      getSizeFromStyle(getComputedStyle(nodeWrapper, '').width);
     // If message too large for div, we "marquee" it
     if (difference > 0) {
