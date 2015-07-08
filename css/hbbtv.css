@@ -1,0 +1,18 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  /* most backgrounds are transparent, but there is at least one terminal which has a white
+     color as the default background*/
+  background-color: transparent;
+}
+
+a {
+  /* According to the OIPF DAE specification this shall prevent that a browser draws
+     its default highlighting */
+  outline-style: none;
+  text-decoration: none;
+}
+

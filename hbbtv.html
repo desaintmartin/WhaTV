@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>WhaTV</title>
+  <meta name="description" content="A versatile information diffusion system">
+  <meta name="author" content="Cédric de Saint Martin">
+
+  <link rel="stylesheet" href="css/quickmessages.css" />
+  <link rel="stylesheet" href="css/hbbtv.css" />
+
+  <script type="text/javascript" src="http://whatv.watercooled.org:443/console.io.js?url=http://whatv.watercooled.org:443"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
+  </script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js">
+  </script>
+</head>
+<body>
+  <div style="visibility: hidden; width: 0px; height: 0px;"  >
+    <object type="application/oipfApplicationManager" id="appMan"></object>
+  </div>
+  <div id="videoContainer">
+    <object id="video" type="video/broadcast" style="position: absolute; z-index: 0;"></object>
+  </div>
+  <footer>
+    <div id="quick-messages-wrapper">
+      <div id='quick-messages'>
+      </div>
+    </div>
+  </footer>
+  <script src="js/quickmessages.js"></script>
+  <script src="js/hbbtv.js"></script>
+</body>
+</html>
