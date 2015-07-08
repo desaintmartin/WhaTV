@@ -73,11 +73,11 @@ WhaTV.quickMessages = (function() {
     if (!messages.length) {
       return;
     }
-    messages.unshift({title: '', content: ''});
+    messages.unshift('');
     // Adding each message in the div
     for (index = 0, length = messages.length; index < length; index += 1) {
       message = document.createElement('span');
-      message.innerHTML = messages[index].content;
+      message.innerHTML = messages[index];
       div = document.createElement('div');
       div.style.height = height + 'px';
       div.appendChild(message);
