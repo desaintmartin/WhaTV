@@ -13,9 +13,9 @@ WhaTV.quickMessages = (function() {
     // Default speed of animation between two messages
     transitionSpeed: 'slow',
     // Default time before showing first message
-    timeBeforeFirstMessage: 4000
-    // If you want to customize other values, please add them here before
-    // And commit them. Thanks.
+    timeBeforeFirstMessage: 4000,
+    // Default time before showing next message
+    timeBeforeNextMessage: 1000
   },
       // A pointer to the current message
       // Starts at 1, ends at length + 1
@@ -31,7 +31,13 @@ WhaTV.quickMessages = (function() {
       // The height of a message
       height,
       // The width of the wrapper
-      footerWidth;
+      footerWidth,
+      shown = false,
+      readyToShowEventName = 'readyToShowMessages',
+      readyToHideEventName = 'readyToHideMessages',
+      readyToShowNextEventName = 'readyToShowNextMessage',
+      readyToMarqueeIfNeededEventName = 'readyToMarqueeMessage',
+      currentTimeout;
 
   /**
    * The constructor of quickMessages
@@ -41,24 +47,32 @@ WhaTV.quickMessages = (function() {
    * We show it with an animation
    * while there is messages : we move the content one 'div height' up
    */
-  function init() {
-    var length, index, message, div;
-    // No message at all, we hide and return
-    if (!messages.length) {
-      return;
-    }
+  function init(divId) {
+    node = document.getElementById(divId);
+    nodeWrapper = node.parentNode;
     // Set fontsize relatively to footer height
     height = Number(getComputedStyle(nodeWrapper, '').height.replace('px', ''));
     footerWidth = Number(getComputedStyle(nodeWrapper.parentNode, '').
                          width.replace('px', ''));
+    console.debug('quickMessages: height = ' + height + ', width = ' + footerWidth);
     nodeWrapper.style.fontSize = height * 0.8 + 'px';
     nodeWrapper.style.lineHeight = height + 'px';
     // Put the div at the left the window
     nodeWrapper.style.left = - footerWidth + 'px';
     // Set the display from 'none' to 'block'
     nodeWrapper.style.opacity = 1;
+  }
 
+  function populateMessageDiv() {
+    var length, index, message, div, nodeChild;
+    // No message at all, we hide and return
     // Adding a first, blank message
+    while (node.firstChild) {
+      node.removeChild(node.firstChild);
+    }
+    if (!messages.length) {
+      return;
+    }
     messages.unshift({title: '', content: ''});
     // Adding each message in the div
     for (index = 0, length = messages.length; index < length; index += 1) {
@@ -69,8 +83,6 @@ WhaTV.quickMessages = (function() {
       div.appendChild(message);
       node.appendChild(div);
     }
-    // Let's go.
-    setTimeout(showMessages, defaults.timeBeforeFirstMessage);
   }
 
   /**
@@ -80,18 +92,21 @@ WhaTV.quickMessages = (function() {
    */
   function showMessages() {
     var messagesLength = messages.length, index, span;
+    if (shown || !messages.length) { return; }
+    shown = true;
     node.style.marginTop = '0px';
     currentMessage = 0;
     for (index = 0; index < messagesLength; index += 1) {
       span = node.children[index].children[0];
       span.style.marginLeft = '';
     }
-    $(nodeWrapper).animate({'left': '+=' + footerWidth + 'px'},
-                           1000,
-                           function() {
-                             setTimeout(showNextMessage,
-                                        1000);
-                           });
+    $(nodeWrapper).animate(
+      {'left': '+=' + footerWidth + 'px'},
+      1000,
+      function() {
+        dispatchEvent(readyToShowNextEventName, 1000);
+      }
+     );
   }
 
   /**
@@ -99,31 +114,35 @@ WhaTV.quickMessages = (function() {
    * Then start again!
    */
   function hideMessages() {
-    $(nodeWrapper).animate({'left': '-=' + footerWidth + 'px'},
-                           1000,
-                           function() {
-                             setTimeout(showMessages,
-                                        defaults.timeBeforeStartingAgain);
-                           });
+    if (!shown) { return; }
+    shown = false;
+    $(nodeWrapper).animate(
+      {'left': '-=' + footerWidth + 'px'},
+      1000,
+      function() {
+        dispatchEvent(readyToShowEventName, defaults.timeBeforeStartingAgain);
+      }
+     );
   }
   /**
    * Show/animate a message, then increment the pointer.
    */
   function showNextMessage() {
+    if (!shown) { return; }
     incrementPointer();
     // If last message has finished showing : we hide the message bar.
     if (currentMessage === messages.length) {
       $(node).animate({'marginTop': '-=' + height},
                      defaults.transitionSpeed,
                      function hideMessageBar() {
-                       setTimeout(hideMessages, 1000);
+                       dispatchEvent(readyToHideEventName, defaults.timeBeforeNextMessage);
                      });
     } else {
       // Normal case : we show the message, then call marquee function
       $(node).animate({'marginTop': '-=' + height},
                       defaults.transitionSpeed,
-                      function AnimateCurrentMessage() {
-                        setTimeout(marqueeIfNeeded, defaults.timeout);
+                      function () {
+                        dispatchEvent(readyToMarqueeIfNeededEventName, defaults.timeout);
                       });
     }
   }
@@ -132,6 +151,7 @@ WhaTV.quickMessages = (function() {
    * If message too long : we animate it from right to left.
    */
   function marqueeIfNeeded() {
+    if (!shown) { return; }
     var span = node.children[currentMessage].children[0],
         difference = getSizeFromStyle(getComputedStyle(span, '').width) -
                      getSizeFromStyle(getComputedStyle(nodeWrapper, '').width);
@@ -141,11 +161,36 @@ WhaTV.quickMessages = (function() {
                       15 * difference,
                       'easeInOutSine',
                       function() {
-                        setTimeout(showNextMessage, defaults.timeout);
+                          dispatchEvent(readyToShowNextEventName, defaults.timeout);
                       });
     } else {
-      showNextMessage();
+      dispatchEvent(readyToShowNextEventName);
     }
+  }
+
+  function dispatchEvent(eventName, delay) {
+    console.debug('Firing event: ' + eventName);
+    if (!delay) {
+      delay = 0;
+    }
+    currentTimeout = setTimeout(function() {
+      node.dispatchEvent(new Event(eventName));
+    }, delay);
+  }
+
+  function enableEventListeners() {
+    node.addEventListener(readyToShowEventName, showMessages);
+    node.addEventListener(readyToHideEventName, hideMessages);
+    node.addEventListener(readyToShowNextEventName, showNextMessage);
+    node.addEventListener(readyToMarqueeIfNeededEventName, marqueeIfNeeded);
+  }
+
+  function disableEventListeners() {
+    node.removeEventListener(readyToShowEventName, showMessages);
+    node.removeEventListener(readyToHideEventName, hideMessages);
+    node.removeEventListener(readyToShowNextEventName, showNextMessage);
+    node.removeEventListener(readyToMarqueeIfNeededEventName, marqueeIfNeeded);
+    clearTimeout(currentTimeout);
   }
 
   /**
@@ -169,12 +214,17 @@ WhaTV.quickMessages = (function() {
      * @param {String[]} messageArray an array of strings.
      * @param {HTMLElement} div the div containing messages.
      */
-    create: function(messageArray, divId) {
-      node = document.getElementById(divId);
-      nodeWrapper = node.parentNode;
-      messages = messageArray;
-      window.plop = messageArray;
-      init();
+    create: init,
+    update: function update(messageArray) {
+      disableEventListeners();
+      // hide current message
+      hideMessages();
+      setTimeout(function() {
+        messages = messageArray;
+        populateMessageDiv();
+        showMessages();
+        enableEventListeners();
+      }, defaults.timeBeforeNextMessage);
     }
   };
 })();

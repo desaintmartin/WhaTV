@@ -55,8 +55,10 @@ WhaTV.core = (function WhaTVCoreClosure(global, WhaTV) {
     }
     if (WhaTV.quickMessages) {
       WhaTV.quickMessages.create(
-          data.messages,
           defaults.quickMessagesDivId
+      );
+      WhaTV.quickMessages.update(
+          data.messages
       );
     }
     loadPointedSlideIntoDOM(pointer); // pointer is 0 at this point
@@ -71,7 +73,7 @@ WhaTV.core = (function WhaTVCoreClosure(global, WhaTV) {
     var currentSlide = slides[slideReference],
         moduleName = currentSlide.type,
         content;
-    global.console.log('loadPointedSlideIntoDOM called. preparing slide ' + 
+    global.console.log('loadPointedSlideIntoDOM called. preparing slide ' +
                        'number ' + slideReference);
     // Calls loaders method depending on slide type. Assigns the resulting
     // node to 'content'
@@ -349,7 +351,7 @@ WhaTV.core = (function WhaTVCoreClosure(global, WhaTV) {
 
   // Launch WhaTV : parses slides informations, launching ignition
   WhaTV.util.parseJSON('slides.json', ignition);
-  
+
   // For javascript dummies : the whole function WhaTVCoreInitClosure returns
   // an object, which has access to the whole content of the function. You
   // (i.e window) don't have access to anything in this function outside of
