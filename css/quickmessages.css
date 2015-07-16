@@ -24,8 +24,7 @@ footer #quick-messages-wrapper {
 }
 
 footer #quick-messages-wrapper #quick-messages {
-  position : relative;
-  z-index: 10;
+  position: relative;
 }
 
 footer #quick-messages-wrapper #quick-messages div {
